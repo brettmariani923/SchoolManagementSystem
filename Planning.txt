@@ -33,6 +33,7 @@ Course - School
 
 2. Project Setup
 
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 SCHOOL----> TEACHERS ----> COURSES 
 	\-----> STUDENTS
@@ -43,7 +44,7 @@ Schools have students
 Schools have courses, students learn courses
 
 By setting it up this way we define the order of the relationships in the school: The School's teachers teach courses to students.
-By usings SchoolID at the center of it all, we connect and organize the secondary components of the different reltionships under the primary 
+By usings SchoolID for all tables, we can connect and organize the secondary components of the school reltionships under the primary 
 one (ultimately each category belongs first and foremost to the school it happens in). By using schoolID we also open up the possiblity of adding
 other schools later on.
 
@@ -106,16 +107,21 @@ Requests we will need
 
 DataAccess / Interfaces
 
-	-We will need a way to CRUD records individually (transfer students entering school, epulsions, skipping a grade, etc.)
-	-We will need a way to CRUD records as a list (new school year, new wave of students coming and going through different years, graduating, entering freshman)
-	-Will need an interface to check for SQL and Parameters for execution with DataAccess
-	-Helper method to open connection string
+	-We will need a way to CRUD records individually (transfer students entering school, expulsions, skipping a grade, held back, etc.)
+	-We will need a way to CRUD records as a list (new school year, new wave of students coming and going through different years, graduating, entering freshman class, etc.)
+	-Will use an interface to abstract SQL and Parameters before execution with DataBase (security)
+	-Helper method to open connection string only when interacting with the database (security)
+
+	Helper
+
+		-HandleRequest: a reuseable wrapper for opening the connection, executing the dapper queries, and returning the results (security)
 
 	Interfaces
+
 		-IDataAccess
-			-Provides framework for how dataaccess should interact with the database: execution, fetch, and fetchlist
-			-For the pattern we are using, we want to separate what the code does (interface) from how it does it (implementation). 
-			 we want to abstract away raw SQL execution using different types of requests and this helpps do that.
+			-Provides framework for how data access should interact with the database: execution, fetch, and fetchlist
+			-For the pattern we are using, we want to separate what the code does (interface) from how it does it (implementation) 
+			 so we need to abstract out raw SQL execution using different types of requests and this helpps do that.
 
 		-IDataExecute
 			-Similar to IDataAccess, only difference is this handles other Crud Functions that dont return a response object
@@ -124,9 +130,34 @@ DataAccess / Interfaces
 			- implemented for SQL queries that will return a single/record object
 
 		-IDataFetchList
-		-IDataRequest.
+			- implemented for SQL queries that will return a collection of records/ objects
+
+		-IDataRequest
+			- Makes it so every datarequest must use getsql() for the sql statment to execute
+			- getparameters() is for parameters the query will need, if no parameters will return a null
+
 		-IDbConnectionFactory
+			-This will define the factory pattern we use that returns the IDbConnection we use to connect to the database
+			-helps with privacy and security
 
+	DataAccess
 
+		-DataAccess methods
 
+			-Dappers ExecuteAsync to execute sql statments that dont return objects
 
+				-needs to internally run the command, will use ExecuteAsync() to return how many rows are effected.
+				-Used to insert, update, or delete SQL statments
+				-Accepts IDataExecute request object
+				-will call request.GetSql() and request.Parameters() to abstract the SQL query and parameters
+				-Will use HandleRequest to oppen connection string
+		
+			-Method to fetch a single record from the database (FetchAsync<TResponse>)
+
+				-will use Dappers QueryFirstORDeafultAsync<T> to return one object or null if not found
+				-will use HandleRequest to open connection string
+
+			-Method to fetch a collection of records from the database (FetchListAsync<TResponse>)
+
+				-will use Dappers QueryAsync<T>() to run the SQL and return the collection
+				-will use HandleRequest to open connection string
