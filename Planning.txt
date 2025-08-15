@@ -36,30 +36,32 @@ Course - School
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 SCHOOL----> TEACHERS ----> COURSES 
-	\-----> STUDENTS
+	\-----> STUDENTS ----> ENROLL ---> COURSES
 	 \-----> COURSES -----> STUDENTS
 
-Schools have teachers, teachers teach courses
-Schools have students
-Schools have courses, students learn courses
+many to many for enrollments
 
-By setting it up this way we define the order of the relationships in the school: The School's teachers teach courses to students.
+Schools have teachers, teachers teach courses
+Schools have students, students enroll in courses
+Schools have courses, courses have students
+
+By setting it up this way we define the order of the relationships in the school: The School's teachers teach students who enroll in courses.
 By usings SchoolID for all tables, we can connect and organize the secondary components of the school reltionships under the primary 
 one (ultimately each category belongs first and foremost to the school it happens in). By using schoolID we also open up the possiblity of adding
 other schools later on.
 
-So we will have 4 different tables
+So we will have 5 different tables
 1.Courses
 2.School
 3.Students
 4.Teachers
+5.Enrollments
 
 	Courses
 		-CourseID
 		-Course Name
 		-Credits
 		-SchoolID 
-		-StudentID
 
 	School
 		-SchoolID
@@ -77,8 +79,13 @@ So we will have 4 different tables
 		-Teacher First Name
 		-Teaacher Last Name
 		-SchoolID
-		-CourseID
 
+	Enrollments
+		-StudentID
+		-CourseID
+		-SchoolID
+		-TeacherID
+		
 Requests we will need
 
 	Create 
@@ -86,17 +93,21 @@ Requests we will need
 		-new student
 		-new students
 		-new teacher
+		-new enrollment
 
 	Read
 		-all students
 		-all teachers
 		-all courses
+		-all enrollment
 		-student by id
 		-teacher by id
 		-course by id
+		-enrollment by id
 
 	Update
 		-update course info
+		-update enrollment info
 		-update student info
 		-update students info
 		-update teacher info
@@ -106,6 +117,7 @@ Requests we will need
 		-remove teacher
 		-remove student
 		-remove students
+		-remove enrollment
 
 
 DataAccess / Interfaces
