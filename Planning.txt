@@ -1,0 +1,85 @@
+You are tasked with designing a school management system in C#. The system should support the following:
+
+Students
+Teachers
+Courses
+School
+
+Please design an application to represent these entities and establish the appropriate relationships between them.
+
+1. Planning Phase
+
+There is no expectation to finish or build a fully functional app. 
+
+30 min time limit - when you say go 
+
+Don't have UI
+
+What is important - project setup - establishing relationships
+
+Clean Architecture.
+Layered. 
+Okay - 30m - one project - all my Data access, bl , etc - explain why
+
+Data Access - 4 Tables - 4 Classes
+
+Student: 
+Id, First Name, Last Name
+
+Teacher: 
+Id, First Name, Last Name
+
+Course - School  
+
+2. Project Setup
+
+
+SCHOOL----> TEACHERS ----> COURSES 
+	\-----> STUDENTS
+	 \-----> COURSES -----> STUDENTS
+
+Schools have teachers, teachers teach courses
+Schools have students
+Schools have courses, students learn courses
+
+By setting it up this way we define the order of the relationships in the school: The School's teachers teach courses to students.
+By usings SchoolID at the center of it all, we connect and organize the secondary components of the different reltionships under the primary 
+one (ultimately each category belongs first and foremost to the school it happens in). By using schoolID we also open up the possiblity of adding
+other schools later on.
+
+So we will have 4 different tables
+1.Courses
+2.School
+3.Students
+4.Teachers
+
+Courses
+	-CourseID
+	-Course Name
+	-Credits
+	-SchoolID 
+	-StudentID
+
+School
+	-SchoolID
+	-Name
+	-Address
+
+Students
+	-StudentID
+	-Student First Name
+	-Student Last Name
+	-SchoolID
+
+Teachers
+	-TeacherID
+	-Teacher First Name
+	-Teaacher Last Name
+	-SchoolID
+	-CourseID
+
+
+
+
+
+

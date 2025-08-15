@@ -1,1 +1,7 @@
-﻿
+﻿CREATE TABLE Teachers (
+	TeacherID INT PRIMARY KEY,
+	FirstName NVARCHAR (150) NOT NULL,
+	LastName NVARCHAR (150) NOT NULL,
+	SchoolID INT FOREIGN KEY(SchoolID) REFERENCES School(SchoolID),
+	CourseID INT FOREIGN KEY(CourseID) REFERENCES Courses(CourseID),
+	);
