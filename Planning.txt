@@ -53,32 +53,79 @@ So we will have 4 different tables
 3.Students
 4.Teachers
 
-Courses
-	-CourseID
-	-Course Name
-	-Credits
-	-SchoolID 
-	-StudentID
+	Courses
+		-CourseID
+		-Course Name
+		-Credits
+		-SchoolID 
+		-StudentID
 
-School
-	-SchoolID
-	-Name
-	-Address
+	School
+		-SchoolID
+		-Name
+		-Address
 
-Students
-	-StudentID
-	-Student First Name
-	-Student Last Name
-	-SchoolID
+	Students
+		-StudentID
+		-Student First Name
+		-Student Last Name
+		-SchoolID
 
-Teachers
-	-TeacherID
-	-Teacher First Name
-	-Teaacher Last Name
-	-SchoolID
-	-CourseID
+	Teachers
+		-TeacherID
+		-Teacher First Name
+		-Teaacher Last Name
+		-SchoolID
+		-CourseID
+
+Requests we will need
+
+	Create 
+		-new course
+		-new student
+		-new teacher
+
+	Read
+		-all students
+		-all teachers
+		-all courses
+		-student by id
+		-teacher by id
+		-course by id
+
+	Update
+		-update course info
+		-update student info
+		-update teacher info
+	
+	Delete
+		-remove course
+		-remove teacher
+		-remove students
 
 
+DataAccess / Interfaces
+
+	-We will need a way to CRUD records individually (transfer students entering school, epulsions, skipping a grade, etc.)
+	-We will need a way to CRUD records as a list (new school year, new wave of students coming and going through different years, graduating, entering freshman)
+	-Will need an interface to check for SQL and Parameters for execution with DataAccess
+	-Helper method to open connection string
+
+	Interfaces
+		-IDataAccess
+			-Provides framework for how dataaccess should interact with the database: execution, fetch, and fetchlist
+			-For the pattern we are using, we want to separate what the code does (interface) from how it does it (implementation). 
+			 we want to abstract away raw SQL execution using different types of requests and this helpps do that.
+
+		-IDataExecute
+			-Similar to IDataAccess, only difference is this handles other Crud Functions that dont return a response object
+			
+		-IDataFetch
+			- implemented for SQL queries that will return a single/record object
+
+		-IDataFetchList
+		-IDataRequest.
+		-IDbConnectionFactory
 
 
 
