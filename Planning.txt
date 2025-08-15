@@ -84,6 +84,7 @@ Requests we will need
 	Create 
 		-new course
 		-new student
+		-new students
 		-new teacher
 
 	Read
@@ -97,11 +98,13 @@ Requests we will need
 	Update
 		-update course info
 		-update student info
+		-update students info
 		-update teacher info
 	
 	Delete
 		-remove course
 		-remove teacher
+		-remove student
 		-remove students
 
 
@@ -161,3 +164,7 @@ DataAccess / Interfaces
 
 				-will use Dappers QueryAsync<T>() to run the SQL and return the collection
 				-will use HandleRequest to open connection string
+
+		-SqlConnectionFactory
+
+			-This class will implement IDbConnectionFactory in order to encapsulate the SqlConnection that is created and returned as an IDbConnection using this Factory class.
