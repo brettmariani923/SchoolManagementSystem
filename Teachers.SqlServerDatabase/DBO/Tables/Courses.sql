@@ -3,5 +3,4 @@
 	CourseName NVARCHAR(100) NOT NULL,
 	Credits INT NOT NULL,
 	SchoolID INT FOREIGN KEY(SchoolID) REFERENCES SchoolID(SchoolID),
-	StudentID INT FOREIGN KEY(StudentID) REFERENCES StudentID(StudentID),
 	);
