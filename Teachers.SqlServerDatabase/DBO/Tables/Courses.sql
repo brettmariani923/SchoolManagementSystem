@@ -1,4 +1,4 @@
-﻿CREATE TABLE Course (
+﻿CREATE TABLE [dbo].[Course] (
 	CourseID INT PRIMARY KEY,
 	CourseName NVARCHAR(100) NOT NULL,
 	Credits INT NOT NULL,

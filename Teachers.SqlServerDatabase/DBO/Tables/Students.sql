@@ -1,4 +1,4 @@
-﻿CREATE TABLE Students(
+﻿CREATE TABLE [dbo].[Students] (
 	StudentID INT PRIMARY KEY,
 	FirstName NVARCHAR (150) NOT NULL,
 	LastName NVarChar(150) NOT NULL,

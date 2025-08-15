@@ -1,4 +1,4 @@
-﻿CREATE TABLE Teachers (
+﻿CREATE TABLE [dbo].[Teachers] (
 	TeacherID INT PRIMARY KEY,
 	FirstName NVARCHAR (150) NOT NULL,
 	LastName NVARCHAR (150) NOT NULL,
