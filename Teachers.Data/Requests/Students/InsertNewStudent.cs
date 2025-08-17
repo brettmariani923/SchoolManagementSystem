@@ -6,7 +6,7 @@
         private readonly int _firstName;
         private readonly int _lastName;
 
-        public string InsertNewStudent(int firstName, int lastName, int schoolID)
+        public InsertNewStudent(int firstName, int lastName, int schoolID)
         {
             schoolID = _schoolID;
             firstName = _firstName;

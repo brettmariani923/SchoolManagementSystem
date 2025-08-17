@@ -7,14 +7,14 @@
 
         public InsertNewCourse(int course, int credits)
         {
-            _course = course;
-            _credits = credits;
+            course = _course;
+            credits = _credits;
         }
 
         public string GetSql()
         {
             return @"
-            INSERT INTO Courses (Course, Credits) VALUES @(Course, @Credits);";
+            INSERT INTO Courses (Course, Credits) VALUES (@Course, @Credits);";
         }
 
         public object GetParameters()

@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Teachers.Data.Requests.Students
+﻿namespace Teachers.Data.Requests.Students
 {
-    internal class ReturnAllStudents
+    public class ReturnAllStudents
     {
+        public string GetSql()
+        {
+            return "SELECT Students FROM SchoolSystem;";
+        }
+
+        public object? GetParameters()
+        {
+            return null;
+        }
     }
 }

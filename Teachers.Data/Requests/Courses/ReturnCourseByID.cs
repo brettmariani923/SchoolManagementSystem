@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Teachers.Data.Requests.Courses
+﻿namespace Teachers.Data.Requests.Courses
 {
     public class ReturnCourseByID
     {
+        private readonly int _courseID;
+        private readonly int _courseName;
+        private readonly int _credits;
+
+        public ReturnCourseByID(int courseID, int courseName, int credits)
+        {
+            courseID = _courseID;
+            courseName = _courseName;
+            credits = _credits;
+
+        }
         public string GetSql()
         {
             return "SELECT Course FROM SchoolSystem WHERE CourseID = @CourseID;";
@@ -15,7 +20,7 @@ namespace Teachers.Data.Requests.Courses
 
         public object? GetParameters()
         {
-            return null;
+            return new { CourseID = _courseID };
         }
     }
 }
