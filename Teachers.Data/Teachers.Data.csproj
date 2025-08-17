@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.66" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
+    <ProjectReference Include="..\Teachers.Domain\Teachers.Domain.csproj" />
   </ItemGroup>
 
 </Project>

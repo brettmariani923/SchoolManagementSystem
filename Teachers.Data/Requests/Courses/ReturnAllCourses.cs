@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Teachers.Domain.Interfaces;
+using Teachers.Data.DTO;
 
 namespace Teachers.Data.Requests.Courses
 {
-    internal class ReturnAllCourses
+    public class ReturnAllCourses : IDataFetchList<Courses_DTO>
     {
+       public string GetSql()
+        {
+            return "SELECT Courses FROM SchoolSystem;";
+        }
+
+        public object? GetParameters()
+        {
+            return null;
+        }
     }
 }

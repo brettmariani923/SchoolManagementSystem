@@ -1,8 +1,8 @@
-﻿using Teachers.Data.Interfaces;
+﻿using Teachers.Domain.Interfaces;
 using System.Data;
 using Dapper;
 
-namespace BillsPC_CleanArchitecture.Data.Implementation
+namespace Teachers.Domain.Implementation
 {
     public class DataAccess : IDataAccess
     {

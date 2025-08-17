@@ -1,12 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Teachers.Data.Requests.Students
+﻿namespace Teachers.Data.Requests.Students
 {
-    internal class InsertNewStudent
+    public class InsertNewStudent
     {
+        private readonly int _schoolID;
+        private readonly int _firstName;
+        private readonly int _lastName;
+
+        public string InsertNewStudent(int firstName, int lastName, int schoolID)
+        {
+            schoolID = _schoolID;
+            firstName = _firstName;
+            lastName = _lastName;
+        }
+
+        public string GetSql()
+        {
+            return @"
+            INSERT INTO Students (FirstName, LastName, SchoolID) VALUES (@FirstName, @LastName, @SchoolID);";
+        }
+
+        public object? GetParameters()
+        {
+            return new { FirstName = _firstName, LastName = _lastName, SchoolID = _schoolID };
+        }
     }
 }
