@@ -66,7 +66,10 @@ So we will have 5 different tables
 	School
 		-SchoolID
 		-Name
-		-Address
+		-Street1
+		-Street2
+		-City
+		-State
 
 	Students
 		-StudentID
@@ -86,41 +89,107 @@ So we will have 5 different tables
 		-SchoolID
 		-TeacherID
 		
-Requests we will need
+Entity / Object
 
-	Create 
-		-new course
-		-new student
-		-new students
-		-new teacher
-		-new enrollment
-
-	Read
-		-all students
-		-all teachers
-		-all courses
-		-all enrollment
-		-student by id
-		-teacher by id
-		-course by id
-		-enrollment by id
-
-	Update
-		-update course info
-		-update enrollment info
-		-update student info
+Student
+	-Create
+		-Create student
+		-Create students
+	-Read
+		-Get all students
+		-Get student by id
+	-Updte
+		-Update student info
 		-update students info
-		-update teacher info
-	
-	Delete
-		-remove course
-		-remove teacher
+	-Delete
 		-remove student
 		-remove students
-		-remove enrollment
 
+	REST
+		-Post /student
+		-Post / students/(list of ids)
 
-DataAccess / Interfaces
+		-Get / student/{studentID}
+		-Get /students
+
+		-Put /student/{studentID}
+		-Put /students/ (list of ids)
+
+		-Delete /student/{studentID}
+		-Delete /students/ (list of ids)
+
+Teacher
+	-Create
+		-Create teacher
+	-Read
+		-Get all teachers
+		-Get teaacher by id
+	-Update
+		-update teacher info
+	-Delete
+		-Remove teacher
+
+	REST
+
+		-post /teacher
+
+		-get /teachers
+		-get /teacher/{teacherid}
+
+		-put /teacher/{teacherid}
+
+		-delete teacher/{teacherid}
+
+Course
+	-Create
+		-Create course
+	-Read
+		-Get all courses
+		-Get course by id
+	-Update
+		-update course info
+	-Delete
+		-remove course
+
+	REST
+		-post /course
+
+		-get /courses
+		-get /course/{courseid}
+
+		-put /course/{courseid}
+
+		-delete /course/{courseid}
+
+Enrollment
+	-Create
+		-Enroll student
+		-Enroll students
+	-Read
+		-Get all enrollments
+		-get enrollment by id
+		-get enrollments for a student
+		-get enrollments for a course
+	-Update
+		-update enrollment info
+	-Delete
+		-Remove an enrollment
+
+	REST
+		-POST /Enrollment/{studentid, course id, etc}
+		-post /enrollments/(list of ids)
+
+		-Get /enrollments
+		-Get /enrollment/{enrollmentid}
+
+		-get /student/{studentid}/enrollments
+		-get /course/{courseid}/enrollments
+
+		-put /enrollments/{enrollmentid}
+		-delete /enrollments/{enrollmentid}
+	
+	
+	DataAccess / Interfaces
 
 	-We will need a way to CRUD records individually (transfer students entering school, expulsions, skipping a grade, held back, etc.)
 	-We will need a way to CRUD records as a list (new school year, new wave of students coming and going through different years, graduating, entering freshman class, etc.)

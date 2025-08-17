@@ -4,3 +4,4 @@
 	Credits INT NOT NULL,
 	SchoolID INT FOREIGN KEY(SchoolID) REFERENCES SchoolID(SchoolID),
 	);
+
