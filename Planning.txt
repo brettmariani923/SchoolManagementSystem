@@ -7,32 +7,6 @@ School
 
 Please design an application to represent these entities and establish the appropriate relationships between them.
 
-1. Planning Phase
-
-There is no expectation to finish or build a fully functional app. 
-
-30 min time limit - when you say go 
-
-Don't have UI
-
-What is important - project setup - establishing relationships
-
-Clean Architecture.
-Layered. 
-Okay - 30m - one project - all my Data access, bl , etc - explain why
-
-Data Access - 4 Tables - 4 Classes
-
-Student: 
-Id, First Name, Last Name
-
-Teacher: 
-Id, First Name, Last Name
-
-Course - School  
-
-2. Project Setup
-
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 SCHOOL----> TEACHERS ----> COURSES 
@@ -148,9 +122,9 @@ Course
 		-Get all courses x
 		-Get course by id x
 	-Update
-		-update course info
+		-update course info x
 	-Delete
-		-remove course
+		-remove course x
 
 	REST
 		-post /course
@@ -167,8 +141,8 @@ Enrollment
 		-Enroll student x
 		-Enroll students x
 	-Read
-		-Get all enrollments
-		-get enrollment by id
+		-Get all enrollments  x
+		-get enrollment by id x
 		-get enrollments for a student
 		-get enrollments for a course
 	-Update

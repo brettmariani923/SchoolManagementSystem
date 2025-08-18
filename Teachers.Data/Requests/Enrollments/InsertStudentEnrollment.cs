@@ -2,14 +2,14 @@
 
 namespace Teachers.Data.Requests.Enrollments
 {
-    public class EnrollStudent : IDataExecute
+    public class InsertStudentEnrollment : IDataExecute
     {
         private readonly int _studentID;
         private readonly int _teacherID;
         private readonly int _courseID;
         private readonly int _schoolID;
 
-        public EnrollStudent(int studentID, int teacherID, int courseID, int schoolID)
+        public InsertStudentEnrollment(int studentID, int teacherID, int courseID, int schoolID)
         {
             _studentID = studentID;
             _teacherID = teacherID;

@@ -2,14 +2,14 @@
 
 namespace Teachers.Data.Requests.Enrollments
 {
-    public class EnrollBulkStudents : IDataExecute
+    public class InsertBulkStudentEnrollment : IDataExecute
     {
         private readonly IEnumerable<int> _studentIds;
         private readonly int _teacherID;
         private readonly int _courseID;
         private readonly int _schoolID;
 
-        public EnrollBulkStudents(IEnumerable<int> studentIds, int teacherID, int courseID, int schoolID)
+        public InsertBulkStudentEnrollment(IEnumerable<int> studentIds, int teacherID, int courseID, int schoolID)
         {
             _studentIds = studentIds ?? throw new ArgumentNullException(nameof(studentIds));
             _teacherID = teacherID;

@@ -1,6 +1,7 @@
 ﻿namespace Teachers.Data.DTO
 {
-    public class Teachers_DTO
+    public class Enrollments_DTO
     {
+
     }
 }

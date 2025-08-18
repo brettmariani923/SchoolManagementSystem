@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Teachers.Data.DTO
+﻿namespace Teachers.Data.DTO
 {
-    internal class Students_DTO
+    public class Students_DTO
     {
     }
 }
