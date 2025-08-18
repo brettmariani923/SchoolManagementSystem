@@ -74,11 +74,11 @@ Student
 		-Get all students x
 		-Get student by id x
 	-Updte
-		-Update student info
-		-update students info
+		-Update student info x
+		-update students info x
 	-Delete
-		-remove student
-		-remove students
+		-remove student x
+		-remove students x
 
 	REST
 		-Post /student
@@ -98,11 +98,11 @@ Teacher
 		-Create teacher x
 	-Read
 		-Get all teachers x
-		-Get teaacher by id
+		-Get teaacher by id x
 	-Update
-		-update teacher info
+		-update teacher info x
 	-Delete
-		-Remove teacher
+		-Remove teacher x
 
 	REST
 
@@ -143,12 +143,12 @@ Enrollment
 	-Read
 		-Get all enrollments  x
 		-get enrollment by id x
-		-get enrollments for a student
-		-get enrollments for a course
+		-get enrollments for a student x
+		-get enrollments for a course x
 	-Update
-		-update enrollment info
+		-update enrollment info x
 	-Delete
-		-Remove an enrollment
+		-Remove an enrollment x
 
 	REST
 		-POST /Enrollment/{studentid, course id, etc}
