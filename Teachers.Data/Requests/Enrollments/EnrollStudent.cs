@@ -1,6 +1,8 @@
-﻿namespace Teachers.Data.Requests.Enrollments
+﻿using Teachers.Domain.Interfaces;
+
+namespace Teachers.Data.Requests.Enrollments
 {
-    public class EnrollStudent
+    public class EnrollStudent : IDataExecute
     {
         private readonly int _studentID;
         private readonly int _teacherID;
@@ -16,7 +18,7 @@
         }
 
         public string GetSql() =>
-            "INSERT INTO Enrollments (StudentID, TeacherID, CourseID, SchoolID) " +
+            "INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID) " +
             "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
 
         public object GetParameters() => new

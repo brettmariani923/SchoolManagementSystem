@@ -1,6 +1,8 @@
-﻿namespace Teachers.Data.Requests.Teachers
+﻿using Teachers.Domain.Interfaces;
+
+namespace Teachers.Data.Requests.Teachers
 {
-    public class InsertNewTeacher
+    public class InsertNewTeacher : IDataExecute
     {
         private readonly string _firstName;
         private readonly string _lastName;

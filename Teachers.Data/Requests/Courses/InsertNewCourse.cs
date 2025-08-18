@@ -1,6 +1,8 @@
-﻿namespace Teachers.Data.Requests.Courses
+﻿using Teachers.Domain.Interfaces;
+
+namespace Teachers.Data.Requests.Courses
 {
-    public class InsertNewCourse
+    public class InsertNewCourse : IDataExecute
     {
         private readonly string _courseName;
         private readonly int _credits;

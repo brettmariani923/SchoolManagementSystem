@@ -1,9 +1,13 @@
-﻿namespace Teachers.Data.Requests.Teachers
+﻿using Teachers.Domain.Interfaces;
+using Teachers.Data.DTO;
+
+namespace Teachers.Data.Requests.Teachers
 {
-    public class ReturnAllTeachers
+    public class ReturnAllTeachers : IDataFetchList<Teachers_DTO>
     {
         public string GetSql() =>
-            "SELECT * FROM dbo.Teachers;";
+            @"SELECT TeacherID, FirstName, LastName, SchoolID
+              FROM dbo.Teachers;";
 
         public object? GetParameters() => null;
     }

@@ -1,7 +1,9 @@
-﻿CREATE TABLE [dbo].[Course] (
-	CourseID INT PRIMARY KEY,
-	CourseName NVARCHAR(100) NOT NULL,
-	Credits INT NOT NULL,
-	SchoolID INT FOREIGN KEY(SchoolID) REFERENCES SchoolID(SchoolID),
-	);
-
+﻿CREATE TABLE dbo.Course
+(
+    CourseID   INT IDENTITY(1,1) PRIMARY KEY,
+    CourseName NVARCHAR(100) NOT NULL,
+    Credits    INT NOT NULL,
+    SchoolID   INT NOT NULL,
+    CONSTRAINT FK_Course_School 
+        FOREIGN KEY (SchoolID) REFERENCES dbo.School(SchoolID)
+);

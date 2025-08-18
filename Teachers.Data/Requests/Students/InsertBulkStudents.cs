@@ -1,6 +1,8 @@
-﻿namespace Teachers.Data.Requests.Students
+﻿using Teachers.Domain.Interfaces;
+
+namespace Teachers.Data.Requests.Students
 {
-    public class InsertBulkStudents
+    public class InsertBulkStudents : IDataExecute
     {
         private readonly IEnumerable<(string FirstName, string LastName, int Year)> _students;
         private readonly int _schoolID;
@@ -12,10 +14,10 @@
         }
 
         public string GetSql() =>
-            "INSERT INTO Students (FirstName, LastName, [Year], SchoolID) " +
+            "INSERT INTO dbo.Students (FirstName, LastName, [Year], SchoolID) " +
             "VALUES (@FirstName, @LastName, @Year, @SchoolID);";
 
-        public IEnumerable<object> GetParameters() =>
+        public object GetParameters() =>
             _students.Select(s => new
             {
                 s.FirstName,

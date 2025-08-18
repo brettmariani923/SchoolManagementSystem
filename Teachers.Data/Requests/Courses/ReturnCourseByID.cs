@@ -1,6 +1,9 @@
-﻿namespace Teachers.Data.Requests.Courses
+﻿using Teachers.Domain.Interfaces;
+using Teachers.Data.DTO; 
+
+namespace Teachers.Data.Requests.Courses
 {
-    public class ReturnCourseByID
+    public class ReturnCourseByID : IDataFetch<Courses_DTO>
     {
         private readonly int _courseID;
 
