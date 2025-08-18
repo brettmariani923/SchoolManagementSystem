@@ -4,14 +4,14 @@ namespace Teachers.Data.Requests.Enrollments
 {
     public class InsertBulkStudentEnrollment : IDataExecute
     {
-        private readonly IEnumerable<int> _studentIds;
+        private readonly IEnumerable<int> _studentIDs;
         private readonly int _teacherID;
         private readonly int _courseID;
         private readonly int _schoolID;
 
-        public InsertBulkStudentEnrollment(IEnumerable<int> studentIds, int teacherID, int courseID, int schoolID)
+        public InsertBulkStudentEnrollment(IEnumerable<int> studentIDs, int teacherID, int courseID, int schoolID)
         {
-            _studentIds = studentIds ?? throw new ArgumentNullException(nameof(studentIds));
+            _studentIDs = studentIDs ?? throw new ArgumentNullException(nameof(studentIDs));
             _teacherID = teacherID;
             _courseID = courseID;
             _schoolID = schoolID;
@@ -22,7 +22,7 @@ namespace Teachers.Data.Requests.Enrollments
             "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
 
         public object GetParameters() =>
-            _studentIds.Select(id => new
+            _studentIDs.Select(id => new
             {
                 StudentID = id,
                 TeacherID = _teacherID,
