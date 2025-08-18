@@ -58,7 +58,7 @@ So we will have 5 different tables
 5.Enrollments
 
 	Courses
-		-CourseID
+		-CourseID 
 		-Course Name
 		-Credits
 		-SchoolID 
@@ -94,11 +94,11 @@ Entity / Object
 
 Student
 	-Create
-		-Create student
-		-Create students
+		-Create student x
+		-Create students x
 	-Read
-		-Get all students
-		-Get student by id
+		-Get all students x
+		-Get student by id x
 	-Updte
 		-Update student info
 		-update students info
@@ -121,9 +121,9 @@ Student
 
 Teacher
 	-Create
-		-Create teacher
+		-Create teacher x
 	-Read
-		-Get all teachers
+		-Get all teachers x
 		-Get teaacher by id
 	-Update
 		-update teacher info
@@ -143,10 +143,10 @@ Teacher
 
 Course
 	-Create
-		-Create course
+		-Create course x
 	-Read
-		-Get all courses
-		-Get course by id
+		-Get all courses x
+		-Get course by id x
 	-Update
 		-update course info
 	-Delete
@@ -164,8 +164,8 @@ Course
 
 Enrollment
 	-Create
-		-Enroll student
-		-Enroll students
+		-Enroll student x
+		-Enroll students x
 	-Read
 		-Get all enrollments
 		-get enrollment by id
