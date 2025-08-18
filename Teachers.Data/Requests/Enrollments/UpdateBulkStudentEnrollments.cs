@@ -1,0 +1,34 @@
+﻿using Teachers.Domain.Interfaces;
+using Teachers.Data.DTO;
+
+namespace Teachers.Data.Requests.Enrollments
+{
+    public class UpdateBulkEnrollments : IDataExecute
+    {
+        private readonly IEnumerable<Enrollments_DTO> _enrollments;
+
+        public UpdateBulkEnrollments(IEnumerable<Enrollments_DTO> enrollments)
+        {
+            if (enrollments is null) throw new ArgumentNullException(nameof(enrollments));
+            _enrollments = enrollments;
+        }
+
+        public string GetSql() =>
+            @"UPDATE dbo.Enrollments
+              SET StudentID = @StudentID,
+                  TeacherID = @TeacherID,
+                  CourseID  = @CourseID,
+                  SchoolID  = @SchoolID
+              WHERE EnrollmentID = @EnrollmentID;";
+
+        public object? GetParameters() =>
+            _enrollments.Select(e => new
+            {
+                e.EnrollmentID,
+                e.StudentID,
+                e.TeacherID,
+                e.CourseID,
+                e.SchoolID
+            });
+    }
+}

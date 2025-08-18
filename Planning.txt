@@ -73,7 +73,7 @@ Student
 	-Read
 		-Get all students x
 		-Get student by id x
-	-Updte
+	-Update
 		-Update student info x
 		-update students info x
 	-Delete
@@ -147,9 +147,10 @@ Enrollment
 		-get enrollments for a course x
 	-Update
 		-update enrollment info x
+		-updat bulk enrollments x
 	-Delete
 		-Remove an enrollment x
-
+		-remove bulk enrollments x
 	REST
 		-POST /Enrollment/{studentid, course id, etc}
 		-post /enrollments/(list of ids)
