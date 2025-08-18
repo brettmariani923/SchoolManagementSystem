@@ -2,25 +2,25 @@
 {
     public class EnrollBulkStudents
     {
-        private readonly IEnumerable<int> _studentID;
+        private readonly IEnumerable<int> _studentIds;
         private readonly int _teacherID;
         private readonly int _courseID;
         private readonly int _schoolID;
 
-        public EnrollBulkStudents(IEnumerable<int> studentID, int teacherID, int courseID, int schoolID)
+        public EnrollBulkStudents(IEnumerable<int> studentIds, int teacherID, int courseID, int schoolID)
         {
-            studentID = _studentID;
-            teacherID = _teacherID;
-            courseID = _courseID;
-            schoolID = _schoolID;
+            _studentIds = studentIds ?? throw new ArgumentNullException(nameof(studentIds));
+            _teacherID = teacherID;
+            _courseID = courseID;
+            _schoolID = schoolID;
         }
 
         public string GetSql() =>
-            "INSERT INTO Enrollments (StudentID, TeacherID, CourseID, SchoolID) " +
+            "INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID) " +
             "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
 
         public IEnumerable<object> GetParameters() =>
-            _studentID.Select(id => new
+            _studentIds.Select(id => new
             {
                 StudentID = id,
                 TeacherID = _teacherID,
@@ -28,5 +28,4 @@
                 SchoolID = _schoolID
             });
     }
-  
 }

@@ -64,7 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\PostDeploymentScripts\Script.PostDeployment.sql" />
-    <None Include="Scripts\PostDeploymentScripts\SeedTable_Teachers.sql" />
     <None Include="DBO\Tables\Teachers.sql" />
     <None Include="DBO\Tables\Students.sql" />
     <None Include="DBO\Tables\School.sql" />

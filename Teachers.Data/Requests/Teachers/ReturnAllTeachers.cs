@@ -2,14 +2,9 @@
 {
     public class ReturnAllTeachers
     {
-        public string GetSql()
-        {
-            return "SELECT Teachers FROM SchoolSystem;";
-        }
+        public string GetSql() =>
+            "SELECT * FROM dbo.Teachers;";
 
-        public object? GetParameters()
-        {
-            return null;
-        }
+        public object? GetParameters() => null;
     }
 }

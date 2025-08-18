@@ -1,31 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Teachers.Data.Requests.Students
+﻿namespace Teachers.Data.Requests.Students
 {
-    public class ReturnStudentByID
+    public class ReturnStudentById
     {
         private readonly int _studentID;
-        private readonly int _firstName;
-        private readonly int _lastName;
 
-        public ReturnStudentByID(int studentID, int firstName, int lastName)
+        public ReturnStudentById(int studentID)
         {
-            studentID = _studentID;
-            firstName = _firstName;
-            lastName = _lastName;
-
-        }
-        public string GetSql()
-        {
-            return @"Select Student FROM SchoolSystem WHERE StudentID = @StudentID;";
+            _studentID = studentID;
         }
 
-        public object? GetParameters()
-        {
-            return new { StudentID = _studentID };
+        public string GetSql() =>
+            "SELECT StudentID, FirstName, LastName, [Year], SchoolID " +
+            "FROM dbo.Students " +
+            "WHERE StudentID = @StudentID;";
+
+        public object GetParameters() => new { StudentID = _studentID };
     }
 }

@@ -2,26 +2,26 @@
 {
     public class InsertNewStudent
     {
+        private readonly string _firstName;
+        private readonly string _lastName;
         private readonly int _schoolID;
-        private readonly int _firstName;
-        private readonly int _lastName;
 
-        public InsertNewStudent(int firstName, int lastName, int schoolID)
+        public InsertNewStudent(string firstName, string lastName, int schoolID)
         {
-            schoolID = _schoolID;
-            firstName = _firstName;
-            lastName = _lastName;
+            _firstName = firstName;
+            _lastName = lastName;
+            _schoolID = schoolID;
         }
 
-        public string GetSql()
-        {
-            return @"
-            INSERT INTO Students (FirstName, LastName, SchoolID) VALUES (@FirstName, @LastName, @SchoolID);";
-        }
+        public string GetSql() =>
+            "INSERT INTO Students (FirstName, LastName, SchoolID) " +
+            "VALUES (@FirstName, @LastName, @SchoolID);";
 
-        public object? GetParameters()
+        public object GetParameters() => new
         {
-            return new { FirstName = _firstName, LastName = _lastName, SchoolID = _schoolID };
-        }
+            FirstName = _firstName,
+            LastName = _lastName,
+            SchoolID = _schoolID
+        };
     }
 }

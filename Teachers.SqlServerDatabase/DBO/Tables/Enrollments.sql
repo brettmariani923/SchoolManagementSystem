@@ -1,7 +1,14 @@
-﻿CREATE TABLE [dbo].[Enrollments] (
-	EnrollmentID INT PRIMARY KEY NOT NULL,
-	TeacherID INT FOREIGN KEY (TeacherID) REFERENCES TeacherID (TeacherID),
-	StudentID INT FOREIGN KEY (StudentID) REFERENCES StudentID (StudentID),
-	CourseID INT FOREIGN KEY (CourseID) REFERENCES CourseID (CourseID),
-	SchoolID INT FOREIGN KEY (SchoolID) REFERENCES SchoolID (SchoolID),
-	);
+﻿CREATE TABLE dbo.Enrollments (
+  EnrollmentID INT IDENTITY(1,1) PRIMARY KEY,
+  TeacherID INT NOT NULL
+    REFERENCES dbo.Teachers(TeacherID),
+  StudentID INT NOT NULL
+    REFERENCES dbo.Students(StudentID),
+  CourseID INT NOT NULL
+    REFERENCES dbo.Courses(CourseID),
+  SchoolID INT NOT NULL
+    REFERENCES dbo.Schools(SchoolID)
+);
+
+CREATE UNIQUE INDEX UX_Enrollments_Student_Course
+  ON dbo.Enrollments(StudentID, CourseID);

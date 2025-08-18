@@ -2,24 +2,22 @@
 {
     public class InsertNewCourse
     {
-        private readonly int _course;
+        private readonly string _courseName;
         private readonly int _credits;
+        private readonly int _schoolID;
 
-        public InsertNewCourse(int course, int credits)
+        public InsertNewCourse(string courseName, int credits, int schoolID)
         {
-            course = _course;
-            credits = _credits;
+            _courseName = courseName;
+            _credits = credits;
+            _schoolID = schoolID;
         }
 
-        public string GetSql()
-        {
-            return @"
-            INSERT INTO Courses (Course, Credits) VALUES (@Course, @Credits);";
-        }
+        public string GetSql() =>
+            @"INSERT INTO dbo.Courses (CourseName, Credits, SchoolID)
+              VALUES (@CourseName, @Credits, @SchoolID);";
 
-        public object GetParameters()
-        {
-            return new { Course = _course, Credits = _credits };
-        }
+        public object GetParameters() =>
+            new { CourseName = _courseName, Credits = _credits, SchoolID = _schoolID };
     }
 }

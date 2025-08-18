@@ -1,6 +1,9 @@
-﻿CREATE TABLE [dbo].[Teachers] (
-	TeacherID INT PRIMARY KEY,
-	FirstName NVARCHAR (150) NOT NULL,
-	LastName NVARCHAR (150) NOT NULL,
-	SchoolID INT FOREIGN KEY(SchoolID) REFERENCES School(SchoolID),
-	);
+﻿CREATE TABLE dbo.Teachers
+(
+    TeacherID INT IDENTITY(1,1) PRIMARY KEY,
+    FirstName NVARCHAR(150) NOT NULL,
+    LastName  NVARCHAR(150) NOT NULL,
+    SchoolID  INT NOT NULL,
+    CONSTRAINT FK_Teachers_School
+        FOREIGN KEY (SchoolID) REFERENCES dbo.School(SchoolID)
+);

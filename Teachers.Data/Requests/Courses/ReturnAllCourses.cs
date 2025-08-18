@@ -5,14 +5,10 @@ namespace Teachers.Data.Requests.Courses
 {
     public class ReturnAllCourses : IDataFetchList<Courses_DTO>
     {
-       public string GetSql()
-        {
-            return "SELECT Courses FROM SchoolSystem;";
-        }
+        public string GetSql() =>
+            @"SELECT CourseID, CourseName, Credits, SchoolID
+              FROM dbo.Courses;";
 
-        public object? GetParameters()
-        {
-            return null;
-        }
+        public object? GetParameters() => null;
     }
 }

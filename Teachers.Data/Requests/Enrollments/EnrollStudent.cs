@@ -7,22 +7,24 @@
         private readonly int _courseID;
         private readonly int _schoolID;
 
-        public EnrollStudent (int studentID, int teacherID, int courseID, int schoolID)
+        public EnrollStudent(int studentID, int teacherID, int courseID, int schoolID)
         {
-            studentID = _studentID;
-            teacherID = _teacherID;
-            courseID = _courseID;
-            schoolID = _schoolID;
+            _studentID = studentID;
+            _teacherID = teacherID;
+            _courseID = courseID;
+            _schoolID = schoolID;
         }
 
-        public string GetSql()
-        {
-            return "INSERT INTO Enrollments (StudentID, TeacherID, CourseID, SchoolID) VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
-        }
+        public string GetSql() =>
+            "INSERT INTO Enrollments (StudentID, TeacherID, CourseID, SchoolID) " +
+            "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
 
-        public object? GetParameters()
+        public object GetParameters() => new
         {
-            return new { StudentID = _studentID, TeacherID = _teacherID, CourseID = _courseID, SchoolID = _schoolID };
-        }
+            StudentID = _studentID,
+            TeacherID = _teacherID,
+            CourseID = _courseID,
+            SchoolID = _schoolID
+        };
     }
 }
