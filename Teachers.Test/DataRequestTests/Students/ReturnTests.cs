@@ -1,6 +1,4 @@
-﻿using System;
-using Xunit;
-using Teachers.Data.Requests.Students.Return;
+﻿using Teachers.Data.Requests.Students.Return;
 
 namespace Teachers.Test.DataRequestTests.Students
 {
@@ -82,7 +80,7 @@ namespace Teachers.Test.DataRequestTests.Students
             Assert.ThrowsAny<ArgumentException>(() => new ReturnStudentById(-1));
         }
 
-        // --- Helper ---
+        //Helper
         private static string Normalize(string s) =>
             new string(s.AsSpan().ToString().ToCharArray())
                 .Replace(" ", string.Empty)
