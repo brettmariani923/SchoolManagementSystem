@@ -1,25 +1,32 @@
 ﻿using Teachers.Domain.Interfaces;
+using Teachers.Data.DTO;
 
-namespace Teachers.Data.Requests.Students.Update
+namespace Teachers.Data.Requests.Students
 {
     public class UpdateStudent : IDataExecute
     {
-        private readonly int _studentID;
+        private readonly Students_DTO _student;
 
-        public UpdateStudent(int studentID)
+        public UpdateStudent(Students_DTO student)
         {
-            _studentID = studentID;
+            _student = student; 
         }
 
         public string GetSql() =>
-             @"UPDATE dbo.Students
-              SET StudentID = @StudentID,
-                  FirstName = @FirstName,
-                  LastName = @LastName,
-                  SchoolID = @SchoolID
+            @"UPDATE Students
+              SET FirstName = @FirstName,
+                  LastName  = @LastName,
+                  [Year]    = @Year,
+                  SchoolID  = @SchoolID
               WHERE StudentID = @StudentID;";
 
-        public object? GetParameters() => new { StudentID = _studentID };
-
+        public object? GetParameters() => new
+        {
+            _student.StudentID,
+            _student.FirstName,
+            _student.LastName,
+            _student.Year,
+            _student.SchoolID
+        };
     }
 }

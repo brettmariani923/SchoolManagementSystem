@@ -14,5 +14,4 @@ namespace Teachers.Test.Helpers
             _dataAccess = new DataAccess(connectionFactory);
         }
     }
-
 }

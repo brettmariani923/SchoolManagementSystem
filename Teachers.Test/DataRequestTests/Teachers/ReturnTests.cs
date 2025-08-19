@@ -30,7 +30,7 @@ namespace Teachers.Test.DataRequestTests.Teachers
         [Fact]
         public void GetSql_ShouldReturnExpectedSelectByIdStatement()
         {
-            var sut = new ReturnTeacherByID(42);
+            var sut = new ReturnTeacherByID(1);
 
             var sql = sut.GetSql();
             var expected =

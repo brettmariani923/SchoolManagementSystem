@@ -1,7 +1,7 @@
 ﻿using Teachers.Domain.Interfaces;
 using Teachers.Data.DTO;
 
-namespace Teachers.Data.Requests.Students.Update
+namespace Teachers.Data.Requests.Students
 {
     public class UpdateBulkStudents : IDataExecute
     {
@@ -13,7 +13,7 @@ namespace Teachers.Data.Requests.Students.Update
         }
 
         public string GetSql() =>
-            @"UPDATE dbo.Students
+            @"UPDATE Students
               SET FirstName = @FirstName,
                   LastName  = @LastName,
                   [Year]    = @Year,

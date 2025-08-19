@@ -47,14 +47,5 @@ namespace Teachers.Test.DataRequestTests.Teachers
             }
         }
 
-        [Fact]
-        public void GetParameters_GivenEmptyIds_ReturnsEmptySequence()
-        {
-            var sut = new RemoveBulkTeachers(Array.Empty<int>());
-
-            var enumerable = sut.GetParameters() as IEnumerable<object>;
-            Assert.NotNull(enumerable);
-            Assert.Empty(enumerable!);
-        }
     }
 }

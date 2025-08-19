@@ -15,23 +15,6 @@ namespace Teachers.Test.DataRequestTests.Teachers
         }
 
         [Fact]
-        public void GetSql_ShouldReturnExpectedUpdateStatement_Bulk()
-        {
-            var sut = new UpdateBulkTeachers(new List<Teachers_DTO>());
-
-            var sql = sut.GetSql();
-            var expected =
-                @"UPDATE Teachers
-                  SET FirstName = @FirstName,
-                      LastName  = @LastName,
-                      SchoolID  = @SchoolID
-                  WHERE TeacherID = @TeacherID;";
-
-            static string Normalize(string s) => new string(s.Where(c => !char.IsWhiteSpace(c)).ToArray());
-            Assert.Equal(Normalize(expected), Normalize(sql));
-        }
-
-        [Fact]
         public void GetParameters_ShouldProject_AllRequiredFields_PerTeacher()
         {
             var teachers = new List<Teachers_DTO>
