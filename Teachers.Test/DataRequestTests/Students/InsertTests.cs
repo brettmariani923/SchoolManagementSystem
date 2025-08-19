@@ -1,0 +1,83 @@
+﻿using Teachers.Data.DTO;
+using Teachers.Data.Requests.Students.Insert;
+
+namespace Teachers.Test.Requests.Students
+{
+    public class InsertBulkStudentsTests
+    {
+        [Fact]
+        public void GetSql_ShouldMatchExpectedInsertStatement()
+        {
+            // Arrange
+            var students = new[]
+            {
+                new Students_DTO { FirstName = "Naruto", LastName = "Uzumaki", Year = 1, SchoolID = 1 },
+                new Students_DTO { FirstName = "Sakura", LastName = "Haruno",  Year = 2, SchoolID = 2 },
+            };
+            var request = new InsertBulkStudents(students, schoolID: 7);
+
+            // Act
+            var sql = request.GetSql();
+
+            // Assert (match your exact newline/spacing)
+            const string expected =
+              @"INSERT INTO dbo.Students (FirstName, LastName, [Year], SchoolID)
+              VALUES (@FirstName, @LastName, @Year, @SchoolID);";
+            Assert.Equal(expected, sql);
+        }
+
+        [Fact]
+        public void GetParameters_ShouldYieldOneParamObjectPerStudent_AndUseCtorSchoolID()
+        {
+            // Arrange: DTO SchoolID values should be ignored in favor of ctor schoolID
+            var students = new List<Students_DTO>
+            {
+                new() { FirstName = "Shikamaru", LastName = "Nara",    Year = 2, SchoolID = 123 },
+                new() { FirstName = "Choji",     LastName = "Akimichi", Year = 2, SchoolID = 456 },
+                new() { FirstName = "Ino",       LastName = "Yamanaka", Year = 2, SchoolID = 789 }
+            };
+            const int enforcedSchoolId = 12;
+
+            var request = new InsertBulkStudents(students, enforcedSchoolId);
+
+            // Act
+            var obj = request.GetParameters();
+            Assert.NotNull(obj);
+
+            var list = ((IEnumerable<object>)obj!).ToList();
+            Assert.Equal(3, list.Count);
+
+            // Assert each anonymous object's fields
+            var p0 = list[0]; var t0 = p0.GetType();
+            Assert.Equal("Shikamaru", t0.GetProperty("FirstName")!.GetValue(p0));
+            Assert.Equal("Nara", t0.GetProperty("LastName")!.GetValue(p0));
+            Assert.Equal(2, t0.GetProperty("Year")!.GetValue(p0));
+            Assert.Equal(enforcedSchoolId, t0.GetProperty("SchoolID")!.GetValue(p0)); // ctor overrides DTO
+
+            var p1 = list[1]; var t1 = p1.GetType();
+            Assert.Equal("Choji", t1.GetProperty("FirstName")!.GetValue(p1));
+            Assert.Equal("Akimichi", t1.GetProperty("LastName")!.GetValue(p1));
+            Assert.Equal(2, t1.GetProperty("Year")!.GetValue(p1));
+            Assert.Equal(enforcedSchoolId, t1.GetProperty("SchoolID")!.GetValue(p1));
+
+            var p2 = list[2]; var t2 = p2.GetType();
+            Assert.Equal("Ino", t2.GetProperty("FirstName")!.GetValue(p2));
+            Assert.Equal("Yamanaka", t2.GetProperty("LastName")!.GetValue(p2));
+            Assert.Equal(2, t2.GetProperty("Year")!.GetValue(p2));
+            Assert.Equal(enforcedSchoolId, t2.GetProperty("SchoolID")!.GetValue(p2));
+        }
+
+        [Fact]
+        public void Ctor_NullStudents_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => new InsertBulkStudents(null!, 99));
+        }
+
+        [Fact]
+        public void Ctor_EmptyStudents_Throws()
+        {
+            Assert.Throws<ArgumentException>(() => new InsertBulkStudents(Array.Empty<Students_DTO>(), 99));
+        }
+    }
+}
+
