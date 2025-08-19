@@ -12,14 +12,14 @@ namespace Teachers.Test.Requests.Students
             var students = new[]
             {
                 new Students_DTO { FirstName = "Naruto", LastName = "Uzumaki", Year = 1, SchoolID = 1 },
-                new Students_DTO { FirstName = "Sakura", LastName = "Haruno",  Year = 2, SchoolID = 2 },
+                new Students_DTO { FirstName = "Sauske", LastName = "Uchiha",  Year = 2, SchoolID = 2 },
             };
             var request = new InsertBulkStudents(students, schoolID: 7);
 
             // Act
             var sql = request.GetSql();
 
-            // Assert (match your exact newline/spacing)
+            // Assert 
             const string expected =
               @"INSERT INTO dbo.Students (FirstName, LastName, [Year], SchoolID)
               VALUES (@FirstName, @LastName, @Year, @SchoolID);";
@@ -28,8 +28,7 @@ namespace Teachers.Test.Requests.Students
 
         [Fact]
         public void GetParameters_ShouldYieldOneParamObjectPerStudent_AndUseCtorSchoolID()
-        {
-            // Arrange: DTO SchoolID values should be ignored in favor of ctor schoolID
+        {   //Arrange
             var students = new List<Students_DTO>
             {
                 new() { FirstName = "Shikamaru", LastName = "Nara",    Year = 2, SchoolID = 123 },
@@ -47,12 +46,12 @@ namespace Teachers.Test.Requests.Students
             var list = ((IEnumerable<object>)obj!).ToList();
             Assert.Equal(3, list.Count);
 
-            // Assert each anonymous object's fields
+            // Assert
             var p0 = list[0]; var t0 = p0.GetType();
             Assert.Equal("Shikamaru", t0.GetProperty("FirstName")!.GetValue(p0));
             Assert.Equal("Nara", t0.GetProperty("LastName")!.GetValue(p0));
             Assert.Equal(2, t0.GetProperty("Year")!.GetValue(p0));
-            Assert.Equal(enforcedSchoolId, t0.GetProperty("SchoolID")!.GetValue(p0)); // ctor overrides DTO
+            Assert.Equal(enforcedSchoolId, t0.GetProperty("SchoolID")!.GetValue(p0));
 
             var p1 = list[1]; var t1 = p1.GetType();
             Assert.Equal("Choji", t1.GetProperty("FirstName")!.GetValue(p1));
