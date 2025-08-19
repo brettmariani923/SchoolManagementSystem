@@ -1,23 +1,27 @@
 ﻿using Teachers.Domain.Interfaces;
+using Teachers.Data.DTO;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace Teachers.Data.Requests.Students
 {
     public class InsertBulkStudents : IDataExecute
     {
-        private readonly IEnumerable<(string FirstName, string LastName, int Year)> _students;
+        private readonly IEnumerable<Students_DTO> _students;
         private readonly int _schoolID;
 
-        public InsertBulkStudents(IEnumerable<(string FirstName, string LastName, int Year)> students, int schoolID)
+        public InsertBulkStudents(IEnumerable<Students_DTO> students, int schoolID)
         {
             _students = students ?? throw new ArgumentNullException(nameof(students));
             _schoolID = schoolID;
         }
 
         public string GetSql() =>
-            "INSERT INTO dbo.Students (FirstName, LastName, [Year], SchoolID) " +
-            "VALUES (@FirstName, @LastName, @Year, @SchoolID);";
+            @"INSERT INTO dbo.Students (FirstName, LastName, [Year], SchoolID)
+              VALUES (@FirstName, @LastName, @Year, @SchoolID);";
 
-        public object GetParameters() =>
+        public object? GetParameters() =>
             _students.Select(s => new
             {
                 s.FirstName,
