@@ -11,7 +11,7 @@ namespace Teachers.Data.Requests.Enrollments.Remove
             if (studentIDs is null) throw new ArgumentNullException(nameof(studentIDs));
             _studentIDs = studentIDs.Distinct().ToArray();
             if (_studentIDs.Length == 0)
-                throw new ArgumentException("At least one StudentID is required.", nameof(studentIds));
+                throw new ArgumentException("At least one StudentID is required.", nameof(studentIDs));
         }
 
         public string GetSql() =>

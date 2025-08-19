@@ -1,4 +1,4 @@
-﻿CREATE TABLE dbo.School
+﻿CREATE TABLE dbo.Schools
 (
     SchoolID INT IDENTITY(1,1) PRIMARY KEY,
     Name     NVARCHAR(75)  NOT NULL,
