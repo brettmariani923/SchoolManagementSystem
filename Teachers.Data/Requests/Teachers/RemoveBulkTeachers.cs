@@ -1,17 +1,23 @@
 ﻿using Teachers.Domain.Interfaces;
-using Teachers.Data.DTO;
 
 namespace Teachers.Data.Requests.Teachers
 {
-    public class RemoveBulkTeachers
+    public class RemoveBulkTeachers : IDataExecute
     {
-        private readonly IEnumerable<Teachers_DTO> _teacherIDs;
+        private readonly int[] _teacherIDs;
 
-        public RemoveBulkTeachers(IEnumerable<Teachers_DTO> teacherIDs)
+        public RemoveBulkTeachers(IEnumerable<int> teacherIds)
         {
-            _teacherIDs = teacherIDs;
+            if (teacherIds is null) throw new ArgumentNullException(nameof(teacherIds));
+            _teacherIDs = teacherIds.Distinct().ToArray();
+            if (_teacherIDs.Length == 0)
+                throw new ArgumentException("At least one TeacherID is required.", nameof(teacherIds));
         }
 
         public string GetSql() =>
+            @"DELETE FROM dbo.Teachers
+              WHERE TeacherID IN @TeacherIDs;";
+
+        public object? GetParameters() => new { TeacherIDs = _teacherIDs };
     }
 }

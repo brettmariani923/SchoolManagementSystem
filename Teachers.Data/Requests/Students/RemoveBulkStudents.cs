@@ -1,23 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Teachers.Domain.Interfaces;
+﻿using Teachers.Domain.Interfaces;
 
 namespace Teachers.Data.Requests.Students
 {
     public class RemoveBulkStudents : IDataExecute
     {
-        private readonly IEnumerable<int> _studentIDs;
+        private readonly int[] _studentIDs;
 
         public RemoveBulkStudents(IEnumerable<int> studentIDs)
         {
-            _studentIDs = studentIDs;
+            if (studentIDs is null) throw new ArgumentNullException(nameof(studentIDs));
+            _studentIDs = studentIDs.Distinct().ToArray();
+            if (_studentIDs.Length == 0)
+                throw new ArgumentException("At least one StudentID is required.", nameof(studentIDs));
         }
 
         public string GetSql() =>
-            @"DELETE FROM Students
-              WHERE StudentID = @StudentID;";
+            @"DELETE FROM dbo.Students
+              WHERE StudentID IN @StudentIDs;";
 
-        public object? GetParameters() =>
-            _studentIDs.Select(id => new { StudentID = id });
+        public object? GetParameters() => new { StudentIDs = _studentIDs };
     }
 }

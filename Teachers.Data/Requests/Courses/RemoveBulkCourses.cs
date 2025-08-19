@@ -4,18 +4,20 @@ namespace Teachers.Data.Requests.Courses
 {
     public class RemoveBulkCourses : IDataExecute
     {
-        private readonly IEnumerable<int> _courseIDs;
+        private readonly int[] _courseIDs;
 
         public RemoveBulkCourses(IEnumerable<int> courseIDs)
         {
-            _courseIDs = courseIDs ?? throw new ArgumentNullException(nameof(courseIDs));
+            if (courseIDs is null) throw new ArgumentNullException(nameof(courseIDs));
+            _courseIDs = courseIDs.Distinct().ToArray();
+            if (_courseIDs.Length == 0)
+                throw new ArgumentException("At least one CourseID is required.", nameof(courseIDs));
         }
 
         public string GetSql() =>
             @"DELETE FROM dbo.Courses
-              WHERE CourseID = @CourseID;";
+              WHERE CourseID IN @CourseIDs;";
 
-        public object? GetParameters() =>
-            _courseIDs.Select(id => new { CourseID = id });
+        public object? GetParameters() => new { CourseIDs = _courseIDs };
     }
 }
