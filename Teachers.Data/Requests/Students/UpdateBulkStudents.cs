@@ -13,7 +13,7 @@ namespace Teachers.Data.Requests.Students
         }
 
         public string GetSql() =>
-            @"UPDATE Students
+            @"UPDATE dbo.Students
               SET FirstName = @FirstName,
                   LastName  = @LastName,
                   [Year]    = @Year,

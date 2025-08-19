@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Teachers.Domain.Interfaces;
+﻿using Teachers.Domain.Interfaces;
 using Teachers.Data.DTO;
 
 namespace Teachers.Data.Requests.Courses
