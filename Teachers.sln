@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36202.13 d17.14
+VisualStudioVersion = 17.14.36202.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teachers.Domain", "Teachers.Domain\Teachers.Domain.csproj", "{99E016CE-D6F0-4823-B241-71C7DC1AE80B}"
 EndProject
@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 	ProjectSection(SolutionItems) = preProject
 		Planning.txt = Planning.txt
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1A7EB0BE-8A39-456D-9E34-DB2A9000662C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teachers.Test", "Teachers.Test\Teachers.Test.csproj", "{0B81ED96-8A5D-491D-A66F-32D6D084B15E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,9 +50,16 @@ Global
 		{5A233C07-BDF9-4ABD-9DEB-31A88C5B9DA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A233C07-BDF9-4ABD-9DEB-31A88C5B9DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A233C07-BDF9-4ABD-9DEB-31A88C5B9DA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B81ED96-8A5D-491D-A66F-32D6D084B15E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B81ED96-8A5D-491D-A66F-32D6D084B15E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B81ED96-8A5D-491D-A66F-32D6D084B15E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B81ED96-8A5D-491D-A66F-32D6D084B15E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0B81ED96-8A5D-491D-A66F-32D6D084B15E} = {1A7EB0BE-8A39-456D-9E34-DB2A9000662C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {382FD9C1-CB0C-42A8-8860-964003DD2811}

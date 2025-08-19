@@ -96,13 +96,16 @@ Student
 Teacher
 	-Create
 		-Create teacher x
+		-Create teachers x
 	-Read
 		-Get all teachers x
 		-Get teaacher by id x
 	-Update
 		-update teacher info x
+		-update teachers info x
 	-Delete
 		-Remove teacher x
+		-Remove teachers x
 
 	REST
 
@@ -118,13 +121,16 @@ Teacher
 Course
 	-Create
 		-Create course x
+		-Create courses x
 	-Read
 		-Get all courses x
 		-Get course by id x
 	-Update
 		-update course info x
+		-update courses info x
 	-Delete
 		-remove course x
+		-remove courses x
 
 	REST
 		-post /course
