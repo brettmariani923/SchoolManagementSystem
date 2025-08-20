@@ -1,5 +1,4 @@
-﻿using Xunit;
-using Teachers.Data.Requests.Enrollments.Insert;
+﻿using Teachers.Data.Requests.Enrollments.Insert;
 
 namespace Teachers.Test.DataRequestTests.Enrollments
 {

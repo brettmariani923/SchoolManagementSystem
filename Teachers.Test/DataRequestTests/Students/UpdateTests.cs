@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Teachers.Data.DTO;
+﻿using Teachers.Data.DTO;
 using Teachers.Data.Requests.Students;
-using Xunit;
 
 namespace Teachers.Test.DataRequestTests.Students
 {

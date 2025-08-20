@@ -34,9 +34,9 @@ namespace Teachers.Test.DataRequestTests.Teachers
 
             var sql = sut.GetSql();
             var expected =
-                @"SELECT TeacherID, FirstName, LastName, SchoolID
-                  FROM dbo.Teachers
-                  WHERE TeacherID = @TeacherID;";
+                @"SELECT TeacherID, FirstName, LastName, SchoolID" +
+                 "FROM dbo.Teachers" +
+                 "WHERE TeacherID = @TeacherID;"; 
 
             static string Normalize(string s) => new string(s.Where(c => !char.IsWhiteSpace(c)).ToArray());
             Assert.Equal(Normalize(expected), Normalize(sql));

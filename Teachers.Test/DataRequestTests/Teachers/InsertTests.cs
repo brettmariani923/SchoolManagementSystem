@@ -8,27 +8,26 @@ using Xunit;
 public class InsertTests
 {
     [Fact]
-    public void InsertNewTeacher_GetParameters_ProjectsFields()
+    public void InsertNewTeacher_GetSql_IsExact()
     {
         var req = new InsertNewTeacher("John", "Doe", 1);
 
+        const string expected =
+            "INSERT INTO dbo.Teachers (FirstName, LastName, SchoolID) " +
+            "VALUES (@FirstName, @LastName, @SchoolID);";
+        Assert.Equal(expected, req.GetSql());
+    }
+
+    [Fact]
+    public void InsertNewTeacher_GetParameters_ProjectsFields()
+    {
+        var req = new InsertNewTeacher("John", "Doe", 1);
         var p = req.GetParameters()!;
         var t = p.GetType();
 
         Assert.Equal("John", (string)t.GetProperty("FirstName")!.GetValue(p)!);
         Assert.Equal("Doe", (string)t.GetProperty("LastName")!.GetValue(p)!);
         Assert.Equal(1, (int)t.GetProperty("SchoolID")!.GetValue(p)!);
-    }
-
-    [Fact]
-    public void InsertNewTeacher_GetSql_ContainsInsertStatement()
-    {
-        var req = new InsertNewTeacher("John", "Doe", 1);
-        var sql = req.GetSql();
-
-        Assert.Contains("INSERT INTO", sql, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("(FirstName, LastName, SchoolID)", sql);
-        Assert.Contains("VALUES (@FirstName, @LastName, @SchoolID);", sql);
     }
 
     [Fact]
@@ -39,14 +38,15 @@ public class InsertTests
     }
 
     [Fact]
-    public void InsertBulkNewTeachers_GetSql_ContainsInsertStatement()
+    public void InsertBulkNewTeachers_GetSql_IsExact()
     {
         var req = new InsertBulkNewTeachers(new List<Teachers_DTO>());
-        var sql = req.GetSql();
 
-        Assert.Contains("INSERT INTO", sql, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("(FirstName, LastName, SchoolID)", sql);
-        Assert.Contains("VALUES (@FirstName, @LastName, @SchoolID);", sql);
+        const string expected =
+            "INSERT INTO dbo.Teachers (TeacherID, FirstName, LastName, SchoolID)" +
+            "VALUES (@TeacherID, @FirstName, @LastName, @SchoolID);";
+
+        Assert.Equal(expected, req.GetSql());
     }
 
     [Fact]
