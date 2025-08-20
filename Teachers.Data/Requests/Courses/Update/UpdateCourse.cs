@@ -18,11 +18,12 @@ namespace Teachers.Data.Requests.Courses.Update
         }
 
         public string GetSql() =>
-              @"UPDATE dbo.Courses" +
-              "SET CourseName = @CourseName," +
-                  "Credits = @Credits," +
-                  "SchoolID = @SchoolID" +
-              "WHERE CourseID = @CourseID;";
+            "UPDATE dbo.Courses " +
+            "SET CourseID = @CourseID, " +
+            "CourseName = @CourseName, " +
+            "Credits  = @Credits, " +
+            "SchoolID  = @SchoolID " +
+            "WHERE CourseID = @CourseID;";
 
         public object GetParameters() => new
         {
