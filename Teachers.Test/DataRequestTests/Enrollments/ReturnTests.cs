@@ -35,12 +35,13 @@ namespace Teachers.Test.DataRequestTests.Enrollments
         [Fact]
         public void ReturnEnrollmentByCourseID_GetParameters_ProjectsCourseID()
         {
-            var courseId = 55;
-            var req = new ReturnEnrollmentsByCourseID(courseId);
+            var courseID = 1;
+            var req = new ReturnEnrollmentsByCourseID(courseID);
 
-            dynamic p = req.GetParameters()!;
-            Assert.Equal(courseId, (int)p.CourseID);
+            dynamic p = req.GetParameters();
+            Assert.Equal(courseID, (int)p.CourseID);
         }
+
 
         [Fact]
         public void ReturnEnrollmentsByEnrollmentID_GetSql_SelectsByEnrollmentID()

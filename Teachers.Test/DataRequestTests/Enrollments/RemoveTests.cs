@@ -32,10 +32,12 @@ namespace Teachers.Test.DataRequestTests.Enrollments
         {
             var req = new RemoveStudentEnrollment(2);
 
-            dynamic p = req.GetParameters();
+            var p = req.GetParameters();
+            var id = (int)p!.GetType().GetProperty("EnrollmentID")!.GetValue(p)!;
 
-            Assert.Equal(2, (int)p.EnrollmentID);
+            Assert.Equal(2, id);
         }
+
 
         [Fact]
         public void RemoveBulkEnrollments_GetSql()
