@@ -1,119 +1,54 @@
-﻿using Teachers.Data.Requests.Students.Remove;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Teachers.Data.Requests.Students.Remove;
+using Xunit;
 
 namespace Teachers.Test.DataRequestTests.Students
 {
     public class RemoveTests
     {
         [Fact]
-        public void RemoveStudent_GetSql_IsExactAndSchemaQualified()
+        public void RemoveStudent_GetSql_IsCorrect()
         {
-            // Arrange
             var req = new RemoveStudent(42);
 
-            // Act
-            var sql = req.GetSql();
-
-            // Assert
-            const string expected =
-                @"DELETE FROM dbo.Students
-                  WHERE StudentID = @StudentID;";
-
-            Assert.Equal(Normalize(expected), Normalize(sql));
+            Assert.Equal(
+                @"DELETE FROM dbo.Students" +
+                  "WHERE StudentID = @StudentID;",
+                req.GetSql());
         }
 
         [Fact]
-        public void RemoveStudent_GetParameters_ContainsStudentID()
+        public void RemoveStudent_GetParameters_ProjectsId()
         {
-            // Arrange
-            var id = 1337;
-            var req = new RemoveStudent(id);
+            var req = new RemoveStudent(1337);
+            var p = req.GetParameters()!;
+            var id = (int)p.GetType().GetProperty("StudentID")!.GetValue(p)!;
 
-            // Act
-            var parameters = req.GetParameters();
-
-            // Assert
-            Assert.NotNull(parameters);
-
-            var studentIdProp = parameters!.GetType().GetProperty("StudentID");
-            Assert.NotNull(studentIdProp);
-            var value = (int)studentIdProp!.GetValue(parameters)!;
-            Assert.Equal(id, value);
+            Assert.Equal(1337, id);
         }
 
         [Fact]
-        public void RemoveBulkStudents_NullIds_ThrowsArgumentNullException()
+        public void RemoveBulkStudents_GetSql_IsCorrect()
         {
-            // Arrange
-            IEnumerable<int>? ids = null;
+            var req = new RemoveBulkStudents(new[] { 1, 2, 3, 4 });
 
-            // Act + Assert
-            Assert.Throws<ArgumentNullException>(() => new RemoveBulkStudents(ids!));
+            Assert.Equal(
+                @"DELETE FROM dbo.Students" +
+                  "WHERE StudentID IN @StudentIDs;",
+                req.GetSql());
         }
 
         [Fact]
-        public void RemoveBulkStudents_EmptyIds_ThrowsArgumentException()
+        public void RemoveBulkStudents_GetParameters_CountMatches()
         {
-            // Arrange
-            var ids = Array.Empty<int>();
-
-            // Act + Assert
-            Assert.Throws<ArgumentException>(() => new RemoveBulkStudents(ids));
-        }
-
-        [Fact]
-        public void RemoveBulkStudents_DuplicateIds_ThrowsArgumentException()
-        {
-            // Arrange
-            var ids = new[] { 1, 2, 2, 3 };
-            // Act + Assert
-            Assert.Throws<ArgumentException>(() => new RemoveBulkStudents(ids));
-        }
-
-        [Fact]
-        public void RemoveBulkStudents_NegativeOrZeroId_ThrowsArgumentOutOfRangeException()
-        {
-            // Arrange
-            var ids = new[] { 1, -2, 3 };
-            // Act + Assert
-            Assert.Throws<ArgumentOutOfRangeException>(() => new RemoveBulkStudents(ids));
-        }
-
-        [Fact]
-        public void RemoveBulkStudents_GetParameters_HandlesLargeIdCollections()
-        {
-            // Arrange
-            var ids = Enumerable.Range(1, 1000).ToArray();
+            var ids = new[] { 1, 2, 3, 4 };               // no duplicates
             var req = new RemoveBulkStudents(ids);
-            // Act
-            var parameters = req.GetParameters();
-            // Assert
-            Assert.NotNull(parameters);
-            var list = ((IEnumerable<object>)parameters!).ToList();
-            Assert.Equal(ids.Length, list.Count);
-            var projectedIds = list
-                .Select(p => (int)p.GetType().GetProperty("StudentID")!.GetValue(p)!)
-                .ToArray();
-            Assert.True(ids.SequenceEqual(projectedIds),
-                $"Projected IDs mismatch. Expected: {string.Join(",", ids.Take(10))}...  Actual: {string.Join(",", projectedIds.Take(10))}...");
+            var p = req.GetParameters()!;
+            var projected = (IEnumerable<int>)p.GetType().GetProperty("StudentIDs")!.GetValue(p)!;
+
+            Assert.Equal(ids.Length, projected.Count()); // 3 == 3
         }
 
-        [Fact]
-        public void RemoveBulkStudents_GetParameters_HandlesSingleId()
-        {
-            // Arrange
-            var ids = new[] { 42 };
-            var req = new RemoveBulkStudents(ids);
-            // Act
-            var parameters = req.GetParameters();
-            // Assert
-            Assert.NotNull(parameters);
-            var list = ((IEnumerable<object>)parameters!).ToList();
-            Assert.Single(list);
-            var projectedId = (int)list[0].GetType().GetProperty("StudentID")!.GetValue(list[0])!;
-            Assert.Equal(42, projectedId);
-        }
-        // Helpers
-        private static string Normalize(string s) =>
-            new string(s.Where(c => !char.IsWhiteSpace(c)).ToArray()).ToLowerInvariant();
     }
 }

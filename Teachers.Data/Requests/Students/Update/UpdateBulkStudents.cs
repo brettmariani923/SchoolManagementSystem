@@ -13,12 +13,12 @@ namespace Teachers.Data.Requests.Students
         }
 
         public string GetSql() =>
-            @"UPDATE Students
-              SET FirstName = @FirstName,
-                  LastName  = @LastName,
-                  [Year]    = @Year,
-                  SchoolID  = @SchoolID
-              WHERE StudentID = @StudentID;";
+       "UPDATE dbo.Students " +
+       "SET StudentID = @StudentID, " +
+       "TeacherID = @TeacherID, " +
+       "CourseID  = @CourseID, " +
+       "SchoolID  = @SchoolID " +
+       "WHERE StudentID = @StudentID;";
 
         public object? GetParameters() =>
             _students.Select(s => new

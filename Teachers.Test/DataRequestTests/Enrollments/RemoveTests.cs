@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Xunit;
-using Teachers.Data.Requests.Enrollments.Remove;
+﻿using Teachers.Data.Requests.Enrollments.Remove;
 
 namespace Teachers.Test.DataRequestTests.Enrollments
 {
@@ -38,14 +36,13 @@ namespace Teachers.Test.DataRequestTests.Enrollments
             Assert.Equal(2, id);
         }
 
-
         [Fact]
         public void RemoveBulkEnrollments_GetSql()
         {
             var req = new RemoveBulkStudentEnrollments(new[] { 1, 2, 3, 2, 1 });
 
             Assert.Equal(
-                "DELETE FROM dbo.Enrollments WHERE EnrollmentID IN @EnrollmentID;",
+                "DELETE FROM dbo.Enrollments WHERE EnrollmentID IN @EnrollmentIDs;",
                 req.GetSql());
         }
 

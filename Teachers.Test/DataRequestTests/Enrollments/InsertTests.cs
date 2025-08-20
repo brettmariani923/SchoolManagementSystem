@@ -21,11 +21,13 @@ namespace Teachers.Test.DataRequestTests.Enrollments
         {
             var req = new InsertStudentEnrollment(101, 7, 55, 3);
 
-            dynamic p = req.GetParameters()!;
-            Assert.Equal(101, (int)p.StudentID);
-            Assert.Equal(7, (int)p.TeacherID);
-            Assert.Equal(55, (int)p.CourseID);
-            Assert.Equal(3, (int)p.SchoolID);
+            var p = req.GetParameters()!;
+            var t = p.GetType();
+
+            Assert.Equal(101, (int)t.GetProperty("StudentID")!.GetValue(p)!);
+            Assert.Equal(7, (int)t.GetProperty("TeacherID")!.GetValue(p)!);
+            Assert.Equal(55, (int)t.GetProperty("CourseID")!.GetValue(p)!);
+            Assert.Equal(3, (int)t.GetProperty("SchoolID")!.GetValue(p)!);
         }
 
         [Fact]
@@ -44,14 +46,16 @@ namespace Teachers.Test.DataRequestTests.Enrollments
         {
             var req = new InsertBulkStudentEnrollment(new[] { 101, 102 }, 7, 55, 3);
 
-            var list = req.GetParameters() as IEnumerable<dynamic>;
-            Assert.NotNull(list);
+            var list = ((IEnumerable<object>)req.GetParameters()!).ToList();
 
-            var first = list!.First();
-            Assert.Equal(101, (int)first.StudentID);
-            Assert.Equal(7, (int)first.TeacherID);
-            Assert.Equal(55, (int)first.CourseID);
-            Assert.Equal(3, (int)first.SchoolID);
+            var first = list[0];
+            var t = first.GetType();
+
+            Assert.Equal(101, (int)t.GetProperty("StudentID")!.GetValue(first)!);
+            Assert.Equal(7, (int)t.GetProperty("TeacherID")!.GetValue(first)!);
+            Assert.Equal(55, (int)t.GetProperty("CourseID")!.GetValue(first)!);
+            Assert.Equal(3, (int)t.GetProperty("SchoolID")!.GetValue(first)!);
         }
+
     }
 }

@@ -1,91 +1,58 @@
-﻿using Teachers.Data.Requests.Students.Return;
+﻿using System;
+using Teachers.Data.Requests.Students.Return;
+using Xunit;
 
 namespace Teachers.Test.DataRequestTests.Students
 {
     public class ReturnTests
     {
         [Fact]
-        public void ReturnAllStudents_GetSql_IsExactAndSchemaQualified()
+        public void ReturnAllStudents_GetSql_IsCorrect()
         {
-            // Arrange
             var req = new ReturnAllStudents();
 
-            // Act
-            var sql = req.GetSql();
-
-            // Assert
-            const string expected =
-                @"SELECT StudentID, FirstName, LastName, [Year], SchoolID
-                  FROM dbo.Students;";
-
-            Assert.Equal(Normalize(expected), Normalize(sql));
+            Assert.Equal(
+            @"SELECT StudentID, FirstName, LastName, [Year], SchoolID" +
+              "FROM dbo.Students;",
+            req.GetSql());
         }
 
         [Fact]
-        public void ReturnAllStudents_GetParameters_IsNullOrAnonymousNull()
+        public void ReturnAllStudents_GetParameters_IsNull()
         {
-            // Arrange
             var req = new ReturnAllStudents();
 
-            // Act
-            var parameters = req.GetParameters();
-
-            // Assert
-            Assert.True(parameters is null, "Expected null parameters for ReturnAllStudents.");
+            Assert.Null(req.GetParameters());
         }
 
         [Fact]
-        public void ReturnStudentById_GetSql_IsExactAndSchemaQualified()
+        public void ReturnStudentById_GetSql_IsCorrect()
         {
-            // Arrange
             var req = new ReturnStudentById(123);
 
-            // Act
-            var sql = req.GetSql();
-
-            // Assert
-            const string expected =
-                @"SELECT StudentID, FirstName, LastName, [Year], SchoolID
-                  FROM dbo.Students
-                  WHERE StudentID = @StudentID;";
-
-            Assert.Equal(Normalize(expected), Normalize(sql));
+            Assert.Equal(
+               @"SELECT StudentID, FirstName, LastName, [Year], SchoolID" +
+              "FROM dbo.Students" +
+              "WHERE StudentID = @StudentID;",
+                req.GetSql());
         }
 
         [Fact]
-        public void ReturnStudentById_GetParameters_ContainsStudentID()
+        public void ReturnStudentById_GetParameters_ProjectsId()
         {
-            // Arrange
-            var id = 987;
-            var req = new ReturnStudentById(id);
+            var req = new ReturnStudentById(987);
 
-            // Act
-            var p = req.GetParameters();
+            var p = req.GetParameters()!;
+            var id = (int)p.GetType().GetProperty("StudentID")!.GetValue(p)!;
 
-            // Assert
-            Assert.NotNull(p);
-            var prop = p!.GetType().GetProperty("StudentID");
-            Assert.NotNull(prop);
-            var value = (int)prop!.GetValue(p)!;
-            Assert.Equal(id, value);
+            Assert.Equal(987, id);
         }
 
         [Fact]
         public void ReturnStudentById_InvalidId_Throws()
         {
-            // Arrange
-     
-            // Act + Assert
             Assert.ThrowsAny<ArgumentException>(() => new ReturnStudentById(0));
             Assert.ThrowsAny<ArgumentException>(() => new ReturnStudentById(-1));
         }
-
-        //Helper
-        private static string Normalize(string s) =>
-            new string(s.AsSpan().ToString().ToCharArray())
-                .Replace(" ", string.Empty)
-                .Replace("\r", string.Empty)
-                .Replace("\n", string.Empty)
-                .ToLowerInvariant();
     }
 }

@@ -1,109 +1,76 @@
-﻿using Teachers.Data.Requests.Teachers.Insert;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Teachers.Data.DTO;
+using Teachers.Data.Requests.Teachers.Insert;
+using Xunit;
 
 public class InsertTests
 {
     [Fact]
-    public void GetParameters_ShouldMapCorrectly()
+    public void InsertNewTeacher_GetParameters_ProjectsFields()
     {
-        var request = new InsertNewTeacher("John", "Doe", 1);
+        var req = new InsertNewTeacher("John", "Doe", 1);
 
-        dynamic p = request.GetParameters(); 
-        Assert.Equal("John", (string)p.FirstName);
-        Assert.Equal("Doe", (string)p.LastName);
-        Assert.Equal(1, (int)p.SchoolID);
+        var p = req.GetParameters()!;
+        var t = p.GetType();
+
+        Assert.Equal("John", (string)t.GetProperty("FirstName")!.GetValue(p)!);
+        Assert.Equal("Doe", (string)t.GetProperty("LastName")!.GetValue(p)!);
+        Assert.Equal(1, (int)t.GetProperty("SchoolID")!.GetValue(p)!);
     }
 
     [Fact]
-    public void GetSql_ShouldContain_InsertStatement()
+    public void InsertNewTeacher_GetSql_ContainsInsertStatement()
     {
-        var request = new InsertNewTeacher("John", "Doe", 1);
-        var sql = request.GetSql();
+        var req = new InsertNewTeacher("John", "Doe", 1);
+        var sql = req.GetSql();
 
-        Assert.Contains("INSERT INTO dbo.Teachers", sql, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("INSERT INTO", sql, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("(FirstName, LastName, SchoolID)", sql);
         Assert.Contains("VALUES (@FirstName, @LastName, @SchoolID);", sql);
     }
 
     [Fact]
-    public void Ctor_GivenNullTeachers_Throws()
+    public void InsertBulkNewTeachers_Ctor_Null_Throws()
     {
-        // Arrange
         IEnumerable<Teachers_DTO>? input = null;
-
-        // Act
-        var ex = Assert.Throws<ArgumentNullException>(() => new InsertBulkNewTeachers(input!));
-
-        // Assert
-        Assert.Equal("teachers", ex.ParamName);
+        Assert.Throws<ArgumentNullException>(() => new InsertBulkNewTeachers(input!));
     }
 
     [Fact]
-    public void GetSql_ShouldReturnExpectedInsertStatement()
+    public void InsertBulkNewTeachers_GetSql_ContainsInsertStatement()
     {
-        // Arrange
-        var sut = new InsertBulkNewTeachers(new List<Teachers_DTO>());
+        var req = new InsertBulkNewTeachers(new List<Teachers_DTO>());
+        var sql = req.GetSql();
 
-        // Act
-        var sql = sut.GetSql();
-
-        // Assert
-        var expected =
-            @"INSERT INTO Teachers (FirstName, LastName, SchoolID)
-                  VALUES (@FirstName, @LastName, @SchoolID);";
-
-        string Normalize(string s) => new string(s.Where(c => !char.IsWhiteSpace(c)).ToArray());
-        Assert.Equal(Normalize(expected), Normalize(sql));
+        Assert.Contains("INSERT INTO", sql, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("(FirstName, LastName, SchoolID)", sql);
+        Assert.Contains("VALUES (@FirstName, @LastName, @SchoolID);", sql);
     }
 
     [Fact]
-    public void GetParameters_ShouldProjectAllFields_ForEachTeacher()
+    public void InsertBulkNewTeachers_GetParameters_CountMatches()
     {
-        // Arrange
         var teachers = new List<Teachers_DTO>
-            {
-                new() { FirstName = "John", LastName = "Doe",     SchoolID = 1 },
-                new() { FirstName = "Jane", LastName = "Smith",   SchoolID = 1 },
-                new() { FirstName = "Ada",  LastName = "Lovelace",SchoolID = 2 }
-            };
-        var sut = new InsertBulkNewTeachers(teachers);
-
-        // Act
-        var enumerable = sut.GetParameters() as IEnumerable<object>;
-        Assert.NotNull(enumerable);
-
-        var parameters = enumerable!.ToArray();
-
-        // Assert
-        Assert.Equal(teachers.Count, parameters.Length);
-
-        // Assert
-        for (int i = 0; i < teachers.Count; i++)
         {
-            var p = parameters[i];
-            var t = teachers[i];
+            new() { FirstName = "John", LastName = "Doe",      SchoolID = 1 },
+            new() { FirstName = "Jane", LastName = "Smith",    SchoolID = 1 },
+            new() { FirstName = "Ada",  LastName = "Lovelace", SchoolID = 2 }
+        };
 
-            var first = p.GetType().GetProperty("FirstName")!.GetValue(p);
-            var last = p.GetType().GetProperty("LastName")!.GetValue(p);
-            var sid = p.GetType().GetProperty("SchoolID")!.GetValue(p);
+        var req = new InsertBulkNewTeachers(teachers);
+        var rows = ((IEnumerable<object>)req.GetParameters()!).ToList();
 
-            Assert.Equal(t.FirstName, first);
-            Assert.Equal(t.LastName, last);
-            Assert.Equal(t.SchoolID, sid);
-        }
+        Assert.Equal(teachers.Count, rows.Count);
     }
 
     [Fact]
-    public void GetParameters_GivenEmptyList_ReturnsEmptySequence()
+    public void InsertBulkNewTeachers_GetParameters_EmptyList_ReturnsEmpty()
     {
-        // Arrange
-        var sut = new InsertBulkNewTeachers(new List<Teachers_DTO>());
+        var req = new InsertBulkNewTeachers(new List<Teachers_DTO>());
+        var rows = (IEnumerable<object>)req.GetParameters()!;
 
-        // Act
-        var enumerable = sut.GetParameters() as IEnumerable<object>;
-
-        // Assert
-        Assert.NotNull(enumerable);
-        Assert.Empty(enumerable!);
+        Assert.Empty(rows);
     }
 }

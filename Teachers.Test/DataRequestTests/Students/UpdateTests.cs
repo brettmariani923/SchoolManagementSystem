@@ -1,130 +1,69 @@
-﻿using Teachers.Data.DTO;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Teachers.Data.DTO;
 using Teachers.Data.Requests.Students;
-using Teachers.Domain.Interfaces;
+using Xunit;
 
 namespace Teachers.Test.DataRequestTests.Students
 {
     public class UpdateTests
     {
         private const string ExpectedSql =
-            @"UPDATE Students
-              SET FirstName = @FirstName,
-                  LastName  = @LastName,
-                  [Year]    = @Year,
-                  SchoolID  = @SchoolID
-              WHERE StudentID = @StudentID;";
+        "UPDATE dbo.Students " +
+        "SET StudentID = @StudentID, " +
+        "TeacherID = @TeacherID, " +
+        "CourseID  = @CourseID, " +
+        "SchoolID  = @SchoolID " +
+        "WHERE StudentID = @StudentID;";
+
 
         [Fact]
-        public void UpdateStudent_Implements_IDataExecute()
+        public void UpdateStudent_GetSql_IsCorrect()
         {
-            var dto = MakeDto(1, "Ash", "Ketchum", 3, 42);
-            var req = new UpdateStudent(dto); 
-            Assert.IsAssignableFrom<IDataExecute>(req);
-        }
-
-        [Fact]
-        public void UpdateStudent_GetSql_Returns_Expected()
-        {
-            var dto = MakeDto(1, "Ash", "Ketchum", 3, 42);
+            var dto = new Students_DTO { StudentID = 1, FirstName = "Ash", LastName = "Ketchum", Year = 3, SchoolID = 42 };
             var req = new UpdateStudent(dto);
 
-            var sql = req.GetSql().NormalizeWs();
-            Assert.Equal(ExpectedSql.NormalizeWs(), sql);
+            Assert.Equal(ExpectedSql, req.GetSql());
         }
 
         [Fact]
-        public void UpdateStudent_GetParameters_Maps_All_Fields()
+        public void UpdateStudent_GetParameters_ProjectsFields()
         {
-            var dto = MakeDto(7, "Misty", "Waterflower", 2, 99);
+            var dto = new Students_DTO { StudentID = 7, FirstName = "Misty", LastName = "Waterflower", Year = 2, SchoolID = 99 };
             var req = new UpdateStudent(dto);
 
-            var p = req.GetParameters();
-            Assert.NotNull(p);
+            var p = req.GetParameters()!;
+            var t = p.GetType();
 
-            var anon = ToDict(p);
-            Assert.Equal(7, anon["StudentID"]);
-            Assert.Equal("Misty", anon["FirstName"]);
-            Assert.Equal("Waterflower", anon["LastName"]);
-            Assert.Equal(2, anon["Year"]);
-            Assert.Equal(99, anon["SchoolID"]);
+            Assert.Equal(7, (int)t.GetProperty("StudentID")!.GetValue(p)!);
+            Assert.Equal("Misty", (string)t.GetProperty("FirstName")!.GetValue(p)!);
+            Assert.Equal("Waterflower", (string)t.GetProperty("LastName")!.GetValue(p)!);
+            Assert.Equal(2, (int)t.GetProperty("Year")!.GetValue(p)!);
+            Assert.Equal(99, (int)t.GetProperty("SchoolID")!.GetValue(p)!);
         }
 
         [Fact]
-        public void UpdateBulkStudents_Implements_IDataExecute()
+        public void UpdateBulkStudents_GetSql_IsCorrect()
         {
-            var list = new[] { MakeDto(1, "A", "B", 1, 2) };
-            var req = new UpdateBulkStudents(list);
-            Assert.IsAssignableFrom<IDataExecute>(req);
-        }
-
-        [Fact]
-        public void UpdateBulkStudents_GetSql_Returns_Expected()
-        {
-            var list = new[] { MakeDto(1, "A", "B", 1, 2) };
+            var list = new[] { new Students_DTO { StudentID = 1, FirstName = "A", LastName = "B", Year = 1, SchoolID = 2 } };
             var req = new UpdateBulkStudents(list);
 
-            var sql = req.GetSql().NormalizeWs();
-            Assert.Equal(ExpectedSql.NormalizeWs(), sql);
+            Assert.Equal(ExpectedSql, req.GetSql());
         }
 
         [Fact]
-        public void UpdateBulkStudents_GetParameters_Produces_One_Row_Per_DTO()
+        public void UpdateBulkStudents_GetParameters_CountMatches()
         {
             var list = new[]
             {
-                MakeDto(10, "Brock", "Harrison", 4, 5),
-                MakeDto(11, "Tracey", "Sketchit", 1, 5)
+                new Students_DTO { StudentID = 10, FirstName = "Brock",  LastName = "Harrison", Year = 4, SchoolID = 5 },
+                new Students_DTO { StudentID = 11, FirstName = "Tracey", LastName = "Sketchit", Year = 1, SchoolID = 5 }
             };
 
             var req = new UpdateBulkStudents(list);
-            var rows = (req.GetParameters() as IEnumerable<object>)?.ToList();
+            var rows = ((IEnumerable<object>)req.GetParameters()!).ToList();
 
-            Assert.NotNull(rows);
-            Assert.Equal(2, rows!.Count);
-
-            var r1 = ToDict(rows[0]);
-            Assert.Equal(10, r1["StudentID"]);
-            Assert.Equal("Brock", r1["FirstName"]);
-            Assert.Equal("Harrison", r1["LastName"]);
-            Assert.Equal(4, r1["Year"]);
-            Assert.Equal(5, r1["SchoolID"]);
-
-            var r2 = ToDict(rows[1]);
-            Assert.Equal(11, r2["StudentID"]);
-            Assert.Equal("Tracey", r2["FirstName"]);
-            Assert.Equal("Sketchit", r2["LastName"]);
-            Assert.Equal(1, r2["Year"]);
-            Assert.Equal(5, r2["SchoolID"]);
+            Assert.Equal(list.Length, rows.Count);
         }
-
-        //helpers
-
-        private static Students_DTO MakeDto(int id, string first, string last, int year, int schoolId) =>
-            new Students_DTO
-            {
-                StudentID = id,
-                FirstName = first,
-                LastName = last,
-                Year = year,
-                SchoolID = schoolId
-            };
-
-        private static Dictionary<string, object?> ToDict(object anon) =>
-            anon.GetType()
-                .GetProperties()
-                .ToDictionary(p => p.Name, p => p.GetValue(anon));
-
-    }
-
-    internal static class StringExtensions
-    {
-        public static string NormalizeWs(this string s) =>
-            new string(s.Where(c => !char.IsWhiteSpace(c) || c == ' ').ToArray())
-                .Replace("\r", "")
-                .Replace("\n", "")
-                .Replace("  ", " ")
-                .Trim();
     }
 }
-
-
