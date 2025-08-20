@@ -14,8 +14,7 @@ namespace Teachers.Data.Requests.Enrollments.Remove
                 throw new ArgumentException("At least one EnrollmentID is required.", nameof(enrollmentIDs));
         }
 
-        public string GetSql() =>
-            @"DELETE FROM dbo.Enrollments WHERE EnrollmentID IN @EnrollmentIDs;";
+        public string GetSql() => @"DELETE FROM dbo.Enrollments WHERE EnrollmentID IN @EnrollmentIDs;";
 
         public object? GetParameters() => new { EnrollmentIDs = _enrollmentIDs };
     }

@@ -21,8 +21,8 @@ namespace Teachers.Test.Requests.Students
 
             // Assert 
             const string expected =
-              @"INSERT INTO dbo.Students (FirstName, LastName, [Year], SchoolID)
-              VALUES (@FirstName, @LastName, @Year, @SchoolID);";
+              @"INSERT INTO dbo.Students (FirstName, LastName, [Year], SchoolID)" +
+              "VALUES (@FirstName, @LastName, @Year, @SchoolID);";
             Assert.Equal(expected, sql);
         }
 

@@ -15,11 +15,11 @@ namespace Teachers.Data.Requests.Teachers.Update
         }
 
         public string GetSql() =>
-            @"UPDATE dbo.Teachers
-              SET FirstName = @FirstName,
-                  LastName  = @LastName,
-                  SchoolID  = @SchoolID
-              WHERE TeacherID = @TeacherID;";
+            @"UPDATE dbo.Teachers" +
+              "SET FirstName = @FirstName," +
+                  "LastName = @LastName," +
+                  "SchoolID = @SchoolID" +
+              "WHERE TeacherID = @TeacherID;";
 
         public object? GetParameters() =>
             _teachers.Select(t => new

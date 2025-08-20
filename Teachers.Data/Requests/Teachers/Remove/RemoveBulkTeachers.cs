@@ -15,8 +15,8 @@ namespace Teachers.Data.Requests.Teachers.Remove
         }
 
         public string GetSql() =>
-            @"DELETE FROM dbo.Teachers
-              WHERE TeacherID IN @TeacherIDs;";
+            @"DELETE FROM dbo.Teachers" +
+             "WHERE TeacherID IN @TeacherIDs;";
 
         public object? GetParameters() => new { TeacherIDs = _teacherIDs };
     }

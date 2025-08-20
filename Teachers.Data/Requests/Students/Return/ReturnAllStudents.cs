@@ -7,7 +7,7 @@ namespace Teachers.Data.Requests.Students.Return
     {
         public string GetSql() =>
             @"SELECT StudentID, FirstName, LastName, [Year], SchoolID" +
-              "FROM dbo.Students;";
+             "FROM dbo.Students;";
 
         public object? GetParameters() => null;
     }

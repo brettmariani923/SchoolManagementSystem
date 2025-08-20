@@ -14,8 +14,8 @@ namespace Teachers.Data.Requests.Students.Return
 
         public string GetSql() =>
             @"SELECT StudentID, FirstName, LastName, [Year], SchoolID" +
-              "FROM dbo.Students" +
-              "WHERE StudentID = @StudentID;";
+             "FROM dbo.Students" +
+             "WHERE StudentID = @StudentID;";
 
         public object GetParameters() => new { StudentID = _studentID };
     }

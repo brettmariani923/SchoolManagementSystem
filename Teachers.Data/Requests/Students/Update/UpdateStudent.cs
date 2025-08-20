@@ -20,7 +20,6 @@ namespace Teachers.Data.Requests.Students
         "SchoolID  = @SchoolID " +
         "WHERE StudentID = @StudentID;";
 
-
         public object? GetParameters() => new
         {
             _student.StudentID,

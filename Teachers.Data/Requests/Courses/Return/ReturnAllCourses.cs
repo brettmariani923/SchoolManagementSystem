@@ -6,8 +6,8 @@ namespace Teachers.Data.Requests.Courses.Return
     public class ReturnAllCourses : IDataFetchList<Courses_DTO>
     {
         public string GetSql() =>
-            @"SELECT CourseID, CourseName, Credits, SchoolID
-              FROM dbo.Courses;";
+            @"SELECT CourseID, CourseName, Credits, SchoolID" +
+             "FROM dbo.Courses;";
 
         public object? GetParameters() => null;
     }
