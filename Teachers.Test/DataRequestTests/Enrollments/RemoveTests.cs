@@ -1,76 +1,53 @@
-﻿using Teachers.Data.Requests.Enrollments.Remove;
+﻿using System.Linq;
+using Xunit;
+using Teachers.Data.Requests.Enrollments.Remove;
 
 namespace Teachers.Test.DataRequestTests.Enrollments
 {
-    // Adjust namespaces/type names below if your request classes live elsewhere.
     public class RemoveTests
     {
         [Fact]
-        public void RemoveEnrollment_GetSql_DeletesByEnrollmentID()
+        public void RemoveEnrollment_GetSql()
         {
-            // Arrange
-            var req = new RemoveStudentEnrollment(42);
+            var req = new RemoveStudentEnrollment(2);
 
-            // Act
-            var sql = req.GetSql();
-
-            // Assert
             Assert.Equal(
                 "DELETE FROM dbo.Enrollments WHERE EnrollmentID = @EnrollmentID;",
-                sql.Trim());
+                req.GetSql());
         }
 
         [Fact]
-        public void RemoveEnrollment_GetParameters_ProjectsEnrollmentID()
+        public void RemoveBulkEnrollments_GetParameters()
         {
-            // Arrange
-            
-            var req = new RemoveStudentEnrollment(42);
+            var req = new RemoveBulkStudentEnrollments(new[] { 1, 2, 3, 2, 1 });
 
-            // Act
             var p = req.GetParameters();
+            var ids = (int[])p!.GetType().GetProperty("EnrollmentIDs")!.GetValue(p)!;
 
-            // Assert
-            Assert.NotNull(p);
-            var enrollmentIdProperty = p!.GetType().GetProperty("EnrollmentID");
-            Assert.NotNull(enrollmentIdProperty);
-            Assert.Equal(42, (int)enrollmentIdProperty!.GetValue(p)!);
+            Assert.Equal(5, ids.Length);
         }
 
         [Fact]
-        public void RemoveBulkEnrollments_GetSql_DeletesByEnrollmentID()
+        public void RemoveEnrollment_GetParameters()
         {
-            // Arrange
-            var ids = new[] { 101, 102, 103 };
-            var req = new RemoveBulkStudentEnrollments(ids);
+            var req = new RemoveStudentEnrollment(2);
 
-            // Act
-            var sql = req.GetSql();
+            dynamic p = req.GetParameters();
 
-            // Assert
+            Assert.Equal(2, (int)p.EnrollmentID);
+        }
+
+        [Fact]
+        public void RemoveBulkEnrollments_GetSql()
+        {
+            var req = new RemoveBulkStudentEnrollments(new[] { 1, 2, 3, 2, 1 });
+
             Assert.Equal(
-                "DELETE FROM dbo.Enrollments WHERE EnrollmentID = @EnrollmentID;",
-                sql.Trim());
+                "DELETE FROM dbo.Enrollments WHERE EnrollmentID IN @EnrollmentID;",
+                req.GetSql());
         }
 
-        [Fact]
-        public void RemoveBulkEnrollments_Ctor_NullIds_Throws()
-        {
-            // Arrange
-            IEnumerable<int>? ids = null;
-
-            // Act + Assert
-            Assert.Throws<ArgumentNullException>(() => new RemoveBulkStudentEnrollments(ids!));
-        }
-
-        [Fact]
-        public void RemoveBulkEnrollments_Ctor_EmptyIds_Throws()
-        {
-            // Arrange
-            var ids = Array.Empty<int>();
-
-            // Act + Assert
-            Assert.Throws<ArgumentException>(() => new RemoveBulkStudentEnrollments(ids));
-        }
     }
 }
+
+

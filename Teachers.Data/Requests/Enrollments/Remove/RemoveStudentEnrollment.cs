@@ -4,18 +4,16 @@ namespace Teachers.Data.Requests.Enrollments.Remove
 {
     public class RemoveStudentEnrollment : IDataExecute
     {
-        private readonly int _studentID;
+        private readonly int _enrollmentID;
 
-        public RemoveStudentEnrollment(int studentID)
+        public RemoveStudentEnrollment(int enrollmentID)
         {
-            _studentID = studentID;
+            _enrollmentID = enrollmentID;
         }
 
-        public string GetSql() =>
-            @"DELETE FROM dbo.Enrollments
-              WHERE StudentID = @StudentID;";
+        public string GetSql() => @"DELETE FROM dbo.Enrollments WHERE EnrollmentID = @EnrollmentID;";
 
-        public object? GetParameters() => new { StudentID = _studentID };
+        public object? GetParameters() => new { EnrollmentID = _enrollmentID };
 
     }
 }

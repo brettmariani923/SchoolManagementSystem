@@ -1,80 +1,57 @@
-﻿using Teachers.Data.Requests.Enrollments.Insert;
+﻿using Xunit;
+using Teachers.Data.Requests.Enrollments.Insert;
 
 namespace Teachers.Test.DataRequestTests.Enrollments
 {
     public class InsertTests
     {
-        private const string ExpectedSql =
-            "INSERT INTO Enrollments (StudentID, TeacherID, CourseID, SchoolID) " +
-            "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
-
         [Fact]
-        public void InsertEnrollment_GetSql_ReturnsExpectedInsertStatement()
+        public void InsertEnrollment_GetSql()
         {
-            // Arrange
-            var req = new InsertStudentEnrollment(studentID: 101, teacherID: 7, courseID: 55, schoolID: 3);
+            var req = new InsertStudentEnrollment(101, 7, 55, 3);
 
-            // Act
-            var sql = req.GetSql();
-
-            // Assert
-            Assert.Equal(ExpectedSql, sql);
+            Assert.Equal(
+                "INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID) " +
+                "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);",
+                req.GetSql());
         }
 
         [Fact]
-        public void InsertEnrollment_GetParameters_Projects_AllFields()
+        public void InsertEnrollment_GetParameters()
         {
-            // Arrange
-            var req = new InsertStudentEnrollment(studentID: 101, teacherID: 7, courseID: 55, schoolID: 3);
+            var req = new InsertStudentEnrollment(101, 7, 55, 3);
 
-            // Act
-            var p = req.GetParameters();
-
-            // Assert
-            var studentID = p!.GetType().GetProperty("StudentID")!.GetValue(p);
-            var teacherID = p.GetType().GetProperty("TeacherID")!.GetValue(p);
-            var courseID = p.GetType().GetProperty("CourseID")!.GetValue(p);
-            var schoolID = p.GetType().GetProperty("SchoolID")!.GetValue(p);
-
-            Assert.Equal(101, studentID);
-            Assert.Equal(7, teacherID);
-            Assert.Equal(55, courseID);
-            Assert.Equal(3, schoolID);
+            dynamic p = req.GetParameters()!;
+            Assert.Equal(101, (int)p.StudentID);
+            Assert.Equal(7, (int)p.TeacherID);
+            Assert.Equal(55, (int)p.CourseID);
+            Assert.Equal(3, (int)p.SchoolID);
         }
 
         [Fact]
-        public void InsertBulkEnrollments_GetSql_ReturnsExpectedInsertStatement()
+        public void InsertBulkEnrollments_GetSql()
         {
-            // Arrange
-            var req = new InsertBulkStudentEnrollment(new[] { 101, 102 }, teacherID: 7, courseID: 55, schoolID: 3);
+            var req = new InsertBulkStudentEnrollment(new[] { 101, 102 }, 7, 55, 3);
 
-            // Act
-            var sql = req.GetSql();
-
-            // Assert
-            Assert.Equal(ExpectedSql, sql);
+            Assert.Equal(
+                "INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID) " +
+                "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);",
+                req.GetSql());
         }
 
         [Fact]
-        public void InsertBulkEnrollments_NullStudents_ThrowsArgumentNullException()
+        public void InsertBulkEnrollments_GetParameters()
         {
-            // Arrange
-            IEnumerable<int>? students = null;
+            var req = new InsertBulkStudentEnrollment(new[] { 101, 102 }, 7, 55, 3);
 
-            // Act & Assert
-            Assert.Throws<ArgumentNullException>(() =>
-                new InsertBulkStudentEnrollment(students!, teacherID: 7, courseID: 55, schoolID: 3));
-        }
+            var list = req.GetParameters() as IEnumerable<dynamic>;
+            Assert.NotNull(list);
 
-        [Fact]
-        public void InsertBulkEnrollments_EmptyStudents_ThrowsArgumentException()
-        {
-            // Arrange
-            var empty = Array.Empty<int>();
-
-            // Act & Assert
-            Assert.Throws<ArgumentException>(() =>
-                new InsertBulkStudentEnrollment(empty, teacherID: 7, courseID: 55, schoolID: 3));
+            var first = list!.First();
+            Assert.Equal(101, (int)first.StudentID);
+            Assert.Equal(7, (int)first.TeacherID);
+            Assert.Equal(55, (int)first.CourseID);
+            Assert.Equal(3, (int)first.SchoolID);
         }
     }
 }

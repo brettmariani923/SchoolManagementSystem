@@ -4,20 +4,19 @@ namespace Teachers.Data.Requests.Enrollments.Remove
 {
     public class RemoveBulkStudentEnrollments : IDataExecute
     {
-        private readonly int[] _studentIDs;
+        private readonly int[] _enrollmentIDs;
 
-        public RemoveBulkStudentEnrollments(IEnumerable<int> studentIDs)
+        public RemoveBulkStudentEnrollments(IEnumerable<int> enrollmentIDs)
         {
-            if (studentIDs is null) throw new ArgumentNullException(nameof(studentIDs));
-            _studentIDs = studentIDs.Distinct().ToArray();
-            if (_studentIDs.Length == 0)
-                throw new ArgumentException("At least one StudentID is required.", nameof(studentIDs));
+            if (enrollmentIDs is null) throw new ArgumentNullException(nameof(enrollmentIDs));
+            _enrollmentIDs = enrollmentIDs.ToArray();
+            if (_enrollmentIDs.Length == 0)
+                throw new ArgumentException("At least one EnrollmentID is required.", nameof(enrollmentIDs));
         }
 
         public string GetSql() =>
-            @"DELETE FROM dbo.Enrollments
-              WHERE StudentID IN @StudentIDs;";
+            @"DELETE FROM dbo.Enrollments WHERE EnrollmentID IN @EnrollmentIDs;";
 
-        public object? GetParameters() => new { StudentIDs = _studentIDs };
+        public object? GetParameters() => new { EnrollmentIDs = _enrollmentIDs };
     }
 }

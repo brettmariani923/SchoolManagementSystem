@@ -12,11 +12,7 @@ namespace Teachers.Data.Requests.Enrollments.Return
             _courseID = courseID;
         }
 
-        public string GetSql() =>
-            @"SELECT EnrollmentID, StudentID, TeacherID, CourseID, SchoolID
-                FROM dbo.Enrollments
-                WHERE CourseID = _courseID
-                ORDER BY EnrollmentID;";
+        public string GetSql() => "SELECT * FROM dbo.Enrollments WHERE CourseID = @CourseID;";
 
         public object? GetParameters() => new { CourseID = _courseID };
     }

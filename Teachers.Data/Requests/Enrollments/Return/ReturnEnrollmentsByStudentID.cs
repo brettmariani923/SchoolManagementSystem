@@ -12,12 +12,8 @@ namespace Teachers.Data.Requests.Enrollments.Return
             _studentID = studentID;
         }
 
-        public string GetSql() =>
-            @"SELECT EnrollmentID, StudentID, TeacherID, CourseID, SchoolID
-                FROM dbo.Enrollments
-                WHERE StudentID = @StudentID
-                ORDER BY EnrollmentID;";
+        public string GetSql() => "SELECT * FROM dbo.Enrollments WHERE StudentID = @StudentID;";
 
-        public object GetParameters() => new { StudentID = _studentID };
+        public object? GetParameters() => new { StudentID = _studentID };
     }
 }
