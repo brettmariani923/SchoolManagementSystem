@@ -26,6 +26,12 @@ namespace Teachers.Test.Requests.Students
             Assert.Equal(expected, sql);
         }
 
+        // This test checks two things:
+        // 1. For each input student, GetParameters() should return one parameter object.
+        //    (3 students in → 3 parameter objects out.)
+        // 2. The FirstName, LastName, and Year come from the DTOs,
+        //    but the SchoolID must always come from the constructor argument,
+        //    ignoring whatever value was in the DTO.
         [Fact]
         public void GetParameters_ShouldYieldOneParamObjectPerStudent_AndUseCtorSchoolID()
         {   //Arrange

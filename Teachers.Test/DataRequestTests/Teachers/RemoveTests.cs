@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Teachers.Data.Requests.Teachers.Remove;
-using Xunit;
+﻿using Teachers.Data.Requests.Teachers.Remove;
 
 namespace Teachers.Test.DataRequestTests.Teachers
 {
