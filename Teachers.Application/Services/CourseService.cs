@@ -14,31 +14,11 @@ namespace Teachers.Data.Services
         private readonly IDataAccess _data;
         public CourseService(IDataAccess data) => _data = data;
 
-        public async Task<Courses_DTO?> GetByIdAsync(int courseId, CancellationToken ct = default)
-        {
-            var row = await _data.FetchAsync(new ReturnCourseByID(courseId));
-            if (row is null) return null;
+        public Task<Courses_DTO?> GetByIdAsync(int courseId, CancellationToken ct = default)
+            => _data.FetchAsync(new ReturnCourseByID(courseId));
 
-            return new Courses_DTO
-            {
-                CourseID = row.CourseID,
-                CourseName = row.CourseName,
-                Credits = row.Credits,
-                SchoolID = row.SchoolID
-            };
-        }
-
-        public async Task<IEnumerable<Courses_DTO>> GetAllAsync(CancellationToken ct = default)
-        {
-            var rows = await _data.FetchListAsync(new ReturnAllCourses());
-            return rows.Select(r => new Courses_DTO
-            {
-                CourseID = r.CourseID,
-                CourseName = r.CourseName,
-                Credits = r.Credits,
-                SchoolID = r.SchoolID
-            });
-        }
+        public Task<IEnumerable<Courses_DTO>> GetAllAsync(CancellationToken ct = default)
+            => _data.FetchListAsync(new ReturnAllCourses());
 
         public Task<int> RemoveByIdAsync(int courseId, CancellationToken ct = default)
             => _data.ExecuteAsync(new RemoveCourseByID(courseId));

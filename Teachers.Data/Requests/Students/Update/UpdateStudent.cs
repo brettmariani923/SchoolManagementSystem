@@ -6,21 +6,17 @@ namespace Teachers.Data.Requests.Students.Update
     public class UpdateStudent : IDataExecute
     {
         private readonly Students_Row _student;
-
-        public UpdateStudent(Students_Row student)
-        {
-            _student = student; 
-        }
+        public UpdateStudent(Students_Row student) => _student = student ?? throw new ArgumentNullException(nameof(student));
 
         public string GetSql() =>
-        "UPDATE dbo.Students " +
-        "SET StudentID = @StudentID, " +
-        "TeacherID = @TeacherID, " +
-        "CourseID  = @CourseID, " +
-        "SchoolID  = @SchoolID " +
-        "WHERE StudentID = @StudentID;";
+            @"UPDATE dbo.Students
+              SET FirstName = @FirstName,
+                  LastName  = @LastName,
+                  [Year]    = @Year,
+                  SchoolID  = @SchoolID
+              WHERE StudentID = @StudentID;";
 
-        public object? GetParameters() => new
+        public object GetParameters() => new
         {
             _student.StudentID,
             _student.FirstName,

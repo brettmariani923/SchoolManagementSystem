@@ -39,7 +39,7 @@ namespace Teachers.Data.Services
             => _data.ExecuteAsync(new UpdateBulkStudents(students.Select(MapToRow)));
 
         public Task<int> InsertAsync(Students_DTO newStudent, int schoolID, CancellationToken ct = default)
-       => _data.ExecuteAsync(new InsertNewStudent(
+            => _data.ExecuteAsync(new InsertNewStudent(
               newStudent.FirstName,
               newStudent.LastName,
               newStudent.Year,
