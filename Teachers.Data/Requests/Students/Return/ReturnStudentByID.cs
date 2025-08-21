@@ -1,13 +1,13 @@
 ﻿using Teachers.Domain.Interfaces;
-using Teachers.Data.DTO;
+using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Students.Return
 {
-    public class ReturnStudentById : IDataFetch<Students_Row>
+    public class ReturnStudentByID : IDataFetch<Students_Row>
     {
         private readonly int _studentID;
 
-        public ReturnStudentById(int studentID)
+        public ReturnStudentByID(int studentID)
         {
             _studentID = studentID;
         }

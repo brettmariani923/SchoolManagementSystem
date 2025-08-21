@@ -7,7 +7,7 @@ namespace Teachers.Test.DataRequestTests.Students
         [Fact]
         public void RemoveStudent_GetSql_IsCorrect()
         {
-            var req = new RemoveStudent(42);
+            var req = new RemoveStudentByID(42);
 
             Assert.Equal(
                 @"DELETE FROM dbo.Students" +
@@ -18,7 +18,7 @@ namespace Teachers.Test.DataRequestTests.Students
         [Fact]
         public void RemoveStudent_GetParameters_ProjectsId()
         {
-            var req = new RemoveStudent(1337);
+            var req = new RemoveStudentByID(1337);
             var p = req.GetParameters()!;
             var id = (int)p.GetType().GetProperty("StudentID")!.GetValue(p)!;
 

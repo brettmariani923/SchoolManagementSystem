@@ -1,7 +1,7 @@
 ﻿using Teachers.Domain.Interfaces;
-using Teachers.Data.DTO;
+using Teachers.Data.Rows;
 
-namespace Teachers.Data.Requests.Students
+namespace Teachers.Data.Requests.Students.Update
 {
     public class UpdateBulkStudents : IDataExecute
     {
