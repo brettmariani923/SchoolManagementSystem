@@ -1,4 +1,4 @@
-﻿namespace Teachers.Data.DTO
+﻿namespace Teachers.Application.DTO
 {
     public class Courses_DTO
     {

@@ -29,14 +29,14 @@ public class InsertTests
     [Fact]
     public void InsertBulkNewTeachers_Ctor_Null_Throws()
     {
-        IEnumerable<Teachers_DTO>? input = null;
+        IEnumerable<Teachers_Row>? input = null;
         Assert.Throws<ArgumentNullException>(() => new InsertBulkNewTeachers(input!));
     }
 
     [Fact]
     public void InsertBulkNewTeachers_GetSql_IsExact()
     {
-        var req = new InsertBulkNewTeachers(new List<Teachers_DTO>());
+        var req = new InsertBulkNewTeachers(new List<Teachers_Row>());
 
         const string expected =
             "INSERT INTO dbo.Teachers (TeacherID, FirstName, LastName, SchoolID)" +
@@ -48,7 +48,7 @@ public class InsertTests
     [Fact]
     public void InsertBulkNewTeachers_GetParameters_CountMatches()
     {
-        var teachers = new List<Teachers_DTO>
+        var teachers = new List<Teachers_Row>
         {
             new() { FirstName = "John", LastName = "Doe",      SchoolID = 1 },
             new() { FirstName = "Jane", LastName = "Smith",    SchoolID = 1 },
@@ -64,7 +64,7 @@ public class InsertTests
     [Fact]
     public void InsertBulkNewTeachers_GetParameters_EmptyList_ReturnsEmpty()
     {
-        var req = new InsertBulkNewTeachers(new List<Teachers_DTO>());
+        var req = new InsertBulkNewTeachers(new List<Teachers_Row>());
         var rows = (IEnumerable<object>)req.GetParameters()!;
 
         Assert.Empty(rows);

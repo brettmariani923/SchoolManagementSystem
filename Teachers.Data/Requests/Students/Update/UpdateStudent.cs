@@ -5,9 +5,9 @@ namespace Teachers.Data.Requests.Students
 {
     public class UpdateStudent : IDataExecute
     {
-        private readonly Students_DTO _student;
+        private readonly Students_Row _student;
 
-        public UpdateStudent(Students_DTO student)
+        public UpdateStudent(Students_Row student)
         {
             _student = student; 
         }

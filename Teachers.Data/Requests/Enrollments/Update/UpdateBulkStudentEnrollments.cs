@@ -5,9 +5,9 @@ namespace Teachers.Data.Requests.Enrollments.Update
 {
     public class UpdateBulkEnrollments : IDataExecute
     {
-        private readonly IEnumerable<Enrollments_DTO> _enrollments;
+        private readonly IEnumerable<Enrollments_Row> _enrollments;
 
-        public UpdateBulkEnrollments(IEnumerable<Enrollments_DTO> enrollments)
+        public UpdateBulkEnrollments(IEnumerable<Enrollments_Row> enrollments)
         {
             if (enrollments is null) throw new ArgumentNullException(nameof(enrollments));
             _enrollments = enrollments;

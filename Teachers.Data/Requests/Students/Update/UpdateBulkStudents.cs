@@ -5,9 +5,9 @@ namespace Teachers.Data.Requests.Students
 {
     public class UpdateBulkStudents : IDataExecute
     {
-        private readonly IEnumerable<Students_DTO> _students;
+        private readonly IEnumerable<Students_Row> _students;
 
-        public UpdateBulkStudents(IEnumerable<Students_DTO> students)
+        public UpdateBulkStudents(IEnumerable<Students_Row> students)
         {
             _students = students;
         }

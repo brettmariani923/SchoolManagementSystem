@@ -3,7 +3,7 @@ using Teachers.Data.DTO;
 
 namespace Teachers.Data.Requests.Enrollments.Return
 {
-    public class ReturnEnrollmentsByStudentID : IDataFetchList<Enrollments_DTO>
+    public class ReturnEnrollmentsByStudentID : IDataFetchList<Enrollments_Row>
     {
         private readonly int _studentID;
 

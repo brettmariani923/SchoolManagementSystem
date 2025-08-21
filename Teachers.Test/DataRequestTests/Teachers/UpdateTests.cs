@@ -8,7 +8,7 @@ namespace Teachers.Test.DataRequestTests.Teachers
         [Fact]
         public void Ctor_GivenNullTeachers_Throws()
         {
-            IEnumerable<Teachers_DTO>? teachers = null;
+            IEnumerable<Teachers_Row>? teachers = null;
 
             var ex = Assert.Throws<ArgumentNullException>(() => new UpdateBulkTeachers(teachers!));
             Assert.Equal("teachers", ex.ParamName);
@@ -17,7 +17,7 @@ namespace Teachers.Test.DataRequestTests.Teachers
         [Fact]
         public void GetParameters_ShouldProject_AllRequiredFields_PerTeacher()
         {
-            var teachers = new List<Teachers_DTO>
+            var teachers = new List<Teachers_Row>
             {
                 new() { TeacherID = 1, FirstName = "John", LastName = "Doe",     SchoolID = 10 },
                 new() { TeacherID = 2, FirstName = "Jane", LastName = "Smith",   SchoolID = 10 },
@@ -55,7 +55,7 @@ namespace Teachers.Test.DataRequestTests.Teachers
         [Fact]
         public void GetParameters_GivenEmptyList_ReturnsEmptySequence()
         {
-            var sut = new UpdateBulkTeachers(new List<Teachers_DTO>());
+            var sut = new UpdateBulkTeachers(new List<Teachers_Row>());
 
             var enumerable = sut.GetParameters() as IEnumerable<object>;
             Assert.NotNull(enumerable);

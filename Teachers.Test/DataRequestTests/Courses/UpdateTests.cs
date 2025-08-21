@@ -40,7 +40,7 @@ namespace Teachers.Test.DataRequestTests.Courses
         {
             var list = new[]
             {
-                new Courses_DTO { CourseID = 1, CourseName = "A", Credits = 1, SchoolID = 2 }
+                new Courses_Row { CourseID = 1, CourseName = "A", Credits = 1, SchoolID = 2 }
             };
             var req = new UpdateBulkCourses(list);
 
@@ -52,8 +52,8 @@ namespace Teachers.Test.DataRequestTests.Courses
         {
             var list = new[]
             {
-                new Courses_DTO { CourseID = 10, CourseName = "Chemistry", Credits = 4, SchoolID = 5 },
-                new Courses_DTO { CourseID = 11, CourseName = "Physics",   Credits = 4, SchoolID = 5 }
+                new Courses_Row { CourseID = 10, CourseName = "Chemistry", Credits = 4, SchoolID = 5 },
+                new Courses_Row { CourseID = 11, CourseName = "Physics",   Credits = 4, SchoolID = 5 }
             };
 
             var req = new UpdateBulkCourses(list);

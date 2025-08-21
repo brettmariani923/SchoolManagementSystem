@@ -3,7 +3,7 @@ using Teachers.Data.DTO;
 
 namespace Teachers.Data.Requests.Courses.Return
 {
-    public class ReturnCourseByID : IDataFetch<Courses_DTO>
+    public class ReturnCourseByID : IDataFetch<Courses_Row>
     {
         private readonly int _courseID;
 

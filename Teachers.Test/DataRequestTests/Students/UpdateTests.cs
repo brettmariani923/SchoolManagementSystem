@@ -17,7 +17,7 @@ namespace Teachers.Test.DataRequestTests.Students
         [Fact]
         public void UpdateStudent_GetSql_IsCorrect()
         {
-            var dto = new Students_DTO { StudentID = 1, FirstName = "Ash", LastName = "Ketchum", Year = 3, SchoolID = 42 };
+            var dto = new Students_Row { StudentID = 1, FirstName = "Ash", LastName = "Ketchum", Year = 3, SchoolID = 42 };
             var req = new UpdateStudent(dto);
 
             Assert.Equal(ExpectedSql, req.GetSql());
@@ -26,7 +26,7 @@ namespace Teachers.Test.DataRequestTests.Students
         [Fact]
         public void UpdateStudent_GetParameters_ProjectsFields()
         {
-            var dto = new Students_DTO { StudentID = 7, FirstName = "Misty", LastName = "Waterflower", Year = 2, SchoolID = 99 };
+            var dto = new Students_Row { StudentID = 7, FirstName = "Misty", LastName = "Waterflower", Year = 2, SchoolID = 99 };
             var req = new UpdateStudent(dto);
 
             var p = req.GetParameters()!;
@@ -42,7 +42,7 @@ namespace Teachers.Test.DataRequestTests.Students
         [Fact]
         public void UpdateBulkStudents_GetSql_IsCorrect()
         {
-            var list = new[] { new Students_DTO { StudentID = 1, FirstName = "A", LastName = "B", Year = 1, SchoolID = 2 } };
+            var list = new[] { new Students_Row { StudentID = 1, FirstName = "A", LastName = "B", Year = 1, SchoolID = 2 } };
             var req = new UpdateBulkStudents(list);
 
             Assert.Equal(ExpectedSql, req.GetSql());
@@ -53,8 +53,8 @@ namespace Teachers.Test.DataRequestTests.Students
         {
             var list = new[]
             {
-                new Students_DTO { StudentID = 10, FirstName = "Brock",  LastName = "Harrison", Year = 4, SchoolID = 5 },
-                new Students_DTO { StudentID = 11, FirstName = "Tracey", LastName = "Sketchit", Year = 1, SchoolID = 5 }
+                new Students_Row { StudentID = 10, FirstName = "Brock",  LastName = "Harrison", Year = 4, SchoolID = 5 },
+                new Students_Row { StudentID = 11, FirstName = "Tracey", LastName = "Sketchit", Year = 1, SchoolID = 5 }
             };
 
             var req = new UpdateBulkStudents(list);

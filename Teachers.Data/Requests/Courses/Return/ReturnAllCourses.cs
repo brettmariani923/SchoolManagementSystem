@@ -3,7 +3,7 @@ using Teachers.Data.DTO;
 
 namespace Teachers.Data.Requests.Courses.Return
 {
-    public class ReturnAllCourses : IDataFetchList<Courses_DTO>
+    public class ReturnAllCourses : IDataFetchList<Courses_Row>
     {
         public string GetSql() =>
             @"SELECT CourseID, CourseName, Credits, SchoolID" +

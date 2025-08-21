@@ -1,13 +1,13 @@
 ﻿using Teachers.Domain.Interfaces;
-using Teachers.Data.DTO;
+using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Courses.Update
 {
     public class UpdateBulkCourses : IDataExecute
     {
-        private readonly IEnumerable<Courses_DTO> _courses;
+        private readonly IEnumerable<Courses_Row> _courses;
 
-        public UpdateBulkCourses(IEnumerable<Courses_DTO> courses)
+        public UpdateBulkCourses(IEnumerable<Courses_Row> courses)
         {
             _courses = courses ?? throw new ArgumentNullException(nameof(courses));
             if (!_courses.Any())
@@ -16,8 +16,7 @@ namespace Teachers.Data.Requests.Courses.Update
 
         public string GetSql() =>
             "UPDATE dbo.Courses " +
-            "SET CourseID = @CourseID, " +
-            "CourseName = @CourseName, " +
+            "SET CourseName = @CourseName, " +
             "Credits  = @Credits, " +
             "SchoolID  = @SchoolID " +
             "WHERE CourseID = @CourseID;";

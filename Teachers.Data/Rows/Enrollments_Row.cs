@@ -1,6 +1,6 @@
-﻿namespace Teachers.Data.DTO
+﻿namespace Teachers.Data.Rows
 {
-    public class Enrollments_DTO
+    public class Enrollments_Row
     {
         public int EnrollmentID { get; set; }
         public int StudentID {  get; set; }

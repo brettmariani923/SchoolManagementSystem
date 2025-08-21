@@ -11,8 +11,8 @@ namespace Teachers.Test.Requests.Students
             // Arrange
             var students = new[]
             {
-                new Students_DTO { FirstName = "Naruto", LastName = "Uzumaki", Year = 1, SchoolID = 1 },
-                new Students_DTO { FirstName = "Sauske", LastName = "Uchiha",  Year = 2, SchoolID = 2 },
+                new Students_Row { FirstName = "Naruto", LastName = "Uzumaki", Year = 1, SchoolID = 1 },
+                new Students_Row { FirstName = "Sauske", LastName = "Uchiha",  Year = 2, SchoolID = 2 },
             };
             var request = new InsertBulkStudents(students, schoolID: 7);
 
@@ -35,7 +35,7 @@ namespace Teachers.Test.Requests.Students
         [Fact]
         public void GetParameters_ShouldYieldOneParamObjectPerStudent_AndUseCtorSchoolID()
         {   //Arrange
-            var students = new List<Students_DTO>
+            var students = new List<Students_Row>
             {
                 new() { FirstName = "Shikamaru", LastName = "Nara",    Year = 2, SchoolID = 123 },
                 new() { FirstName = "Choji",     LastName = "Akimichi", Year = 2, SchoolID = 456 },
@@ -81,7 +81,7 @@ namespace Teachers.Test.Requests.Students
         [Fact]
         public void Ctor_EmptyStudents_Throws()
         {
-            Assert.Throws<ArgumentException>(() => new InsertBulkStudents(Array.Empty<Students_DTO>(), 99));
+            Assert.Throws<ArgumentException>(() => new InsertBulkStudents(Array.Empty<Students_Row>(), 99));
         }
     }
 }

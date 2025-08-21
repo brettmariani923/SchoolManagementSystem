@@ -5,9 +5,9 @@ namespace Teachers.Data.Requests.Teachers.Update
 {
     public class UpdateBulkTeachers : IDataExecute
     {
-        private readonly IEnumerable<Teachers_DTO> _teachers;
+        private readonly IEnumerable<Teachers_Row> _teachers;
 
-        public UpdateBulkTeachers(IEnumerable<Teachers_DTO> teachers)
+        public UpdateBulkTeachers(IEnumerable<Teachers_Row> teachers)
         {
             _teachers = teachers ?? throw new ArgumentNullException(nameof(teachers));
             if (!_teachers.Any())

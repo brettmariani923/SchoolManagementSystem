@@ -3,7 +3,7 @@ using Teachers.Data.DTO;
 
 namespace Teachers.Data.Requests.Enrollments.Return
 {
-    public class ReturnAllEnrollments : IDataFetchList<Enrollments_DTO>
+    public class ReturnAllEnrollments : IDataFetchList<Enrollments_Row>
     {
         public string GetSql() => "SELECT * FROM dbo.Enrollments;";
 

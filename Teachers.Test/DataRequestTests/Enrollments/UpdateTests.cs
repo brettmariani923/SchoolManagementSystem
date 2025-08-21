@@ -37,7 +37,7 @@ namespace Teachers.Test.DataRequestTests.Enrollments
         [Fact]
         public void UpdateBulkEnrollments_GetSql_IsCorrect()
         {
-            var req = new UpdateBulkEnrollments(Array.Empty<Enrollments_DTO>());
+            var req = new UpdateBulkEnrollments(Array.Empty<Enrollments_Row>());
             Assert.Equal(
                 "UPDATE dbo.Enrollments " +
                 "SET StudentID = @StudentID, " +
@@ -53,8 +53,8 @@ namespace Teachers.Test.DataRequestTests.Enrollments
         {
             var items = new[]
             {
-                new Enrollments_DTO { EnrollmentID = 1, StudentID = 10, TeacherID = 20, CourseID = 30, SchoolID = 40 },
-                new Enrollments_DTO { EnrollmentID = 2, StudentID = 11, TeacherID = 21, CourseID = 31, SchoolID = 41 },
+                new Enrollments_Row { EnrollmentID = 1, StudentID = 10, TeacherID = 20, CourseID = 30, SchoolID = 40 },
+                new Enrollments_Row { EnrollmentID = 2, StudentID = 11, TeacherID = 21, CourseID = 31, SchoolID = 41 },
             };
 
             var req = new UpdateBulkEnrollments(items);

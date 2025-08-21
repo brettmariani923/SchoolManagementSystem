@@ -5,9 +5,9 @@ namespace Teachers.Data.Requests.Teachers.Insert
 {
     public class InsertBulkNewTeachers : IDataExecute
     {
-        private readonly IEnumerable<Teachers_DTO> _teachers;
+        private readonly IEnumerable<Teachers_Row> _teachers;
 
-        public InsertBulkNewTeachers(IEnumerable<Teachers_DTO> teachers)
+        public InsertBulkNewTeachers(IEnumerable<Teachers_Row> teachers)
         {
             _teachers = teachers ?? throw new ArgumentNullException(nameof(teachers));
         }

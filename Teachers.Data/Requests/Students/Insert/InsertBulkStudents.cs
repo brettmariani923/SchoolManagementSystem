@@ -5,10 +5,10 @@ namespace Teachers.Data.Requests.Students.Insert
 {
     public class InsertBulkStudents : IDataExecute
     {
-        private readonly IEnumerable<Students_DTO> _students;
+        private readonly IEnumerable<Students_Row> _students;
         private readonly int _schoolID;
 
-        public InsertBulkStudents(IEnumerable<Students_DTO> students, int schoolID)
+        public InsertBulkStudents(IEnumerable<Students_Row> students, int schoolID)
         {
             _students = students ?? throw new ArgumentNullException(nameof(students));
             if (!_students.Any()) throw new ArgumentException("At least one student is required.", nameof(students));

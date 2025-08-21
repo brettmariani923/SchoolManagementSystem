@@ -32,7 +32,7 @@ namespace Teachers.Test.DataRequestTests.Courses
         [Fact]
         public void InsertBulkNewCourses_GetSql_IsExact()
         {
-            var req = new InsertBulkNewCourses(new List<Courses_DTO>());
+            var req = new InsertBulkNewCourses(new List<Courses_Row>());
 
             const string expected =
                 "INSERT INTO dbo.Courses (CourseID, CourseName, Credits, SchoolID)" +
@@ -44,7 +44,7 @@ namespace Teachers.Test.DataRequestTests.Courses
         [Fact]
         public void InsertBulkNewCourses_GetParameters_CountAndFirstRow()
         {
-            var courses = new List<Courses_DTO>
+            var courses = new List<Courses_Row>
             {
                 new() { CourseID = 10, CourseName = "Chemistry", Credits = 4, SchoolID = 5 },
                 new() { CourseID = 11, CourseName = "Physics",   Credits = 4, SchoolID = 5 }
