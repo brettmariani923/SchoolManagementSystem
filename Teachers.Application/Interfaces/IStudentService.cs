@@ -1,4 +1,5 @@
-﻿using Teachers.Application.DTO;
+﻿// Teachers.Application.Interfaces
+using Teachers.Application.DTO;
 
 namespace Teachers.Application.Interfaces
 {
@@ -16,8 +17,8 @@ namespace Teachers.Application.Interfaces
         Task<int> UpdateAsync(Students_DTO student, CancellationToken ct = default);
         Task<int> UpdateBulkAsync(IEnumerable<Students_DTO> students, CancellationToken ct = default);
 
-        // Inserts (StudentID on DTO is ignored if DB uses IDENTITY)
+        // Inserts (schoolID enforced by controller/service)
         Task<int> InsertAsync(Students_DTO newStudent, CancellationToken ct = default);
-        Task<int> InsertBulkAsync(IEnumerable<Students_DTO> newStudents, int schoolID, CancellationToken ct = default);
+        Task<int> InsertBulkAsync(IEnumerable<Students_DTO> newStudents, CancellationToken ct = default);
     }
 }

@@ -45,9 +45,9 @@ namespace Teachers.Application.Services
         public Task<int> InsertAsync(Teachers_DTO newTeacher, CancellationToken ct = default)
              => _data.ExecuteAsync(new InsertNewTeacher(MapToRowForInsert(newTeacher)));
 
-        public Task<int> InsertBulkAsync(IEnumerable<Teachers_DTO> newTeachers, int schoolID, CancellationToken ct = default)
+        public Task<int> InsertBulkAsync(IEnumerable<Teachers_DTO> newTeachers, CancellationToken ct = default)
             => _data.ExecuteAsync(new InsertBulkNewTeachers(
-                newTeachers.Select(MapToRowForInsert), schoolID));
+                newTeachers.Select(MapToRowForInsert)));
 
         // Mapping helpers 
         private static Teachers_DTO Map(Teachers_Row r) => new Teachers_DTO

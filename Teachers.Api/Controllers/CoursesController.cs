@@ -40,7 +40,6 @@ namespace Teachers.Api.Controllers
             var rows = await _courses.InsertAsync(dto, ct);
             if (rows <= 0) return Problem("Insert failed.");
 
-            // If you want to return the created resource, fetch it or return location if you know it.
             // Here we just return 201 with a location to GetAll (or swap to GetById if you retrieve new ID).
             return CreatedAtAction(nameof(GetAll), null);
         }

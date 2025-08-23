@@ -8,14 +8,12 @@ namespace Teachers.Data.Requests.Teachers.Insert
     public sealed class InsertBulkNewTeachers : IDataExecute
     {
         private readonly IEnumerable<Teachers_Row> _teachers;
-        private readonly int _schoolID;
 
-        public InsertBulkNewTeachers(IEnumerable<Teachers_Row> teachers, int schoolID)
+        public InsertBulkNewTeachers(IEnumerable<Teachers_Row> teachers)
         {
             _teachers = teachers ?? throw new ArgumentNullException(nameof(teachers));
             if (!_teachers.Any())
                 throw new ArgumentException("At least one teacher is required.", nameof(teachers));
-            _schoolID = schoolID;
         }
 
         public string GetSql() =>
@@ -27,7 +25,7 @@ namespace Teachers.Data.Requests.Teachers.Insert
             {
                 t.FirstName,
                 t.LastName,
-                SchoolID = _schoolID   
+                t.SchoolID
             });
     }
 }

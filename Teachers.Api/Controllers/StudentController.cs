@@ -31,15 +31,16 @@ namespace Teachers.Api.Controllers
             return student is null ? NotFound() : Ok(student);
         }
 
-        // POST: api/students?schoolID=12
+        // POST /api/schools/{schoolId}/students
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] Students_DTO dto, [FromQuery] int schoolID, CancellationToken ct)
+        public async Task<ActionResult> Create([FromBody] Students_DTO dto, CancellationToken ct)
         {
             if (dto is null) return BadRequest("Body required.");
-            if (schoolID <= 0) return BadRequest("Valid schoolID is required.");
+            if (dto.SchoolID <= 0) return BadRequest("Valid SchoolID is required.");
 
-            var rows = await _students.InsertAsync(dto, schoolID, ct);
+            var rows = await _students.InsertAsync(dto, ct);  // <- only (dto, ct)
             if (rows <= 0) return Problem("Insert failed.");
+
             return CreatedAtAction(nameof(GetAll), null);
         }
 

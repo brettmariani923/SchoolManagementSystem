@@ -18,6 +18,6 @@ namespace Teachers.Application.Interfaces
 
         // Inserts (TeacherID on DTO is ignored if DB uses IDENTITY)
         Task<int> InsertAsync(Teachers_DTO newTeacher, CancellationToken ct = default);
-        Task<int> InsertBulkAsync(IEnumerable<Teachers_DTO> newTeachers, int schoolID, CancellationToken ct = default);
+        Task<int> InsertBulkAsync(IEnumerable<Teachers_DTO> newTeachers, CancellationToken ct = default);
     }
 }

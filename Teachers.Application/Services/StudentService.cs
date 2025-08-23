@@ -44,10 +44,10 @@ namespace Teachers.Application.Services
         // Inserts
         public Task<int> InsertAsync(Students_DTO newStudent, CancellationToken ct = default)
             => _data.ExecuteAsync(new InsertNewStudent(MapToRowForInsert(newStudent)));
-
-        public Task<int> InsertBulkAsync(IEnumerable<Students_DTO> newStudents, int schoolID, CancellationToken ct = default)
+//look into this one again
+        public Task<int> InsertBulkAsync(IEnumerable<Students_DTO> newStudents, CancellationToken ct = default)
             => _data.ExecuteAsync(new InsertBulkStudents(
-                newStudents.Select(MapToRowForInsert), schoolID));
+                newStudents.Select(MapToRowForInsert));
 
         // Mapping helpers
         private static Students_DTO Map(Students_Row r) => new Students_DTO

@@ -68,11 +68,14 @@ namespace Teachers.Api.Controllers
             return NoContent();
         }
 
-        //POST: api/teacher?schoolID=5
+        // POST: api/teacher
         [HttpPost]
-        public async Task<ActionResult<int>> Insert([FromBody] Teachers_DTO newTeacher, int schoolID, CancellationToken ct)
+        public async Task<ActionResult<int>> Insert([FromBody] Teachers_DTO newTeacher, CancellationToken ct)
         {
-            var id = await _service.InsertAsync(newTeacher, schoolID, ct);
+            if (newTeacher is null) return BadRequest("Body required.");
+            if (newTeacher.SchoolID <= 0) return BadRequest("Valid SchoolID is required.");
+
+            var id = await _service.InsertAsync(newTeacher, ct);
             return CreatedAtAction(nameof(GetById), new { id }, id);
         }
 
