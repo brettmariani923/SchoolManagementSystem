@@ -44,6 +44,16 @@ namespace Teachers.Api.Controllers
             return CreatedAtAction(nameof(GetAll), null);
         }
 
+        // POST: api/courses/bulk
+        [HttpPost("bulk")]
+        public async Task<ActionResult> BulkInsert([FromBody] IEnumerable<Courses_DTO> dtos, CancellationToken ct)
+        {
+            if (dtos is null) return BadRequest("Body required.");
+            var rows = await _courses.InsertBulkAsync(dtos, ct);
+            if (rows <= 0) return Problem("Bulk insert failed.");
+            return CreatedAtAction(nameof(GetAll), null);
+        }
+
         // PUT: api/courses/5
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] Courses_DTO dto, CancellationToken ct)
@@ -57,26 +67,6 @@ namespace Teachers.Api.Controllers
             return NoContent();
         }
 
-        // DELETE: api/courses/5
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id, CancellationToken ct)
-        {
-            if (id <= 0) return BadRequest("Invalid id.");
-            var rows = await _courses.RemoveByIdAsync(id, ct);
-            if (rows == 0) return NotFound();
-            return NoContent();
-        }
-
-        // POST: api/courses/bulk
-        [HttpPost("bulk")]
-        public async Task<ActionResult> BulkInsert([FromBody] IEnumerable<Courses_DTO> dtos, CancellationToken ct)
-        {
-            if (dtos is null) return BadRequest("Body required.");
-            var rows = await _courses.InsertBulkAsync(dtos, ct);
-            if (rows <= 0) return Problem("Bulk insert failed.");
-            return CreatedAtAction(nameof(GetAll), null);
-        }
-
         // PUT: api/courses/bulk
         [HttpPut("bulk")]
         public async Task<ActionResult> BulkUpdate([FromBody] IEnumerable<Courses_DTO> dtos, CancellationToken ct)
@@ -84,6 +74,16 @@ namespace Teachers.Api.Controllers
             if (dtos is null) return BadRequest("Body required.");
             var rows = await _courses.UpdateBulkAsync(dtos, ct);
             if (rows <= 0) return Problem("Bulk update failed.");
+            return NoContent();
+        }
+
+        // DELETE: api/courses/5
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id, CancellationToken ct)
+        {
+            if (id <= 0) return BadRequest("Invalid id.");
+            var rows = await _courses.RemoveByIdAsync(id, ct);
+            if (rows == 0) return NotFound();
             return NoContent();
         }
 

@@ -44,6 +44,18 @@ namespace Teachers.Api.Controllers
             return CreatedAtAction(nameof(GetAll), null);
         }
 
+        // POST: api/students/bulk?schoolID=12
+        [HttpPost("bulk")]
+        public async Task<ActionResult> BulkInsert([FromBody] IEnumerable<Students_DTO> dtos, [FromQuery] int schoolID, CancellationToken ct)
+        {
+            if (dtos is null) return BadRequest("Body required.");
+            if (schoolID <= 0) return BadRequest("Valid schoolID is required.");
+
+            var rows = await _students.InsertBulkAsync(dtos, ct);
+            if (rows <= 0) return Problem("Bulk insert failed.");
+            return CreatedAtAction(nameof(GetAll), null);
+        }
+
         // PUT: api/students/5
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] Students_DTO dto, CancellationToken ct)
@@ -57,28 +69,6 @@ namespace Teachers.Api.Controllers
             return NoContent();
         }
 
-        // DELETE: api/students/5
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id, CancellationToken ct)
-        {
-            if (id <= 0) return BadRequest("Invalid id.");
-            var rows = await _students.RemoveByIdAsync(id, ct);
-            if (rows == 0) return NotFound();
-            return NoContent();
-        }
-
-        // POST: api/students/bulk?schoolID=12
-        [HttpPost("bulk")]
-        public async Task<ActionResult> BulkInsert([FromBody] IEnumerable<Students_DTO> dtos, [FromQuery] int schoolID, CancellationToken ct)
-        {
-            if (dtos is null) return BadRequest("Body required.");
-            if (schoolID <= 0) return BadRequest("Valid schoolID is required.");
-
-            var rows = await _students.InsertBulkAsync(dtos, schoolID, ct);
-            if (rows <= 0) return Problem("Bulk insert failed.");
-            return CreatedAtAction(nameof(GetAll), null);
-        }
-
         // PUT: api/students/bulk
         [HttpPut("bulk")]
         public async Task<ActionResult> BulkUpdate([FromBody] IEnumerable<Students_DTO> dtos, CancellationToken ct)
@@ -86,6 +76,16 @@ namespace Teachers.Api.Controllers
             if (dtos is null) return BadRequest("Body required.");
             var rows = await _students.UpdateBulkAsync(dtos, ct);
             if (rows <= 0) return Problem("Bulk update failed.");
+            return NoContent();
+        }
+
+        // DELETE: api/students/5
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id, CancellationToken ct)
+        {
+            if (id <= 0) return BadRequest("Invalid id.");
+            var rows = await _students.RemoveByIdAsync(id, ct);
+            if (rows == 0) return NotFound();
             return NoContent();
         }
 

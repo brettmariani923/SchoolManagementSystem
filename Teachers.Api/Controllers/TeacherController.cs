@@ -83,7 +83,7 @@ namespace Teachers.Api.Controllers
         [HttpPost("bulk")]
         public async Task<ActionResult<int>> InsertBulk([FromBody] IEnumerable<Teachers_DTO> newTeachers, int schoolID, CancellationToken ct)
         {
-            var count = await _service.InsertBulkAsync(newTeachers, schoolID, ct);
+            var count = await _service.InsertBulkAsync(newTeachers, ct);
             return Ok(count);
         }
     }
