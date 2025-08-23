@@ -1,24 +1,41 @@
-﻿using Teachers.Data.Requests.Enrollments.Insert;
+﻿using Teachers.Data.Rows;
+using Teachers.Data.Requests.Enrollments.Insert;
 
 namespace Teachers.Test.DataRequestTests.Enrollments
 {
     public class InsertTests
     {
+        private const string ExpectedSql =
+            "INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID)" +
+             "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
+
         [Fact]
         public void InsertEnrollment_GetSql()
         {
-            var req = new InsertStudentEnrollment(101, 7, 55, 3);
+            var row = new Enrollments_Row
+            {
+                StudentID = 101,
+                TeacherID = 7,
+                CourseID = 55,
+                SchoolID = 3
+            };
 
-            Assert.Equal(
-                "INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID) " +
-                "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);",
-                req.GetSql());
+            var req = new InsertStudentEnrollment(row);
+            Assert.Equal(ExpectedSql, req.GetSql());
         }
 
         [Fact]
         public void InsertEnrollment_GetParameters()
         {
-            var req = new InsertStudentEnrollment(101, 7, 55, 3);
+            var row = new Enrollments_Row
+            {
+                StudentID = 101,
+                TeacherID = 7,
+                CourseID = 55,
+                SchoolID = 3
+            };
+
+            var req = new InsertStudentEnrollment(row);
 
             var p = req.GetParameters()!;
             var t = p.GetType();
@@ -32,20 +49,29 @@ namespace Teachers.Test.DataRequestTests.Enrollments
         [Fact]
         public void InsertBulkEnrollments_GetSql()
         {
-            var req = new InsertBulkStudentEnrollment(new[] { 101, 102 }, 7, 55, 3);
+            var rows = new[]
+            {
+                new Enrollments_Row { StudentID = 101, TeacherID = 7, CourseID = 55, SchoolID = 3 },
+                new Enrollments_Row { StudentID = 102, TeacherID = 7, CourseID = 55, SchoolID = 3 }
+            };
 
-            Assert.Equal(
-                "INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID) " +
-                "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);",
-                req.GetSql());
+            var req = new InsertBulkStudentEnrollment(rows);
+            Assert.Equal(ExpectedSql, req.GetSql());
         }
 
         [Fact]
         public void InsertBulkEnrollments_GetParameters()
         {
-            var req = new InsertBulkStudentEnrollment(new[] { 101, 102 }, 7, 55, 3);
+            var rows = new[]
+            {
+                new Enrollments_Row { StudentID = 101, TeacherID = 7, CourseID = 55, SchoolID = 3 },
+                new Enrollments_Row { StudentID = 102, TeacherID = 7, CourseID = 55, SchoolID = 3 }
+            };
+
+            var req = new InsertBulkStudentEnrollment(rows);
 
             var list = ((IEnumerable<object>)req.GetParameters()!).ToList();
+            Assert.Equal(2, list.Count);
 
             var first = list[0];
             var t = first.GetType();
@@ -55,6 +81,5 @@ namespace Teachers.Test.DataRequestTests.Enrollments
             Assert.Equal(55, (int)t.GetProperty("CourseID")!.GetValue(first)!);
             Assert.Equal(3, (int)t.GetProperty("SchoolID")!.GetValue(first)!);
         }
-
     }
 }

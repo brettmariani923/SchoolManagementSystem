@@ -7,7 +7,7 @@ namespace Teachers.Data.Requests.Students.Insert
     {
         private readonly IEnumerable<Students_Row> _students;
 
-        public InsertBulkStudents(IEnumerable<Students_Row> students, int schoolID)
+        public InsertBulkStudents(IEnumerable<Students_Row> students)
         {
             _students = students ?? throw new ArgumentNullException(nameof(students));
             if (!_students.Any()) throw new ArgumentException("At least one student is required.", nameof(students));

@@ -1,4 +1,4 @@
-﻿using Teachers.Data.DTO;
+﻿using Teachers.Data.Rows;
 using Teachers.Data.Requests.Students.Insert;
 
 namespace Teachers.Test.Requests.Students
@@ -37,9 +37,9 @@ namespace Teachers.Test.Requests.Students
         {   //Arrange
             var students = new List<Students_Row>
             {
-                new() { FirstName = "Shikamaru", LastName = "Nara",    Year = 2, SchoolID = 123 },
-                new() { FirstName = "Choji",     LastName = "Akimichi", Year = 2, SchoolID = 456 },
-                new() { FirstName = "Ino",       LastName = "Yamanaka", Year = 2, SchoolID = 789 }
+                new() { FirstName = "Shikamaru", LastName = "Nara",    Year = 2 },
+                new() { FirstName = "Choji",     LastName = "Akimichi", Year = 2 },
+                new() { FirstName = "Ino",       LastName = "Yamanaka", Year = 2 }
             };
             const int enforcedSchoolId = 12;
 
@@ -57,19 +57,16 @@ namespace Teachers.Test.Requests.Students
             Assert.Equal("Shikamaru", t0.GetProperty("FirstName")!.GetValue(p0));
             Assert.Equal("Nara", t0.GetProperty("LastName")!.GetValue(p0));
             Assert.Equal(2, t0.GetProperty("Year")!.GetValue(p0));
-            Assert.Equal(enforcedSchoolId, t0.GetProperty("SchoolID")!.GetValue(p0));
 
             var p1 = list[1]; var t1 = p1.GetType();
             Assert.Equal("Choji", t1.GetProperty("FirstName")!.GetValue(p1));
             Assert.Equal("Akimichi", t1.GetProperty("LastName")!.GetValue(p1));
             Assert.Equal(2, t1.GetProperty("Year")!.GetValue(p1));
-            Assert.Equal(enforcedSchoolId, t1.GetProperty("SchoolID")!.GetValue(p1));
 
             var p2 = list[2]; var t2 = p2.GetType();
             Assert.Equal("Ino", t2.GetProperty("FirstName")!.GetValue(p2));
             Assert.Equal("Yamanaka", t2.GetProperty("LastName")!.GetValue(p2));
             Assert.Equal(2, t2.GetProperty("Year")!.GetValue(p2));
-            Assert.Equal(enforcedSchoolId, t2.GetProperty("SchoolID")!.GetValue(p2));
         }
 
         [Fact]

@@ -15,12 +15,12 @@ namespace Teachers.Data.Requests.Enrollments.Update
         }
 
         public string GetSql() =>
-        @"UPDATE dbo.Enrollments
-          SET StudentID = @StudentID,
-              TeacherID = @TeacherID,
-              CourseID = @CourseID,
-              SchoolID = @SchoolID
-          WHERE EnrollmentID = @EnrollmentID;";
+        @"UPDATE dbo.Enrollments " +
+         "SET StudentID = @StudentID, " +
+         "TeacherID = @TeacherID, " +
+         "CourseID  = @CourseID, " +
+         "SchoolID  = @SchoolID " +
+         "WHERE EnrollmentID = @EnrollmentID;";
 
 
         public object? GetParameters() =>

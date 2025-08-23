@@ -26,7 +26,7 @@ namespace Teachers.Test.DataRequestTests.Students
         [Fact]
         public void ReturnStudentById_GetSql_IsCorrect()
         {
-            var req = new ReturnStudentById(123);
+            var req = new ReturnStudentByID(123);
 
             Assert.Equal(
                @"SELECT StudentID, FirstName, LastName, [Year], SchoolID" +
@@ -38,7 +38,7 @@ namespace Teachers.Test.DataRequestTests.Students
         [Fact]
         public void ReturnStudentById_GetParameters_ProjectsId()
         {
-            var req = new ReturnStudentById(987);
+            var req = new ReturnStudentByID(987);
 
             var p = req.GetParameters()!;
             var id = (int)p.GetType().GetProperty("StudentID")!.GetValue(p)!;
@@ -49,8 +49,8 @@ namespace Teachers.Test.DataRequestTests.Students
         [Fact]
         public void ReturnStudentById_InvalidId_Throws()
         {
-            Assert.ThrowsAny<ArgumentException>(() => new ReturnStudentById(0));
-            Assert.ThrowsAny<ArgumentException>(() => new ReturnStudentById(-1));
+            Assert.ThrowsAny<ArgumentException>(() => new ReturnStudentByID(0));
+            Assert.ThrowsAny<ArgumentException>(() => new ReturnStudentByID(-1));
         }
     }
 }

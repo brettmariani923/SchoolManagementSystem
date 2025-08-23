@@ -1,29 +1,48 @@
-﻿using Teachers.Data.Requests.Enrollments.Update;
-using Teachers.Data.DTO;
-
+﻿using Teachers.Data.Rows;
+using Teachers.Data.Requests.Enrollments.Update;
 
 namespace Teachers.Test.DataRequestTests.Enrollments
 {
     public class UpdateTests
     {
+        private const string ExpectedSql =
+            "UPDATE dbo.Enrollments " +
+            "SET StudentID = @StudentID, " +
+            "TeacherID = @TeacherID, " +
+            "CourseID  = @CourseID, " +
+            "SchoolID  = @SchoolID " +
+            "WHERE EnrollmentID = @EnrollmentID;";
+
         [Fact]
         public void UpdateStudentEnrollment_GetSql_IsCorrect()
         {
-            var req = new UpdateStudentEnrollment(1, 10, 20, 30, 40);
-            Assert.Equal(
-                "UPDATE dbo.Enrollments " +
-                "SET StudentID = @StudentID, " +
-                "TeacherID = @TeacherID, " +
-                "CourseID  = @CourseID, " +
-                "SchoolID  = @SchoolID " +
-                "WHERE EnrollmentID = @EnrollmentID;",
-                req.GetSql());
+            var row = new Enrollments_Row
+            {
+                EnrollmentID = 1,
+                TeacherID = 20,
+                CourseID = 30,
+                SchoolID = 40
+            };
+
+            var req = new UpdateStudentEnrollment(row);
+
+            Assert.Equal(ExpectedSql, req.GetSql());
         }
 
         [Fact]
         public void UpdateStudentEnrollment_GetParameters_ProjectsFields()
         {
-            var req = new UpdateStudentEnrollment(1, 10, 20, 30, 40);
+            var row = new Enrollments_Row
+            {
+                EnrollmentID = 1,
+                StudentID = 10,
+                TeacherID = 20,
+                CourseID = 30,
+                SchoolID = 40
+            };
+
+            var req = new UpdateStudentEnrollment(row);
+
             var p = req.GetParameters()!;
             var t = p.GetType();
 
@@ -37,15 +56,15 @@ namespace Teachers.Test.DataRequestTests.Enrollments
         [Fact]
         public void UpdateBulkEnrollments_GetSql_IsCorrect()
         {
-            var req = new UpdateBulkEnrollments(Array.Empty<Enrollments_Row>());
-            Assert.Equal(
-                "UPDATE dbo.Enrollments " +
-                "SET StudentID = @StudentID, " +
-                "TeacherID = @TeacherID, " +
-                "CourseID  = @CourseID, " +
-                "SchoolID  = @SchoolID " +
-                "WHERE EnrollmentID = @EnrollmentID;",
-                req.GetSql());
+            // Use at least one item to satisfy typical non-empty validation in ctor
+            var items = new[]
+            {
+                new Enrollments_Row { EnrollmentID = 1, StudentID = 10, TeacherID = 20, CourseID = 30, SchoolID = 40 }
+            };
+
+            var req = new UpdateBulkEnrollments(items);
+
+            Assert.Equal(ExpectedSql, req.GetSql());
         }
 
         [Fact]
@@ -58,9 +77,9 @@ namespace Teachers.Test.DataRequestTests.Enrollments
             };
 
             var req = new UpdateBulkEnrollments(items);
+
             var list = ((IEnumerable<object>)req.GetParameters()!).ToList();
             Assert.Equal(items.Length, list.Count);
         }
-
     }
 }

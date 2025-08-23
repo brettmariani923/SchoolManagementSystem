@@ -1,26 +1,44 @@
-﻿using Teachers.Data.DTO;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Teachers.Data.Rows;
 using Teachers.Data.Requests.Courses.Insert;
+using Xunit;
 
 namespace Teachers.Test.DataRequestTests.Courses
 {
     public class InsertTests
     {
+        private const string ExpectedSql =
+            "INSERT INTO dbo.Courses (CourseName, Credits, SchoolID)" +
+             "VALUES (@CourseName, @Credits, @SchoolID);";
+
         [Fact]
         public void InsertNewCourse_GetSql_IsExact()
         {
-            var req = new InsertNewCourse("Algebra I", 3, 42);
+            var row = new Courses_Row
+            {
+                CourseName = "Algebra I",
+                Credits = 3,
+                SchoolID = 42
+            };
 
-            const string expected =
-                "INSERT INTO dbo.Courses (CourseName, Credits, SchoolID)" +
-                "VALUES (@CourseName, @Credits, @SchoolID);";
+            var req = new InsertNewCourse(row);
 
-            Assert.Equal(expected, req.GetSql());
+            Assert.Equal(ExpectedSql, req.GetSql());
         }
 
         [Fact]
         public void InsertNewCourse_GetParameters_ProjectsFields()
         {
-            var req = new InsertNewCourse("Algebra I", 3, 42);
+            var row = new Courses_Row
+            {
+                CourseName = "Algebra I",
+                Credits = 3,
+                SchoolID = 42
+            };
+
+            var req = new InsertNewCourse(row);
+
             var p = req.GetParameters()!;
             var t = p.GetType();
 
@@ -32,38 +50,37 @@ namespace Teachers.Test.DataRequestTests.Courses
         [Fact]
         public void InsertBulkNewCourses_GetSql_IsExact()
         {
-            var req = new InsertBulkNewCourses(new List<Courses_Row>());
+            var rows = new[]
+            {
+                new Courses_Row { CourseName = "Algebra I", Credits = 3, SchoolID = 42 },
+                new Courses_Row { CourseName = "Biology",   Credits = 4, SchoolID = 99 }
+            };
 
-            const string expected =
-                "INSERT INTO dbo.Courses (CourseID, CourseName, Credits, SchoolID)" +
-                "VALUES (@CourseID, @CourseName, @Credits, @SchoolID);";
+            var req = new InsertBulkNewCourses(rows);
 
-            Assert.Equal(expected, req.GetSql());
+            Assert.Equal(ExpectedSql, req.GetSql());
         }
 
         [Fact]
-        public void InsertBulkNewCourses_GetParameters_CountAndFirstRow()
+        public void InsertBulkNewCourses_GetParameters_ProjectsFirstItem()
         {
-            var courses = new List<Courses_Row>
+            var rows = new[]
             {
-                new() { CourseID = 10, CourseName = "Chemistry", Credits = 4, SchoolID = 5 },
-                new() { CourseID = 11, CourseName = "Physics",   Credits = 4, SchoolID = 5 }
+                new Courses_Row { CourseName = "Algebra I", Credits = 3, SchoolID = 42 },
+                new Courses_Row { CourseName = "Biology",   Credits = 4, SchoolID = 99 }
             };
 
-            var req = new InsertBulkNewCourses(courses);
-            var rows = ((IEnumerable<object>)req.GetParameters()!).ToList();
+            var req = new InsertBulkNewCourses(rows);
 
-            Assert.Equal(2, rows.Count);
+            var list = ((IEnumerable<object>)req.GetParameters()!).ToList();
+            Assert.Equal(rows.Length, list.Count);
 
-            var r0 = rows[0];
-            var t0 = r0.GetType();
+            var first = list[0];
+            var t = first.GetType();
 
-            Assert.Equal(10, (int)t0.GetProperty("CourseID")!.GetValue(r0)!);
-            Assert.Equal("Chemistry", (string)t0.GetProperty("CourseName")!.GetValue(r0)!);
-            Assert.Equal(4, (int)t0.GetProperty("Credits")!.GetValue(r0)!);
-            Assert.Equal(5, (int)t0.GetProperty("SchoolID")!.GetValue(r0)!);
+            Assert.Equal("Algebra I", (string)t.GetProperty("CourseName")!.GetValue(first)!);
+            Assert.Equal(3, (int)t.GetProperty("Credits")!.GetValue(first)!);
+            Assert.Equal(42, (int)t.GetProperty("SchoolID")!.GetValue(first)!);
         }
     }
 }
-
-

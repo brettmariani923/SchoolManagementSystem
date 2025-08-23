@@ -39,7 +39,7 @@ namespace Teachers.Test.DataRequestTests.Students
         [Fact]
         public void RemoveBulkStudents_GetParameters_CountMatches()
         {
-            var ids = new[] { 1, 2, 3, 4 };               // no duplicates
+            var ids = new[] { 1, 2, 3, 4 };             
             var req = new RemoveBulkStudents(ids);
             var p = req.GetParameters()!;
             var projected = (IEnumerable<int>)p.GetType().GetProperty("StudentIDs")!.GetValue(p)!;

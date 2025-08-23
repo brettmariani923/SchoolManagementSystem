@@ -1,5 +1,9 @@
-﻿using Teachers.Data.DTO;
-using Teachers.Data.Requests.Teachers.Update; 
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Teachers.Data.Rows;
+using Teachers.Data.Requests.Teachers.Update;
+using Xunit;
 
 namespace Teachers.Test.DataRequestTests.Teachers
 {
@@ -19,9 +23,9 @@ namespace Teachers.Test.DataRequestTests.Teachers
         {
             var teachers = new List<Teachers_Row>
             {
-                new() { TeacherID = 1, FirstName = "John", LastName = "Doe",     SchoolID = 10 },
-                new() { TeacherID = 2, FirstName = "Jane", LastName = "Smith",   SchoolID = 10 },
-                new() { TeacherID = 3, FirstName = "Ada",  LastName = "Lovelace",SchoolID = 20 }
+                new() { TeacherID = 1, FirstName = "John", LastName = "Doe",      SchoolID = 10 },
+                new() { TeacherID = 2, FirstName = "Jane", LastName = "Smith",    SchoolID = 10 },
+                new() { TeacherID = 3, FirstName = "Ada",  LastName = "Lovelace", SchoolID = 20 }
             };
 
             var sut = new UpdateBulkTeachers(teachers);
@@ -53,25 +57,15 @@ namespace Teachers.Test.DataRequestTests.Teachers
         }
 
         [Fact]
-        public void GetParameters_GivenEmptyList_ReturnsEmptySequence()
-        {
-            var sut = new UpdateBulkTeachers(new List<Teachers_Row>());
-
-            var enumerable = sut.GetParameters() as IEnumerable<object>;
-            Assert.NotNull(enumerable);
-            Assert.Empty(enumerable!);
-        }
-
-        [Fact]
         public void GetSql_ShouldReturnExpectedUpdateStatement()
         {
-            var sut = new UpdateTeacher(1, "John", "Doe", 10);
+            var row = new Teachers_Row { TeacherID = 1, FirstName = "John", LastName = "Doe", SchoolID = 10 };
+            var sut = new UpdateTeacher(row);
 
             var sql = sut.GetSql();
             var expected =
                 @"UPDATE dbo.Teachers
-                  SET TeacherID = @TeacherID,
-                      FirstName = @FirstName,
+                  SET FirstName = @FirstName,
                       LastName  = @LastName,
                       SchoolID  = @SchoolID
                   WHERE TeacherID = @TeacherID;";
@@ -83,7 +77,8 @@ namespace Teachers.Test.DataRequestTests.Teachers
         [Fact]
         public void GetParameters_ShouldProject_AllFields()
         {
-            var sut = new UpdateTeacher(42, "Ada", "Lovelace", 7);
+            var row = new Teachers_Row { TeacherID = 42, FirstName = "Ada", LastName = "Lovelace", SchoolID = 7 };
+            var sut = new UpdateTeacher(row);
 
             var p = sut.GetParameters()!;
             var t = p.GetType();
@@ -97,7 +92,8 @@ namespace Teachers.Test.DataRequestTests.Teachers
         [Fact]
         public void GetParameters_ProducesAnonymousObjectWithExpectedPropertyNames()
         {
-            var sut = new UpdateTeacher(1, "J", "D", 1);
+            var row = new Teachers_Row { TeacherID = 1, FirstName = "J", LastName = "D", SchoolID = 1 };
+            var sut = new UpdateTeacher(row);
 
             var names = sut.GetParameters()!
                 .GetType()

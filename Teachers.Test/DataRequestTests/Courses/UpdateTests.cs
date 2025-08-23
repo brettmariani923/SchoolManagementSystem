@@ -1,22 +1,29 @@
-﻿using Teachers.Data.DTO;
+﻿using Teachers.Data.Rows;
 using Teachers.Data.Requests.Courses.Update;
 
 namespace Teachers.Test.DataRequestTests.Courses
 {
-    public class UpdateTests
+    public class UpdateCourseTests
     {
         private const string ExpectedSql =
-            "UPDATE dbo.Courses " +
-            "SET CourseID = @CourseID, " +
-            "CourseName = @CourseName, " +
-            "Credits  = @Credits, " +
-            "SchoolID  = @SchoolID " +
-            "WHERE CourseID = @CourseID;";
+            @"UPDATE dbo.Courses
+              SET CourseName = @CourseName,
+                  Credits    = @Credits,
+                  SchoolID   = @SchoolID
+              WHERE CourseID = @CourseID;";
 
         [Fact]
         public void UpdateCourse_GetSql_IsCorrect()
         {
-            var req = new UpdateCourse(courseID: 1, courseName: "Algebra I", credits: 3, schoolID: 42);
+            var row = new Courses_Row
+            {
+                CourseID = 1,
+                CourseName = "Algebra I",
+                Credits = 3,
+                SchoolID = 42
+            };
+
+            var req = new UpdateCourse(row);
 
             Assert.Equal(ExpectedSql, req.GetSql());
         }
@@ -24,7 +31,15 @@ namespace Teachers.Test.DataRequestTests.Courses
         [Fact]
         public void UpdateCourse_GetParameters_ProjectsFields()
         {
-            var req = new UpdateCourse(courseID: 7, courseName: "Biology", credits: 4, schoolID: 99);
+            var row = new Courses_Row
+            {
+                CourseID = 7,
+                CourseName = "Biology",
+                Credits = 4,
+                SchoolID = 99
+            };
+
+            var req = new UpdateCourse(row);
 
             var p = req.GetParameters()!;
             var t = p.GetType();

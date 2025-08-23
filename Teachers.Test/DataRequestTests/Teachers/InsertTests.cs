@@ -1,23 +1,31 @@
-﻿using Teachers.Data.DTO;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Teachers.Data.Rows;
 using Teachers.Data.Requests.Teachers.Insert;
+using Xunit;
 
 public class InsertTests
 {
+    private const string ExpectedSql =
+        "INSERT INTO dbo.Teachers (FirstName, LastName, SchoolID)" +
+         "VALUES (@FirstName, @LastName, @SchoolID);";
+
     [Fact]
     public void InsertNewTeacher_GetSql_IsExact()
     {
-        var req = new InsertNewTeacher("John", "Doe", 1);
+        var row = new Teachers_Row { FirstName = "John", LastName = "Doe", SchoolID = 1 };
+        var req = new InsertNewTeacher(row);
 
-        const string expected =
-            "INSERT INTO dbo.Teachers (FirstName, LastName, SchoolID) " +
-            "VALUES (@FirstName, @LastName, @SchoolID);";
-        Assert.Equal(expected, req.GetSql());
+        Assert.Equal(ExpectedSql, req.GetSql());
     }
 
     [Fact]
     public void InsertNewTeacher_GetParameters_ProjectsFields()
     {
-        var req = new InsertNewTeacher("John", "Doe", 1);
+        var row = new Teachers_Row { FirstName = "John", LastName = "Doe", SchoolID = 1 };
+        var req = new InsertNewTeacher(row);
+
         var p = req.GetParameters()!;
         var t = p.GetType();
 
@@ -36,13 +44,14 @@ public class InsertTests
     [Fact]
     public void InsertBulkNewTeachers_GetSql_IsExact()
     {
-        var req = new InsertBulkNewTeachers(new List<Teachers_Row>());
+        var teachers = new[]
+        {
+            new Teachers_Row { FirstName = "John", LastName = "Doe", SchoolID = 1 }
+        };
 
-        const string expected =
-            "INSERT INTO dbo.Teachers (TeacherID, FirstName, LastName, SchoolID)" +
-            "VALUES (@TeacherID, @FirstName, @LastName, @SchoolID);";
+        var req = new InsertBulkNewTeachers(teachers);
 
-        Assert.Equal(expected, req.GetSql());
+        Assert.Equal(ExpectedSql, req.GetSql());
     }
 
     [Fact]
@@ -56,17 +65,16 @@ public class InsertTests
         };
 
         var req = new InsertBulkNewTeachers(teachers);
-        var rows = ((IEnumerable<object>)req.GetParameters()!).ToList();
+        var list = ((IEnumerable<object>)req.GetParameters()!).ToList();
 
-        Assert.Equal(teachers.Count, rows.Count);
+        Assert.Equal(teachers.Count, list.Count);
     }
 
     [Fact]
-    public void InsertBulkNewTeachers_GetParameters_EmptyList_ReturnsEmpty()
+    public void InsertBulkNewTeachers_EmptyList_Throws()
     {
-        var req = new InsertBulkNewTeachers(new List<Teachers_Row>());
-        var rows = (IEnumerable<object>)req.GetParameters()!;
-
-        Assert.Empty(rows);
+        var empty = new List<Teachers_Row>();
+        Assert.Throws<ArgumentException>(() => new InsertBulkNewTeachers(empty));
     }
 }
+

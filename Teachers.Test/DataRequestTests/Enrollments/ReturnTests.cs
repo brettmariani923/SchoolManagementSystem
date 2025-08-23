@@ -10,8 +10,10 @@ namespace Teachers.Test.DataRequestTests.Enrollments
             var req = new ReturnAllEnrollments();
 
             Assert.Equal(
-                "SELECT * FROM dbo.Enrollments;",
-                req.GetSql().Trim());
+            "SELECT EnrollmentID, StudentID, TeacherID, CourseID, SchoolID" +
+             "FROM dbo.Enrollments;",
+
+            req.GetSql().Trim());
         }
 
         [Fact]
@@ -28,7 +30,9 @@ namespace Teachers.Test.DataRequestTests.Enrollments
             var req = new ReturnEnrollmentsByCourseID(55);
 
             Assert.Equal(
-                "SELECT * FROM dbo.Enrollments WHERE CourseID = @CourseID;",
+                "SELECT EnrollmentID, StudentID, TeacherID, CourseID, SchoolID" +
+                 "FROM dbo.Enrollments" +
+                 "WHERE CourseID = @CourseID;",
                 req.GetSql().Trim());
         }
 
@@ -47,7 +51,10 @@ namespace Teachers.Test.DataRequestTests.Enrollments
             var req = new ReturnEnrollmentsByEnrollmentID(42);
 
             Assert.Equal(
-                "SELECT * FROM dbo.Enrollments WHERE EnrollmentID = @EnrollmentID;",
+                "SELECT EnrollmentID, StudentID, TeacherID, CourseID, SchoolID" +
+                 "FROM dbo.Enrollments" +
+                 "WHERE EnrollmentID = @EnrollmentID;",
+
                 req.GetSql().Trim());
         }
 
@@ -57,9 +64,24 @@ namespace Teachers.Test.DataRequestTests.Enrollments
             var req = new ReturnEnrollmentsByStudentID(101);
 
             Assert.Equal(
-                "SELECT * FROM dbo.Enrollments WHERE StudentID = @StudentID;",
+                "SELECT EnrollmentID, StudentID, TeacherID, CourseID, SchoolID" +
+                 "FROM dbo.Enrollments" +
+                 "WHERE StudentID = @StudentID;",
+
                 req.GetSql().Trim());
         }
 
+        [Fact]
+        public void ReturnEnrollmentsByTeacherID_GetSql_SelectsByTeacherID()
+        {
+            var req = new ReturnEnrollmentsByTeacherID(101);
+
+            Assert.Equal(
+                "SELECT EnrollmentID, StudentID, TeacherID, CourseID, SchoolID" +
+                 "FROM dbo.Enrollments" +
+                 "WHERE TeacherID = @TeacherID;",
+
+                req.GetSql().Trim());
+        }
     }
 }

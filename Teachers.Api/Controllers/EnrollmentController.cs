@@ -20,14 +20,14 @@ namespace Teachers.Api.Controllers
         public async Task<ActionResult<Enrollments_DTO>> GetById(int id, CancellationToken ct)
         {
             var enrollment = await _service.GetByIdAsync(id, ct);
-            return enrollment is null ? NotFound() : Ok(enrollment);  // GetByIdAsync
+            return enrollment is null ? NotFound() : Ok(enrollment); // GetByIdAsync
         }
 
         // GET: api/enrollment
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Enrollments_DTO>>> GetAll(CancellationToken ct)
         {
-            var list = await _service.GetAllAsync(ct);                // GetAllAsync
+            var list = await _service.GetAllAsync(ct); // GetAllAsync
             return Ok(list);
         }
 
@@ -43,7 +43,7 @@ namespace Teachers.Api.Controllers
         [HttpGet("by-course/{courseId:int}")]
         public async Task<ActionResult<IEnumerable<Enrollments_DTO>>> GetByCourseId(int courseId, CancellationToken ct)
         {
-            var list = await _service.GetByCourseIdAsync(courseId, ct);   // GetByCourseIdAsync
+            var list = await _service.GetByCourseIdAsync(courseId, ct); // GetByCourseIdAsync
             return Ok(list);
         }
 
@@ -59,19 +59,18 @@ namespace Teachers.Api.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> RemoveById(int id, CancellationToken ct)
         {
-            await _service.RemoveByIdAsync(id, ct);                   // RemoveByIdAsync
+            await _service.RemoveByIdAsync(id, ct); // RemoveByIdAsync
             return NoContent();
         }
 
         // DELETE: api/enrollment/bulk
-        // Body: [1,2,3]
         [HttpDelete("bulk")]
         public async Task<IActionResult> RemoveBulk([FromBody] IEnumerable<int> enrollmentIds, CancellationToken ct)
         {
             if (enrollmentIds is null || !enrollmentIds.Any())
                 return BadRequest("At least one enrollmentId is required.");
 
-            await _service.RemoveBulkAsync(enrollmentIds, ct);        // RemoveBulkAsync
+            await _service.RemoveBulkAsync(enrollmentIds, ct); // RemoveBulkAsync
             return NoContent();
         }
 
@@ -82,7 +81,7 @@ namespace Teachers.Api.Controllers
             if (enrollment is null) return BadRequest("Body required.");
             if (id != enrollment.EnrollmentID) return BadRequest("Mismatched EnrollmentID.");
 
-            await _service.UpdateAsync(enrollment, ct);               // UpdateAsync
+            await _service.UpdateAsync(enrollment, ct); // UpdateAsync
             return NoContent();
         }
 
@@ -93,7 +92,7 @@ namespace Teachers.Api.Controllers
             if (enrollments is null || !enrollments.Any())
                 return BadRequest("At least one enrollment is required.");
 
-            await _service.UpdateBulkAsync(enrollments, ct);          // UpdateBulkAsync
+            await _service.UpdateBulkAsync(enrollments, ct); // UpdateBulkAsync
             return NoContent();
         }
 
@@ -103,7 +102,7 @@ namespace Teachers.Api.Controllers
         {
             if (newEnrollment is null) return BadRequest("Body required.");
 
-            var id = await _service.InsertAsync(newEnrollment, ct);   // InsertAsync
+            var id = await _service.InsertAsync(newEnrollment, ct); // InsertAsync
             return CreatedAtAction(nameof(GetById), new { id }, id);
         }
 

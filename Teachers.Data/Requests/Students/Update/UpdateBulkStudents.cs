@@ -11,12 +11,12 @@ public class UpdateBulkStudents : IDataExecute
             throw new ArgumentException("At least one student is required.", nameof(students));
     }
     public string GetSql() =>
-        @"UPDATE dbo.Students
-          SET FirstName = @FirstName,
-              LastName = @LastName,
-              [Year] = @Year,
-              SchoolID = @SchoolID
-          WHERE StudentID = @StudentID;";
+        @"UPDATE dbo.Students " +
+        "SET StudentID = @StudentID, " +
+        "TeacherID = @TeacherID, " +
+        "CourseID  = @CourseID, " +
+        "SchoolID  = @SchoolID " +
+        "WHERE StudentID = @StudentID;";
 
     public object? GetParameters() => _students.Select(s => new
     {

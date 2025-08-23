@@ -1,5 +1,5 @@
-﻿using Teachers.Data.DTO;
-using Teachers.Data.Requests.Students;
+﻿using Teachers.Data.Rows;
+using Teachers.Data.Requests.Students.Update;
 
 namespace Teachers.Test.DataRequestTests.Students
 {
