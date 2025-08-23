@@ -2,12 +2,14 @@
 
 namespace Teachers.Data.Requests.Enrollments.Remove
 {
-    public class RemoveStudentEnrollment : IDataExecute
+    public class RemoveStudentEnrollmentByID : IDataExecute
     {
         private readonly int _enrollmentID;
 
-        public RemoveStudentEnrollment(int enrollmentID)
+        public RemoveStudentEnrollmentByID(int enrollmentID)
         {
+            if (enrollmentID <= 0)
+                throw new ArgumentOutOfRangeException(nameof(enrollmentID), "EnrollmentID must be positive.");
             _enrollmentID = enrollmentID;
         }
 

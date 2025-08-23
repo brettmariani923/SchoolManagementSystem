@@ -1,5 +1,5 @@
 ﻿using Teachers.Domain.Interfaces;
-using Teachers.Data.DTO;
+using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Courses.Return
 {
@@ -9,6 +9,9 @@ namespace Teachers.Data.Requests.Courses.Return
 
         public ReturnCourseByID(int courseID)
         {
+            if (courseID <= 0)
+                throw new ArgumentOutOfRangeException(nameof(courseID), "CourseID must be positive.");
+
             _courseID = courseID;
         }
 

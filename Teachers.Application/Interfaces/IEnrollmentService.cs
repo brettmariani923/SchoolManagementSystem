@@ -9,6 +9,7 @@ namespace Teachers.Application.Interfaces
         Task<IEnumerable<Enrollments_DTO>> GetAllAsync(CancellationToken ct = default);
         Task<IEnumerable<Enrollments_DTO>> GetByStudentIdAsync(int studentId, CancellationToken ct = default);
         Task<IEnumerable<Enrollments_DTO>> GetByCourseIdAsync(int courseId, CancellationToken ct = default);
+        Task<IEnumerable<Enrollments_DTO>> GetByTeacherIdAsync(int teacherId, CancellationToken ct = default);
 
         // Deletes
         Task<int> RemoveByIdAsync(int enrollmentId, CancellationToken ct = default);

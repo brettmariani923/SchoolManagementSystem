@@ -9,6 +9,9 @@ namespace Teachers.Data.Requests.Students.Return
 
         public ReturnStudentByID(int studentID)
         {
+            if (studentID <= 0)
+                throw new ArgumentOutOfRangeException(nameof(studentID), "StudentID must be positive.");
+
             _studentID = studentID;
         }
 

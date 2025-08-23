@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Teachers.Data.Rows;
+﻿using Teachers.Data.Rows;
 using Teachers.Domain.Interfaces;
 using Teachers.Application.DTO;
 using Teachers.Application.Interfaces;

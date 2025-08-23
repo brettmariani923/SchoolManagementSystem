@@ -7,7 +7,7 @@ namespace Teachers.Test.DataRequestTests.Enrollments
         [Fact]
         public void RemoveEnrollment_GetSql()
         {
-            var req = new RemoveStudentEnrollment(2);
+            var req = new RemoveStudentEnrollmentByID(2);
 
             Assert.Equal(
                 "DELETE FROM dbo.Enrollments WHERE EnrollmentID = @EnrollmentID;",
@@ -28,7 +28,7 @@ namespace Teachers.Test.DataRequestTests.Enrollments
         [Fact]
         public void RemoveEnrollment_GetParameters()
         {
-            var req = new RemoveStudentEnrollment(2);
+            var req = new RemoveStudentEnrollmentByID(2);
 
             var p = req.GetParameters();
             var id = (int)p!.GetType().GetProperty("EnrollmentID")!.GetValue(p)!;

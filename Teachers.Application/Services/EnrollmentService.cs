@@ -40,9 +40,15 @@ namespace Teachers.Data.Services
             return rows.Select(Map);
         }
 
+        public async Task<IEnumerable<Enrollments_DTO>> GetByTeacherIdAsync(int teacherId, CancellationToken ct = default)
+        {
+            var rows = await _data.FetchListAsync(new ReturnEnrollmentsByTeacherID(teacherId));
+            return rows.Select(Map);
+        }
+
         // Deletes
         public Task<int> RemoveByIdAsync(int enrollmentId, CancellationToken ct = default)
-            => _data.ExecuteAsync(new RemoveStudentEnrollment(enrollmentId));
+            => _data.ExecuteAsync(new RemoveStudentEnrollmentByID(enrollmentId));
 
         public Task<int> RemoveBulkAsync(IEnumerable<int> enrollmentIds, CancellationToken ct = default)
             => _data.ExecuteAsync(new RemoveBulkStudentEnrollments(enrollmentIds));
@@ -69,7 +75,7 @@ namespace Teachers.Data.Services
                     SchoolID = schoolId
                 })));
 
-        // -------- Mapping helpers (Row ↔ DTO) --------
+        // Mapping helpers
         private static Enrollments_DTO Map(Enrollments_Row r) => new Enrollments_DTO
         {
             EnrollmentID = r.EnrollmentID,
@@ -98,5 +104,3 @@ namespace Teachers.Data.Services
         };
     }
 }
-
-

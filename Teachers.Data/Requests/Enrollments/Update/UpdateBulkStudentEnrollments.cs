@@ -9,17 +9,18 @@ namespace Teachers.Data.Requests.Enrollments.Update
 
         public UpdateBulkEnrollments(IEnumerable<Enrollments_Row> enrollments)
         {
-            if (enrollments is null) throw new ArgumentNullException(nameof(enrollments));
-            _enrollments = enrollments;
+            _enrollments = enrollments ?? throw new ArgumentNullException(nameof(enrollments));
+            if (!_enrollments.Any())
+                throw new ArgumentException("At least one enrollment is required.", nameof(enrollments));
         }
 
         public string GetSql() =>
-        "UPDATE dbo.Enrollments " +
-        "SET StudentID = @StudentID, " +
-        "TeacherID = @TeacherID, " +
-        "CourseID  = @CourseID, " +
-        "SchoolID  = @SchoolID " +
-        "WHERE EnrollmentID = @EnrollmentID;";
+        @"UPDATE dbo.Enrollments
+          SET StudentID = @StudentID,
+              TeacherID = @TeacherID,
+              CourseID = @CourseID,
+              SchoolID = @SchoolID
+          WHERE EnrollmentID = @EnrollmentID;";
 
 
         public object? GetParameters() =>

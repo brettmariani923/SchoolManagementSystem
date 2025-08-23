@@ -8,6 +8,9 @@ namespace Teachers.Data.Requests.Courses.Remove
 
         public RemoveCourseByID(int courseID)
         {
+            if (courseID <= 0)
+                throw new ArgumentOutOfRangeException(nameof(courseID), "CourseID must be positive.");
+
             _courseID = courseID;
         }
 
