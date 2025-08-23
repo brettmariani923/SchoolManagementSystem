@@ -1,36 +1,33 @@
-﻿using Teachers.Domain.Interfaces;
+﻿using System;
+using Teachers.Domain.Interfaces;
+using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Courses.Update
 {
-    public class UpdateCourse : IDataExecute
+    public sealed class UpdateCourse : IDataExecute
     {
-        private readonly int _courseID;
-        private readonly string _courseName;
-        private readonly int _credits;
-        private readonly int _schoolID;
+        private readonly Courses_Row _row;
 
-        public UpdateCourse(int courseID, string courseName, int credits, int schoolID)
+        public UpdateCourse(Courses_Row row)
         {
-            _courseID = courseID;
-            _courseName = courseName;
-            _credits = credits;
-            _schoolID = schoolID;
+            _row = row ?? throw new ArgumentNullException(nameof(row));
+            if (_row.CourseID <= 0)
+                throw new ArgumentException("CourseID must be a positive existing ID.", nameof(row));
         }
 
         public string GetSql() =>
-            "UPDATE dbo.Courses " +
-            "SET CourseID = @CourseID, " +
-            "CourseName = @CourseName, " +
-            "Credits  = @Credits, " +
-            "SchoolID  = @SchoolID " +
-            "WHERE CourseID = @CourseID;";
+            @"UPDATE dbo.Courses
+              SET CourseName = @CourseName,
+                  Credits    = @Credits,
+                  SchoolID   = @SchoolID
+              WHERE CourseID = @CourseID;";
 
         public object GetParameters() => new
         {
-            CourseID = _courseID,
-            CourseName = _courseName,
-            Credits = _credits,
-            SchoolID = _schoolID
+            CourseID = _row.CourseID,
+            CourseName = _row.CourseName,
+            Credits = _row.Credits,
+            SchoolID = _row.SchoolID
         };
     }
 }

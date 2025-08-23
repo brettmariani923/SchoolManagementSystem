@@ -1,28 +1,33 @@
-﻿using Teachers.Domain.Interfaces;
+﻿using System;
+using System.Linq;
+using Teachers.Domain.Interfaces;
 using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Teachers.Insert
 {
-    public class InsertBulkNewTeachers : IDataExecute
+    public sealed class InsertBulkNewTeachers : IDataExecute
     {
         private readonly IEnumerable<Teachers_Row> _teachers;
+        private readonly int _schoolID;
 
-        public InsertBulkNewTeachers(IEnumerable<Teachers_Row> teachers)
+        public InsertBulkNewTeachers(IEnumerable<Teachers_Row> teachers, int schoolID)
         {
             _teachers = teachers ?? throw new ArgumentNullException(nameof(teachers));
+            if (!_teachers.Any())
+                throw new ArgumentException("At least one teacher is required.", nameof(teachers));
+            _schoolID = schoolID;
         }
 
         public string GetSql() =>
-            @"INSERT INTO dbo.Teachers (TeacherID, FirstName, LastName, SchoolID)" +
-             "VALUES (@TeacherID, @FirstName, @LastName, @SchoolID);";
+            @"INSERT INTO dbo.Teachers (FirstName, LastName, SchoolID)
+              VALUES (@FirstName, @LastName, @SchoolID);";
 
         public object? GetParameters() =>
             _teachers.Select(t => new
             {
-                t.TeacherID,
                 t.FirstName,
                 t.LastName,
-                t.SchoolID
+                SchoolID = _schoolID   // enforce same SchoolID for the batch
             });
     }
 }

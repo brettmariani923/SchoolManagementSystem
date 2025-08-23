@@ -2,11 +2,11 @@
 
 namespace Teachers.Data.Requests.Teachers.Remove
 {
-    public class RemoveTeacher : IDataExecute
+    public class RemoveTeacherByID : IDataExecute
     {
         private readonly int _teacherID;
 
-        public RemoveTeacher(int teacherID)
+        public RemoveTeacherByID(int teacherID)
         {
             _teacherID = teacherID;
         }

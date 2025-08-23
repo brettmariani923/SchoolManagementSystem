@@ -1,36 +1,33 @@
-﻿using Teachers.Domain.Interfaces;
+﻿using System;
+using Teachers.Domain.Interfaces;
+using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Teachers.Update
 {
-    public class UpdateTeacher : IDataExecute
+    public sealed class UpdateTeacher : IDataExecute
     {
-        private readonly int _teacherID;
-        private readonly string _firstName;
-        private readonly string _lastName;
-        private readonly int _schoolID;
+        private readonly Teachers_Row _row;
 
-        public UpdateTeacher(int teacherID, string firstName, string lastName, int schoolID)
+        public UpdateTeacher(Teachers_Row row)
         {
-            _teacherID = teacherID;
-            _firstName = firstName;
-            _lastName = lastName;
-            _schoolID = schoolID;
+            _row = row ?? throw new ArgumentNullException(nameof(row));
+            if (_row.TeacherID <= 0)
+                throw new ArgumentException("TeacherID must be a positive existing ID.", nameof(row));
         }
 
         public string GetSql() =>
-            @"UPDATE dbo.Teachers" +
-              "SET TeacherID = @TeacherID," +
-                  "FirstName = @FirstName," +
-                  "LastName = @LastName," +
-                  "SchoolID = @SchoolID" +
-              "WHERE TeacherID = @TeacherID;";
+            @"UPDATE dbo.Teachers
+              SET FirstName = @FirstName,
+                  LastName  = @LastName,
+                  SchoolID  = @SchoolID
+              WHERE TeacherID = @TeacherID;";
 
-        public object? GetParameters() => new
+        public object GetParameters() => new
         {
-            TeacherID = _teacherID,
-            FirstName = _firstName,
-            LastName = _lastName,
-            SchoolID = _schoolID
+            TeacherID = _row.TeacherID,
+            FirstName = _row.FirstName,
+            LastName = _row.LastName,
+            SchoolID = _row.SchoolID
         };
     }
 }
