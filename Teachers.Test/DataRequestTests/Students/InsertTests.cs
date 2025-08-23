@@ -11,10 +11,10 @@ namespace Teachers.Test.Requests.Students
             // Arrange
             var students = new[]
             {
-                new Students_Row { FirstName = "Naruto", LastName = "Uzumaki", Year = 1, SchoolID = 1 },
-                new Students_Row { FirstName = "Sauske", LastName = "Uchiha",  Year = 2, SchoolID = 2 },
+                new Students_Row { FirstName = "Naruto", LastName = "Uzumaki", Year = 1 },
+                new Students_Row { FirstName = "Sauske", LastName = "Uchiha",  Year = 2 },
             };
-            var request = new InsertBulkStudents(students, schoolID: 7);
+            var request = new InsertBulkStudents(students);
 
             // Act
             var sql = request.GetSql();
@@ -41,9 +41,8 @@ namespace Teachers.Test.Requests.Students
                 new() { FirstName = "Choji",     LastName = "Akimichi", Year = 2 },
                 new() { FirstName = "Ino",       LastName = "Yamanaka", Year = 2 }
             };
-            const int enforcedSchoolId = 12;
 
-            var request = new InsertBulkStudents(students, enforcedSchoolId);
+            var request = new InsertBulkStudents(students);
 
             // Act
             var obj = request.GetParameters();
@@ -72,13 +71,13 @@ namespace Teachers.Test.Requests.Students
         [Fact]
         public void Ctor_NullStudents_Throws()
         {
-            Assert.Throws<ArgumentNullException>(() => new InsertBulkStudents(null!, 99));
+            Assert.Throws<ArgumentNullException>(() => new InsertBulkStudents(null!));
         }
 
         [Fact]
         public void Ctor_EmptyStudents_Throws()
         {
-            Assert.Throws<ArgumentException>(() => new InsertBulkStudents(Array.Empty<Students_Row>(), 99));
+            Assert.Throws<ArgumentException>(() => new InsertBulkStudents(Array.Empty<Students_Row>()));
         }
     }
 }

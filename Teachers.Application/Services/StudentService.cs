@@ -46,7 +46,7 @@ namespace Teachers.Application.Services
             => _data.ExecuteAsync(new InsertNewStudent(MapToRowForInsert(newStudent)));
 //look into this one again
         public Task<int> InsertBulkAsync(IEnumerable<Students_DTO> newStudents, CancellationToken ct = default)
-            => _data.ExecuteAsync(new InsertBulkStudents(newStudents.Select(MapToRowForInsert));
+            => _data.ExecuteAsync(new InsertBulkStudents(newStudents.Select(MapToRowForInsert)));
 
         // Mapping helpers
         private static Students_DTO Map(Students_Row r) => new Students_DTO
