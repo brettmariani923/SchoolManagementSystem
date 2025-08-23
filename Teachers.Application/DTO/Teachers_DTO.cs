@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Teachers.Application.DTO
+﻿namespace Teachers.Application.DTO
 {
-    internal class Teachers_DTO
+    public class Teachers_DTO
     {
+        public int TeacherID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int SchoolID { get; set; }
     }
 }
