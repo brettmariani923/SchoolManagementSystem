@@ -4,8 +4,9 @@ using Teachers.Application.Interfaces;
 
 namespace Teachers.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+
     public class EnrollmentController : ControllerBase
     {
         private readonly IEnrollmentService _service;

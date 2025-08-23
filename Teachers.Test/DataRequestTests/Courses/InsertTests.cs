@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Teachers.Data.Rows;
+﻿using Teachers.Data.Rows;
 using Teachers.Data.Requests.Courses.Insert;
-using Xunit;
 
 namespace Teachers.Test.DataRequestTests.Courses
 {
