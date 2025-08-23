@@ -7,7 +7,7 @@ using Teachers.Data.Requests.Enrollments.Insert;
 using Teachers.Data.Requests.Enrollments.Update;
 using Teachers.Data.Requests.Enrollments.Remove;
 
-namespace Teachers.Data.Services
+namespace Teachers.Application.Services
 {
     public sealed class EnrollmentService : IEnrollmentService
     {

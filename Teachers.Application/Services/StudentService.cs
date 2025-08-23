@@ -7,9 +7,9 @@ using Teachers.Data.Requests.Students.Remove;
 using Teachers.Data.Requests.Students.Update;
 using Teachers.Data.Requests.Students.Insert;
 
-namespace Teachers.Data.Services
+namespace Teachers.Application.Services
 {
-    public sealed class StudentService : IStudentServices
+    public sealed class StudentService : IStudentService
     {
         private readonly IDataAccess _data;
         public StudentService(IDataAccess data) => _data = data;
@@ -42,9 +42,8 @@ namespace Teachers.Data.Services
             => _data.ExecuteAsync(new UpdateBulkStudents(students.Select(MapToRow)));
 
         // Inserts
-        public Task<int> InsertAsync(Students_DTO newStudent, int schoolID, CancellationToken ct = default)
-            => _data.ExecuteAsync(new InsertNewStudent(
-                newStudent.FirstName, newStudent.LastName, newStudent.Year, schoolID));
+        public Task<int> InsertAsync(Students_DTO newStudent, CancellationToken ct = default)
+            => _data.ExecuteAsync(new InsertNewStudent(MapToRowForInsert(newStudent)));
 
         public Task<int> InsertBulkAsync(IEnumerable<Students_DTO> newStudents, int schoolID, CancellationToken ct = default)
             => _data.ExecuteAsync(new InsertBulkStudents(

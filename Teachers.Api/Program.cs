@@ -1,4 +1,7 @@
+using Teachers.Application.Interfaces;
 using Teachers.Application.Services;
+using Teachers.Domain.Interfaces;
+using Teachers.Domain.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 

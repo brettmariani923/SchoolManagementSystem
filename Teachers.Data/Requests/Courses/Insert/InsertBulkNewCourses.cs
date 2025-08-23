@@ -15,8 +15,8 @@ namespace Teachers.Data.Requests.Courses.Insert
         }
 
         public string GetSql() =>
-            @"INSERT INTO dbo.Courses (CourseName, Credits, SchoolID)
-              VALUES (@CourseName, @Credits, @SchoolID);";
+            @"INSERT INTO dbo.Courses (CourseName, Credits, SchoolID)" +
+             "VALUES (@CourseName, @Credits, @SchoolID);";
 
         public object GetParameters() =>
             _courses.Select(c => new

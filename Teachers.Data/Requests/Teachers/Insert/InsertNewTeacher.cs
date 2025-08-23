@@ -25,8 +25,8 @@ namespace Teachers.Data.Requests.Teachers.Insert
         }
 
         public string GetSql() =>
-            @"INSERT INTO dbo.Teachers (FirstName, LastName, SchoolID)
-              VALUES (@FirstName, @LastName, @SchoolID);";
+            @"INSERT INTO dbo.Teachers (FirstName, LastName, SchoolID)" +
+             "VALUES (@FirstName, @LastName, @SchoolID);";
 
         public object GetParameters() => new
         {

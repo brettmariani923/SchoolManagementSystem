@@ -23,8 +23,8 @@ namespace Teachers.Data.Requests.Enrollments.Insert
         }
 
         public string GetSql() =>
-            @"INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID)
-              VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
+            @"INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID)" +
+             "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
 
         public object GetParameters() => new
         {

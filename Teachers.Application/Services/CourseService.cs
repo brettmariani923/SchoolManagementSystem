@@ -7,7 +7,7 @@ using Teachers.Data.Requests.Courses.Insert;
 using Teachers.Data.Requests.Courses.Update;
 using Teachers.Data.Requests.Courses.Remove;
 
-namespace Teachers.Data.Services
+namespace Teachers.Application.Services
 {
     public sealed class CourseService : ICourseService
     {
@@ -43,8 +43,7 @@ namespace Teachers.Data.Services
 
         // Inserts: DTO -> Row using MapToRowForInsert
         public Task<int> InsertAsync(Courses_DTO newCourse, CancellationToken ct = default)
-            => _data.ExecuteAsync(new InsertNewCourse(
-                newCourse.CourseName, newCourse.Credits, newCourse.SchoolID));
+            => _data.ExecuteAsync(new InsertNewCourse(MapToRowForInsert(newCourse)));
 
         public Task<int> InsertBulkAsync(IEnumerable<Courses_DTO> newCourses, CancellationToken ct = default)
             => _data.ExecuteAsync(new InsertBulkNewCourses(newCourses.Select(MapToRowForInsert)));

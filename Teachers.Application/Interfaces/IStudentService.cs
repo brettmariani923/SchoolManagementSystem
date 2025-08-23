@@ -2,7 +2,7 @@
 
 namespace Teachers.Application.Interfaces
 {
-    public interface IStudentServices
+    public interface IStudentService
     {
         // Reads
         Task<Students_DTO?> GetByIdAsync(int studentId, CancellationToken ct = default);
@@ -17,7 +17,7 @@ namespace Teachers.Application.Interfaces
         Task<int> UpdateBulkAsync(IEnumerable<Students_DTO> students, CancellationToken ct = default);
 
         // Inserts (StudentID on DTO is ignored if DB uses IDENTITY)
-        Task<int> InsertAsync(Students_DTO newStudent, int schoolID, CancellationToken ct = default);
+        Task<int> InsertAsync(Students_DTO newStudent, CancellationToken ct = default);
         Task<int> InsertBulkAsync(IEnumerable<Students_DTO> newStudents, int schoolID, CancellationToken ct = default);
     }
 }

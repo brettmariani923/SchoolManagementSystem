@@ -7,7 +7,7 @@ using Teachers.Data.Requests.Teachers.Insert;
 using Teachers.Data.Requests.Teachers.Update;
 using Teachers.Data.Requests.Teachers.Remove;
 
-namespace Teachers.Data.Services
+namespace Teachers.Application.Services
 {
     public sealed class TeacherService : ITeacherService
     {
@@ -42,9 +42,8 @@ namespace Teachers.Data.Services
             => _data.ExecuteAsync(new UpdateBulkTeachers(teachers.Select(MapToRow)));
 
         // Inserts
-        public Task<int> InsertAsync(Teachers_DTO newTeacher, int schoolID, CancellationToken ct = default)
-            => _data.ExecuteAsync(new InsertNewTeacher(
-                newTeacher.FirstName, newTeacher.LastName, schoolID));
+        public Task<int> InsertAsync(Teachers_DTO newTeacher, CancellationToken ct = default)
+             => _data.ExecuteAsync(new InsertNewTeacher(MapToRowForInsert(newTeacher)));
 
         public Task<int> InsertBulkAsync(IEnumerable<Teachers_DTO> newTeachers, int schoolID, CancellationToken ct = default)
             => _data.ExecuteAsync(new InsertBulkNewTeachers(
