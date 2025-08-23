@@ -1,33 +1,25 @@
 ﻿using Teachers.Domain.Interfaces;
+using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Enrollments.Insert
 {
-    public class InsertBulkStudentEnrollment : IDataExecute
+    public sealed class InsertBulkStudentEnrollment : IDataExecute
     {
-        private readonly IEnumerable<int> _studentIDs;
-        private readonly int _teacherID;
-        private readonly int _courseID;
-        private readonly int _schoolID;
+        private readonly Enrollments_Row[] _rows;
 
-        public InsertBulkStudentEnrollment(IEnumerable<int> studentIDs, int teacherID, int courseID, int schoolID)
+        public InsertBulkStudentEnrollment(IEnumerable<Enrollments_Row> rows)
         {
-            _studentIDs = studentIDs ?? throw new ArgumentNullException(nameof(studentIDs));
-            _teacherID = teacherID;
-            _courseID = courseID;
-            _schoolID = schoolID;
+            if (rows is null) throw new ArgumentNullException(nameof(rows));
+            _rows = rows.ToArray();
+            if (_rows.Length == 0) throw new ArgumentException("At least one enrollment is required.", nameof(rows));
         }
 
         public string GetSql() =>
-            "INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID) " +
-            "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
+            @"INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID)
+          VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
 
-        public object GetParameters() =>
-            _studentIDs.Select(id => new
-            {
-                StudentID = id,
-                TeacherID = _teacherID,
-                CourseID = _courseID,
-                SchoolID = _schoolID
-            });
+        public object? GetParameters() =>
+            _rows.Select(r => new { r.StudentID, r.TeacherID, r.CourseID, r.SchoolID });
     }
+
 }

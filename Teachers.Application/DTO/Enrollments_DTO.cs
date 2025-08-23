@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Teachers.Application.DTO
+﻿namespace Teachers.Application.DTO
 {
-    internal class Enrollments_DTO
+    public class Enrollments_DTO
     {
+        public int EnrollmentID { get; set; }
+        public int StudentID { get; set; }
+        public int TeacherID { get; set; }
+        public int CourseID { get; set; }
+        public int SchoolID { get; set; }
     }
 }

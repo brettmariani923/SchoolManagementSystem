@@ -27,7 +27,7 @@ namespace Teachers.Data.Requests.Teachers.Insert
             {
                 t.FirstName,
                 t.LastName,
-                SchoolID = _schoolID   // enforce same SchoolID for the batch
+                SchoolID = _schoolID   
             });
     }
 }

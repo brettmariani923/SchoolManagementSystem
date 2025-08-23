@@ -1,25 +1,36 @@
 ﻿using Teachers.Domain.Interfaces;
+using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Courses.Insert
 {
-    public class InsertNewCourse : IDataExecute
+    public sealed class InsertNewCourse : IDataExecute
     {
-        private readonly string _courseName;
-        private readonly int _credits;
-        private readonly int _schoolID;
+        private readonly Courses_Row _course;
 
-        public InsertNewCourse(string courseName, int credits, int schoolID)
+        public InsertNewCourse(Courses_Row course)
         {
-            _courseName = courseName;
-            _credits = credits;
-            _schoolID = schoolID;
+            _course = course ?? throw new ArgumentNullException(nameof(course));
+
+            if (string.IsNullOrWhiteSpace(_course.CourseName))
+                throw new ArgumentException("CourseName cannot be null or empty.", nameof(course));
+
+            if (_course.Credits <= 0)
+                throw new ArgumentOutOfRangeException(nameof(course.Credits), "Credits must be greater than zero.");
+
+            if (_course.SchoolID <= 0)
+                throw new ArgumentOutOfRangeException(nameof(course.SchoolID), "SchoolID must be greater than zero.");
         }
 
         public string GetSql() =>
-            @"INSERT INTO dbo.Courses (CourseName, Credits, SchoolID)" +
-             "VALUES (@CourseName, @Credits, @SchoolID);";
+            @"INSERT INTO dbo.Courses (CourseName, Credits, SchoolID)
+              VALUES (@CourseName, @Credits, @SchoolID);";
 
         public object GetParameters() =>
-            new { CourseName = _courseName, Credits = _credits, SchoolID = _schoolID };
+            new
+            {
+                _course.CourseName,
+                _course.Credits,
+                _course.SchoolID
+            };
     }
 }

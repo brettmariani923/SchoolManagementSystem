@@ -1,29 +1,38 @@
-﻿using Teachers.Domain.Interfaces;
+﻿using System;
+using Teachers.Domain.Interfaces;
+using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Teachers.Insert
 {
-    public class InsertNewTeacher : IDataExecute
+    public sealed class InsertNewTeacher : IDataExecute
     {
-        private readonly string _firstName;
-        private readonly string _lastName;
-        private readonly int _schoolID;
+        private readonly Teachers_Row _row;
 
-        public InsertNewTeacher(string firstName, string lastName, int schoolID)
+        public InsertNewTeacher(Teachers_Row row)
         {
-            _firstName = firstName;
-            _lastName = lastName;
-            _schoolID = schoolID;
+            _row = row ?? throw new ArgumentNullException(nameof(row));
+
+            if (string.IsNullOrWhiteSpace(_row.FirstName))
+                throw new ArgumentException("FirstName cannot be null or empty.", nameof(row));
+            if (string.IsNullOrWhiteSpace(_row.LastName))
+                throw new ArgumentException("LastName cannot be null or empty.", nameof(row));
+            if (_row.SchoolID <= 0)
+                throw new ArgumentOutOfRangeException(nameof(row.SchoolID), "SchoolID must be positive.");
+
+            // Optional normalization
+            _row.FirstName = _row.FirstName.Trim();
+            _row.LastName = _row.LastName.Trim();
         }
 
         public string GetSql() =>
-            "INSERT INTO dbo.Teachers (FirstName, LastName, SchoolID) " +
-            "VALUES (@FirstName, @LastName, @SchoolID);";
+            @"INSERT INTO dbo.Teachers (FirstName, LastName, SchoolID)
+              VALUES (@FirstName, @LastName, @SchoolID);";
 
         public object GetParameters() => new
         {
-            FirstName = _firstName,
-            LastName = _lastName,
-            SchoolID = _schoolID
+            _row.FirstName,
+            _row.LastName,
+            _row.SchoolID
         };
     }
 }

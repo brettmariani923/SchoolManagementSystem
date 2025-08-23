@@ -1,32 +1,37 @@
-﻿using Teachers.Domain.Interfaces;
+﻿using System;
+using Teachers.Domain.Interfaces;
+using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Enrollments.Insert
 {
-    public class InsertStudentEnrollment : IDataExecute
+    public sealed class InsertStudentEnrollment : IDataExecute
     {
-        private readonly int _studentID;
-        private readonly int _teacherID;
-        private readonly int _courseID;
-        private readonly int _schoolID;
+        private readonly Enrollments_Row _row;
 
-        public InsertStudentEnrollment(int studentID, int teacherID, int courseID, int schoolID)
+        public InsertStudentEnrollment(Enrollments_Row row)
         {
-            _studentID = studentID;
-            _teacherID = teacherID;
-            _courseID = courseID;
-            _schoolID = schoolID;
+            _row = row ?? throw new ArgumentNullException(nameof(row));
+
+            if (_row.StudentID <= 0)
+                throw new ArgumentOutOfRangeException(nameof(row.StudentID), "StudentID must be positive.");
+            if (_row.TeacherID <= 0)
+                throw new ArgumentOutOfRangeException(nameof(row.TeacherID), "TeacherID must be positive.");
+            if (_row.CourseID <= 0)
+                throw new ArgumentOutOfRangeException(nameof(row.CourseID), "CourseID must be positive.");
+            if (_row.SchoolID <= 0)
+                throw new ArgumentOutOfRangeException(nameof(row.SchoolID), "SchoolID must be positive.");
         }
 
         public string GetSql() =>
-            "INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID) " +
-            "VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
+            @"INSERT INTO dbo.Enrollments (StudentID, TeacherID, CourseID, SchoolID)
+              VALUES (@StudentID, @TeacherID, @CourseID, @SchoolID);";
 
         public object GetParameters() => new
         {
-            StudentID = _studentID,
-            TeacherID = _teacherID,
-            CourseID = _courseID,
-            SchoolID = _schoolID
+            _row.StudentID,
+            _row.TeacherID,
+            _row.CourseID,
+            _row.SchoolID
         };
     }
 }
