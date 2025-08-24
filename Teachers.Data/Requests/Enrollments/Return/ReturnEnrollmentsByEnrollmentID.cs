@@ -17,8 +17,8 @@ namespace Teachers.Data.Requests.Enrollments.Return
         }
 
         public string GetSql() =>
-            @"SELECT EnrollmentID, StudentID, TeacherID, CourseID, SchoolID" +
-              "FROM dbo.Enrollments" +
+            @"SELECT EnrollmentID, StudentID, TeacherID, CourseID, SchoolID " +
+              "FROM dbo.Enrollments " +
               "WHERE EnrollmentID = @EnrollmentID;";
 
         public object GetParameters() => new { EnrollmentID = _enrollmentID };

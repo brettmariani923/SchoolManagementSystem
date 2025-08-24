@@ -16,8 +16,8 @@ namespace Teachers.Data.Requests.Teachers.Return
         }
 
         public string GetSql() =>
-            @"SELECT TeacherID, FirstName, LastName, SchoolID" +
-             "FROM dbo.Teachers" +
+            @"SELECT TeacherID, FirstName, LastName, SchoolID " +
+             "FROM dbo.Teachers " +
              "WHERE TeacherID = @TeacherID;";
 
         public object GetParameters() => new { TeacherID = _teacherID };

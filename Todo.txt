@@ -1,3 +1,7 @@
 Need to use something other than a DTO for inserts, because ideneity auto generates 
-the ID for each insert
+the ID for each insert x
+
+make school so I can test inserts because of FK constraints x
+
+make CreateRequests and UpdateRequests for inserts of students, enrollments, and teachers like you did for courses.
 
