@@ -79,6 +79,70 @@ namespace Teachers.Test.Requests.Students
         {
             Assert.Throws<ArgumentException>(() => new InsertBulkStudents(Array.Empty<Students_Row>()));
         }
+
+        [Fact]
+        public void Ctor_WithNullRow_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => new InsertNewStudent(null!));
+        }
+
+        [Theory]
+        [InlineData(null, "Doe", 2, 1, "FirstName")]
+        [InlineData("   ", "Doe", 2, 1, "FirstName")]
+        [InlineData("John", null, 2, 1, "LastName")]
+        [InlineData("John", "   ", 2, 1, "LastName")]
+        public void Ctor_WithMissingNames_Throws(string first, string last, int year, int schoolId, string paramName)
+        {
+            var row = new Students_Row { FirstName = first, LastName = last, Year = year, SchoolID = schoolId };
+            var ex = Assert.Throws<ArgumentException>(() => new InsertNewStudent(row));
+            Assert.Equal(paramName, ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData(0, 1, "row.Year")]
+        [InlineData(-1, 1, "row.Year")]
+        [InlineData(2, 0, "row.SchoolID")]
+        [InlineData(2, -5, "row.SchoolID")]
+        public void Ctor_WithNonPositiveYearOrSchool_Throws(int year, int schoolId, string paramName)
+        {
+            var row = new Students_Row { FirstName = "John", LastName = "Doe", Year = year, SchoolID = schoolId };
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new InsertNewStudent(row));
+            Assert.Equal(paramName, ex.ParamName);
+        }
+
+        [Fact]
+        public void GetSql_IsExact()
+        {
+            var row = new Students_Row { FirstName = "John", LastName = "Doe", Year = 2, SchoolID = 3 };
+            var req = new InsertNewStudent(row);
+
+            const string expected =
+                @"INSERT INTO dbo.Students (FirstName, LastName, [Year], SchoolID)" +
+                "VALUES (@FirstName, @LastName, @Year, @SchoolID);";
+
+            Assert.Equal(expected, req.GetSql());
+        }
+
+        [Fact]
+        public void GetParameters_MapsAndTrimsValues()
+        {
+            var row = new Students_Row
+            {
+                FirstName = "  John  ",
+                LastName = "  Doe ",
+                Year = 2,
+                SchoolID = 3
+            };
+
+            var req = new InsertNewStudent(row);
+            var p = req.GetParameters();
+
+            var t = p.GetType();
+            Assert.Equal("John", (string)t.GetProperty("FirstName")!.GetValue(p)!);
+            Assert.Equal("Doe", (string)t.GetProperty("LastName")!.GetValue(p)!);
+            Assert.Equal(2, (int)t.GetProperty("Year")!.GetValue(p)!);
+            Assert.Equal(3, (int)t.GetProperty("SchoolID")!.GetValue(p)!);
+        }
     }
 }
 

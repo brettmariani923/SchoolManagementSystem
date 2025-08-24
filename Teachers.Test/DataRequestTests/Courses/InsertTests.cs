@@ -79,5 +79,7 @@ namespace Teachers.Test.DataRequestTests.Courses
             Assert.Equal(3, (int)t.GetProperty("Credits")!.GetValue(first)!);
             Assert.Equal(42, (int)t.GetProperty("SchoolID")!.GetValue(first)!);
         }
+
+
     }
 }
