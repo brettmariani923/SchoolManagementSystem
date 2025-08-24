@@ -25,12 +25,10 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// No-cache to avoid sticky UI bundles
+// No-cache for Swagger UI & spec to prevent stale bundles
 app.Use(async (ctx, next) =>
 {
-    if (ctx.Request.Path.StartsWithSegments("/docs2") ||
-        ctx.Request.Path.StartsWithSegments("/swagger") ||
-        ctx.Request.Path.StartsWithSegments("/docs-cdn"))
+    if (ctx.Request.Path.StartsWithSegments("/docs2") || ctx.Request.Path.StartsWithSegments("/swagger"))
     {
         ctx.Response.Headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0";
         ctx.Response.Headers["Pragma"] = "no-cache";
@@ -39,15 +37,15 @@ app.Use(async (ctx, next) =>
     await next();
 });
 
-// OpenAPI JSON + built-in UI (kept at /docs2)
+// OpenAPI JSON + built-in UI
 app.UseSwagger(); // serves /swagger/v2/swagger.json
 app.UseSwaggerUI(c =>
 {
-    c.RoutePrefix = "docs2"; // built-in UI at /docs2
+    c.RoutePrefix = "docs2"; // UI at /docs2 (new path to avoid old cache)
     c.SwaggerEndpoint("/swagger/v2/swagger.json", "Teachers API v2");
 });
 
-// CDN-based Swagger UI at /docs-cdn (always fresh)
+// CDN-based Swagger UI (fresh assets) at /docs-cdn
 app.MapGet("/docs-cdn", () =>
 {
     var html = """
@@ -74,11 +72,6 @@ app.MapGet("/docs-cdn", () =>
     """;
     return Results.Content(html, "text/html");
 });
-
-// Redirect common entry points to the working viewer
-app.MapGet("/", () => Results.Redirect("/docs-cdn"));
-app.MapGet("/swagger", () => Results.Redirect("/docs-cdn"));
-app.MapGet("/docs", () => Results.Redirect("/docs-cdn"));
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
