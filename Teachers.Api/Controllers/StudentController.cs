@@ -38,7 +38,7 @@ namespace Teachers.Api.Controllers
             if (dto is null) return BadRequest("Body required.");
             if (dto.SchoolID <= 0) return BadRequest("Valid SchoolID is required.");
 
-            var rows = await _students.InsertAsync(dto, ct);  // <- only (dto, ct)
+            var rows = await _students.InsertAsync(dto, ct);
             if (rows <= 0) return Problem("Insert failed.");
 
             return CreatedAtAction(nameof(GetAll), null);

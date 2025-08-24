@@ -1,0 +1,3 @@
+Need to use something other than a DTO for inserts, because ideneity auto generates 
+the ID for each insert
+

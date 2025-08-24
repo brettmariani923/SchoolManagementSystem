@@ -9,19 +9,12 @@ namespace Teachers.Api.Controllers
     public sealed class CoursesController : ControllerBase
     {
         private readonly ICourseService _courses;
-
-        public CoursesController(ICourseService courses)
-        {
-            _courses = courses;
-        }
+        public CoursesController(ICourseService courses) => _courses = courses;
 
         // GET: api/courses
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Courses_DTO>>> GetAll(CancellationToken ct)
-        {
-            var list = await _courses.GetAllAsync(ct);
-            return Ok(list);
-        }
+            => Ok(await _courses.GetAllAsync(ct));
 
         // GET: api/courses/5
         [HttpGet("{id:int}")]
@@ -31,49 +24,62 @@ namespace Teachers.Api.Controllers
             return course is null ? NotFound() : Ok(course);
         }
 
-        // POST: api/courses
+        // POST: api/courses  (NO CourseID in request)
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] Courses_DTO dto, CancellationToken ct)
+        public async Task<ActionResult> Create([FromBody] CreateCourseRequest body, CancellationToken ct)
         {
-            if (dto is null) return BadRequest("Body required.");
-            // ID is identity; ignore dto.CourseID on insert
+            if (body is null) return BadRequest("Body required.");
+
+            var dto = new Courses_DTO
+            {
+                // CourseID intentionally omitted (identity)
+                CourseName = body.CourseName,
+                Credits = body.Credits,
+                SchoolID = body.SchoolID
+            };
+
             var rows = await _courses.InsertAsync(dto, ct);
             if (rows <= 0) return Problem("Insert failed.");
 
-            // Here we just return 201 with a location to GetAll (or swap to GetById if you retrieve new ID).
-            return CreatedAtAction(nameof(GetAll), null);
+            // If your service later returns the new ID, switch this to CreatedAtAction(GetById, new { id = newId }, null)
+            return StatusCode(StatusCodes.Status201Created);
         }
 
-        // POST: api/courses/bulk
+        // POST: api/courses/bulk  (NO CourseID in each item)
         [HttpPost("bulk")]
-        public async Task<ActionResult> BulkInsert([FromBody] IEnumerable<Courses_DTO> dtos, CancellationToken ct)
+        public async Task<ActionResult> BulkInsert([FromBody] IEnumerable<CreateCourseRequest> items, CancellationToken ct)
         {
-            if (dtos is null) return BadRequest("Body required.");
+            if (items is null) return BadRequest("Body required.");
+
+            var dtos = items.Select(x => new Courses_DTO
+            {
+                CourseName = x.CourseName,
+                Credits = x.Credits,
+                SchoolID = x.SchoolID
+            });
+
             var rows = await _courses.InsertBulkAsync(dtos, ct);
             if (rows <= 0) return Problem("Bulk insert failed.");
-            return CreatedAtAction(nameof(GetAll), null);
+            return StatusCode(StatusCodes.Status201Created);
         }
 
-        // PUT: api/courses/5
+        // PUT: api/courses/5  (id in route; body has no ID)
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] Courses_DTO dto, CancellationToken ct)
+        public async Task<ActionResult> Update(int id, [FromBody] UpdateCourseRequest body, CancellationToken ct)
         {
-            if (dto is null) return BadRequest("Body required.");
+            if (body is null) return BadRequest("Body required.");
             if (id <= 0) return BadRequest("Invalid id.");
-            dto.CourseID = id;
+
+            var dto = new Courses_DTO
+            {
+                CourseID = id,                   // set from route
+                CourseName = body.CourseName,
+                Credits = body.Credits,
+                SchoolID = body.SchoolID
+            };
 
             var rows = await _courses.UpdateAsync(dto, ct);
             if (rows == 0) return NotFound();
-            return NoContent();
-        }
-
-        // PUT: api/courses/bulk
-        [HttpPut("bulk")]
-        public async Task<ActionResult> BulkUpdate([FromBody] IEnumerable<Courses_DTO> dtos, CancellationToken ct)
-        {
-            if (dtos is null) return BadRequest("Body required.");
-            var rows = await _courses.UpdateBulkAsync(dtos, ct);
-            if (rows <= 0) return Problem("Bulk update failed.");
             return NoContent();
         }
 

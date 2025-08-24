@@ -108,7 +108,6 @@ namespace Teachers.Api.Controllers
         }
 
         // POST: api/enrollment/bulk?teacherId=7&courseId=55&schoolId=3
-        // Body: [101,102,103]  (studentIds)
         [HttpPost("bulk")]
         public async Task<ActionResult<int>> InsertBulk(
             [FromBody] IEnumerable<int> studentIds,
