@@ -5,3 +5,5 @@ make school so I can test inserts because of FK constraints x
 
 make CreateRequests and UpdateRequests for inserts of students, enrollments, and teachers like you did for courses.
 
+test the rest of the requests that come after bulk insert courses
+
