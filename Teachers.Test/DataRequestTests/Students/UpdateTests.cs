@@ -6,13 +6,12 @@ namespace Teachers.Test.DataRequestTests.Students
     public class UpdateTests
     {
         private const string ExpectedSql =
-        "UPDATE dbo.Students " +
-        "SET StudentID = @StudentID, " +
-        "TeacherID = @TeacherID, " +
-        "CourseID  = @CourseID, " +
-        "SchoolID  = @SchoolID " +
-        "WHERE StudentID = @StudentID;";
-
+        @"UPDATE dbo.Students
+              SET FirstName = @FirstName,
+                  LastName  = @LastName,
+                  [Year]    = @Year,
+                  SchoolID  = @SchoolID
+              WHERE StudentID = @StudentID;";
 
         [Fact]
         public void UpdateStudent_GetSql_IsCorrect()

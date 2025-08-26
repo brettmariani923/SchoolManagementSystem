@@ -14,7 +14,6 @@ public sealed class UpdateBulkStudents : IDataExecute
         if (!_students.Any())
             throw new ArgumentException("At least one student is required.", nameof(students));
 
-        // Basic sanity checks (optional, but helpful)
         foreach (var s in _students)
         {
             if (s.StudentID <= 0)
