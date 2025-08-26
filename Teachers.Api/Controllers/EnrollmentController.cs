@@ -78,27 +78,41 @@ namespace Teachers.Api.Controllers
             return CreatedAtAction(nameof(GetAll), null);
         }
 
-
         // PUT: api/enrollment/5
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Enrollments_DTO enrollment, CancellationToken ct)
+        public async Task<IActionResult> Update(int id, [FromBody] EnrollmentRequest body, CancellationToken ct)
         {
-            if (enrollment is null) return BadRequest("Body required.");
-            if (id != enrollment.EnrollmentID) return BadRequest("Mismatched EnrollmentID.");
+            if (id <= 0) return BadRequest("Invalid id.");
+            if (body is null) return BadRequest("Body required.");
 
-            await _service.UpdateAsync(enrollment, ct); // UpdateAsync
-            return NoContent();
+            var dto = new Enrollments_DTO
+            {
+                EnrollmentID = id,                // route is source of truth
+                StudentID = body.StudentID,
+                CourseID = body.CourseID,
+                TeacherID = body.TeacherID,
+                SchoolID = body.SchoolID,
+            };
+
+            var rows = await _service.UpdateAsync(dto, ct);
+            return rows == 0 ? NotFound() : NoContent();
         }
 
         // PUT: api/enrollment/bulk
         [HttpPut("bulk")]
-        public async Task<IActionResult> UpdateBulk([FromBody] IEnumerable<Enrollments_DTO> enrollments, CancellationToken ct)
+        public async Task<IActionResult> UpdateBulk([FromBody] IEnumerable<Enrollments_DTO> dtos, CancellationToken ct)
         {
-            if (enrollments is null || !enrollments.Any())
+            if (dtos is null || !dtos.Any())
                 return BadRequest("At least one enrollment is required.");
 
-            await _service.UpdateBulkAsync(enrollments, ct); // UpdateBulkAsync
-            return NoContent();
+            if (dtos.Any(e => e.EnrollmentID <= 0))
+                return BadRequest("Each enrollment must include a valid EnrollmentID.");
+
+            if (dtos.Select(e => e.EnrollmentID).Distinct().Count() != dtos.Count())
+                return BadRequest("Duplicate EnrollmentIDs are not allowed.");
+
+            var rows = await _service.UpdateBulkAsync(dtos, ct);
+            return rows <= 0 ? Problem("Bulk update failed.") : NoContent();
         }
 
         // DELETE: api/enrollment/5

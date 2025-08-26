@@ -34,20 +34,23 @@ namespace Teachers.Api.Controllers
             return Ok(teachers);
         }
 
-        //DELETE: api/teacher/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveById(int id, CancellationToken ct)
+        // POST: api/teacher
+        [HttpPost]
+        public async Task<ActionResult<int>> Insert([FromBody] Teachers_DTO newTeacher, CancellationToken ct)
         {
-            await _service.RemoveByIdAsync(id, ct);
-            return NoContent();
+            if (newTeacher is null) return BadRequest("Body required.");
+            if (newTeacher.SchoolID <= 0) return BadRequest("Valid SchoolID is required.");
+
+            var id = await _service.InsertAsync(newTeacher, ct);
+            return CreatedAtAction(nameof(GetById), new { id }, id);
         }
 
-        //DELETE: api/teacher/bulk
-        [HttpDelete("bulk")]
-        public async Task<IActionResult> RemoveBulk([FromBody] IEnumerable<int> teacherIds, CancellationToken ct)
+        //POST: api/teacher/bulk?schoolID=5
+        [HttpPost("bulk")]
+        public async Task<ActionResult<int>> InsertBulk([FromBody] IEnumerable<Teachers_DTO> newTeachers, int schoolID, CancellationToken ct)
         {
-            await _service.RemoveBulkAsync(teacherIds, ct);
-            return NoContent();
+            var count = await _service.InsertBulkAsync(newTeachers, ct);
+            return Ok(count);
         }
 
         //PUT: api/teacher/5
@@ -69,23 +72,20 @@ namespace Teachers.Api.Controllers
             return NoContent();
         }
 
-        // POST: api/teacher
-        [HttpPost]
-        public async Task<ActionResult<int>> Insert([FromBody] Teachers_DTO newTeacher, CancellationToken ct)
+        //DELETE: api/teacher/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveById(int id, CancellationToken ct)
         {
-            if (newTeacher is null) return BadRequest("Body required.");
-            if (newTeacher.SchoolID <= 0) return BadRequest("Valid SchoolID is required.");
-
-            var id = await _service.InsertAsync(newTeacher, ct);
-            return CreatedAtAction(nameof(GetById), new { id }, id);
+            await _service.RemoveByIdAsync(id, ct);
+            return NoContent();
         }
 
-        //POST: api/teacher/bulk?schoolID=5
-        [HttpPost("bulk")]
-        public async Task<ActionResult<int>> InsertBulk([FromBody] IEnumerable<Teachers_DTO> newTeachers, int schoolID, CancellationToken ct)
+        //DELETE: api/teacher/bulk
+        [HttpDelete("bulk")]
+        public async Task<IActionResult> RemoveBulk([FromBody] IEnumerable<int> teacherIds, CancellationToken ct)
         {
-            var count = await _service.InsertBulkAsync(newTeachers, ct);
-            return Ok(count);
+            await _service.RemoveBulkAsync(teacherIds, ct);
+            return NoContent();
         }
     }
 }
