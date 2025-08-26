@@ -3,7 +3,8 @@ the ID for each insert x
 
 make school so I can test inserts because of FK constraints x
 
-make CreateRequests and UpdateRequests for inserts of students, enrollments, and teachers like you did for courses.
+make CreateRequests and UpdateRequests for inserts of students, enrollments, and teachers like you did for courses x
 
-test the rest of the requests that come after bulk insert courses
+test the rest of the requests that come after bulk insert courses 
 
+Make it so you cant add the same class twice 
