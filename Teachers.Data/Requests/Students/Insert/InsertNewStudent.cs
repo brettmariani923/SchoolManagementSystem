@@ -12,13 +12,16 @@ namespace Teachers.Data.Requests.Students.Insert
             _row = row ?? throw new ArgumentNullException(nameof(row));
 
             if (string.IsNullOrWhiteSpace(_row.FirstName))
-                throw new ArgumentException("FirstName cannot be null or empty.", nameof(row));
+                throw new ArgumentException("FirstName cannot be null or empty.", "FirstName");
+
             if (string.IsNullOrWhiteSpace(_row.LastName))
-                throw new ArgumentException("LastName cannot be null or empty.", nameof(row));
+                throw new ArgumentException("LastName cannot be null or empty.", "LastName");
+
             if (_row.Year <= 0)
-                throw new ArgumentOutOfRangeException(nameof(row.Year), "Year must be positive.");
+                throw new ArgumentOutOfRangeException("row.Year", _row.Year, "Year must be positive.");
+
             if (_row.SchoolID <= 0)
-                throw new ArgumentOutOfRangeException(nameof(row.SchoolID), "SchoolID must be positive.");
+                throw new ArgumentOutOfRangeException("row.SchoolID", _row.SchoolID, "SchoolID must be positive.");
 
             _row.FirstName = _row.FirstName.Trim();
             _row.LastName = _row.LastName.Trim();

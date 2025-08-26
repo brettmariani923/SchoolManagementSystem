@@ -10,7 +10,7 @@ namespace Teachers.Test.DataRequestTests.Courses
             var req = new RemoveCourseByID(42);
 
             Assert.Equal(
-                @"DELETE FROM dbo.Courses" +
+                @"DELETE FROM dbo.Courses " +
                   "WHERE CourseID = @CourseID;",
                 req.GetSql());
         }
@@ -31,7 +31,7 @@ namespace Teachers.Test.DataRequestTests.Courses
             var req = new RemoveBulkCourses(new[] { 1, 2, 3, 4 });
 
             Assert.Equal(
-                @"DELETE FROM dbo.Courses" +
+                @"DELETE FROM dbo.Courses " +
                   "WHERE CourseID IN @CourseIDs;",
                 req.GetSql());
         }

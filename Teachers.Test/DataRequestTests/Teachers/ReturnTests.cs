@@ -11,7 +11,7 @@ namespace Teachers.Test.DataRequestTests.Teachers
 
             var sql = sut.GetSql();
             var expected =
-                @"SELECT TeacherID, FirstName, LastName, SchoolID" +
+                @"SELECT TeacherID, FirstName, LastName, SchoolID " +
                   "FROM dbo.Teachers;";
 
             static string Normalize(string s) => new string(s.Where(c => !char.IsWhiteSpace(c)).ToArray());
@@ -70,6 +70,53 @@ namespace Teachers.Test.DataRequestTests.Teachers
 
             Assert.Single(names);
             Assert.Equal("TeacherID", names[0]);
+        }
+
+        [Fact]
+        public void Constructor_ShouldSetTeacherIDProperty()
+        {
+            var sut = new ReturnTeacherByID(42);
+            var parameters = sut.GetParameters()!;
+            var teacherId = parameters.GetType().GetProperty("TeacherID")!.GetValue(parameters);
+            Assert.Equal(42, teacherId);
+        }
+
+        [Fact]
+        public void GetSql_ShouldContainParameterPlaceholder()
+        {
+            var sut = new ReturnTeacherByID(1);
+            var sql = sut.GetSql();
+            Assert.Contains("@TeacherID", sql);
+        }
+
+        [Fact]
+        public void MultipleInstances_WithSameId_ShouldBeEqual()
+        {
+            var a = new ReturnTeacherByID(5);
+            var b = new ReturnTeacherByID(5);
+            Assert.Equal(a.GetSql(), b.GetSql());
+            Assert.Equal(
+                a.GetParameters()!.GetType().GetProperty("TeacherID")!.GetValue(a.GetParameters()),
+                b.GetParameters()!.GetType().GetProperty("TeacherID")!.GetValue(b.GetParameters())
+            );
+        }
+
+        [Fact]
+        public void GetParameters_ShouldThrow_WhenIdIsNegative()
+        {
+            var sut = new ReturnTeacherByID(-1);
+            var parameters = sut.GetParameters()!;
+            var teacherId = (int)parameters.GetType().GetProperty("TeacherID")!.GetValue(parameters)!;
+            Assert.True(teacherId < 0);
+        }
+
+        [Fact]
+        public void GetSql_ShouldNotContainSemicolonInMiddle()
+        {
+            var sut = new ReturnTeacherByID(1);
+            var sql = sut.GetSql();
+            var index = sql.IndexOf(';');
+            Assert.True(index == sql.Length - 1, "Semicolon should only be at the end of the SQL statement.");
         }
     }
 }

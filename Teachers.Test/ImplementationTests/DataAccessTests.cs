@@ -1,8 +1,11 @@
 ﻿using System.Data;
 using Dapper;
+using Moq;
 using Microsoft.Data.Sqlite;
 using Teachers.Domain.Implementation;
 using Teachers.Domain.Interfaces;
+using Teachers.Application.Services;
+using Teachers.Application.DTO;
 
 namespace Teachers.Test.ImplementationTests
 {
@@ -24,6 +27,8 @@ namespace Teachers.Test.ImplementationTests
         private readonly string _dbPath;
         private readonly IDbConnectionFactory _factory;
         private readonly DataAccess _data;
+        private readonly Mock<IDataAccess> _dataAccessMock;
+        private readonly CourseService _service;
 
         public DataAccessTests()
         {
@@ -33,6 +38,9 @@ namespace Teachers.Test.ImplementationTests
             _data = new DataAccess(_factory);
 
             InitializeSchemaAndSeed();
+
+            _dataAccessMock = new Mock<IDataAccess>();
+            _service = new CourseService(_dataAccessMock.Object);
         }
 
         public void Dispose()
@@ -174,5 +182,80 @@ namespace Teachers.Test.ImplementationTests
         {
             await Assert.ThrowsAsync<Exception>(() => _data.ExecuteAsync(new FailingDataExecute()));
         }
+
+        [Fact]
+        public async Task RemoveByIdAsync_Throws_WhenDataAccessThrows()
+        {
+            _dataAccessMock
+                .Setup(x => x.ExecuteAsync(It.IsAny<IDataExecute>()))
+                .ThrowsAsync(new InvalidOperationException("ExecuteAsync failure"));
+
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _service.RemoveByIdAsync(1));
+        }
+
+        [Fact]
+        public async Task UpdateAsync_Throws_WhenDataAccessThrows()
+        {
+            _dataAccessMock
+                .Setup(x => x.ExecuteAsync(It.IsAny<IDataExecute>()))
+                .ThrowsAsync(new InvalidOperationException("Update failure"));
+
+            var dto = new Courses_DTO { CourseID = 1, CourseName = "Fail", Credits = 1, SchoolID = 1 };
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _service.UpdateAsync(dto));
+        }
+
+        [Fact]
+        public async Task InsertAsync_Throws_WhenDataAccessThrows()
+        {
+            _dataAccessMock
+                .Setup(x => x.ExecuteAsync(It.IsAny<IDataExecute>()))
+                .ThrowsAsync(new InvalidOperationException("Insert failure"));
+
+            var req = new CourseRequest { CourseName = "Fail", Credits = 1, SchoolID = 1 };
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _service.InsertAsync(req));
+        }
+
+        [Fact]
+        public async Task RemoveBulkAsync_Throws_WhenDataAccessThrows()
+        {
+            _dataAccessMock
+                .Setup(x => x.ExecuteAsync(It.IsAny<IDataExecute>()))
+                .ThrowsAsync(new InvalidOperationException("Bulk remove failure"));
+
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _service.RemoveBulkAsync(new[] { 1, 2 }));
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_Throws_WhenConnectionOpenFails()
+        {
+            var factoryMock = new Mock<IDbConnectionFactory>();
+            var connMock = new Mock<IDbConnection>();
+            connMock.Setup(c => c.Open()).Throws(new InvalidOperationException("Open failed"));
+            factoryMock.Setup(f => f.NewConnection()).Returns(connMock.Object);
+
+            var dataAccess = new DataAccess(factoryMock.Object);
+
+            var requestMock = new Mock<IDataExecute>();
+            requestMock.Setup(r => r.GetSql()).Returns("UPDATE ...");
+            requestMock.Setup(r => r.GetParameters()).Returns(new { });
+
+            await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                dataAccess.ExecuteAsync(requestMock.Object));
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_Throws_WhenRequestIsNull()
+        {
+            var factoryMock = new Mock<IDbConnectionFactory>();
+            var connMock = new Mock<IDbConnection>();
+            factoryMock.Setup(f => f.NewConnection()).Returns(connMock.Object);
+
+            var dataAccess = new DataAccess(factoryMock.Object);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(() =>
+                dataAccess.ExecuteAsync(null!));
+        }
+
     }
 }
+

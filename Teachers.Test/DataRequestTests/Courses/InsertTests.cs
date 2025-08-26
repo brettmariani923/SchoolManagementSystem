@@ -6,7 +6,7 @@ namespace Teachers.Test.DataRequestTests.Courses
     public class InsertTests
     {
         private const string ExpectedSql =
-            "INSERT INTO dbo.Courses (CourseName, Credits, SchoolID)" +
+            "INSERT INTO dbo.Courses (CourseName, Credits, SchoolID) " +
              "VALUES (@CourseName, @Credits, @SchoolID);";
 
         [Fact]

@@ -21,17 +21,11 @@ namespace Teachers.Test.Requests.Students
 
             // Assert 
             const string expected =
-              @"INSERT INTO dbo.Students (FirstName, LastName, [Year], SchoolID)" +
+              @"INSERT INTO dbo.Students (FirstName, LastName, [Year], SchoolID) " +
               "VALUES (@FirstName, @LastName, @Year, @SchoolID);";
             Assert.Equal(expected, sql);
         }
 
-        // This test checks two things:
-        // 1. For each input student, GetParameters() should return one parameter object.
-        //    (3 students in → 3 parameter objects out.)
-        // 2. The FirstName, LastName, and Year come from the DTOs,
-        //    but the SchoolID must always come from the constructor argument,
-        //    ignoring whatever value was in the DTO.
         [Fact]
         public void GetParameters_ShouldYieldOneParamObjectPerStudent_AndUseCtorSchoolID()
         {   //Arrange
@@ -117,7 +111,7 @@ namespace Teachers.Test.Requests.Students
             var req = new InsertNewStudent(row);
 
             const string expected =
-                @"INSERT INTO dbo.Students (FirstName, LastName, [Year], SchoolID)" +
+                @"INSERT INTO dbo.Students (FirstName, LastName, [Year], SchoolID) " +
                 "VALUES (@FirstName, @LastName, @Year, @SchoolID);";
 
             Assert.Equal(expected, req.GetSql());

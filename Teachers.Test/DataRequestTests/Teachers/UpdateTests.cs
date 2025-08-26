@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Teachers.Data.Rows;
 using Teachers.Data.Requests.Teachers.Update;
+using Teachers.Data.Requests.Teachers.Return;
 using Xunit;
 
 namespace Teachers.Test.DataRequestTests.Teachers
@@ -104,5 +105,36 @@ namespace Teachers.Test.DataRequestTests.Teachers
 
             Assert.Equal(new[] { "FirstName", "LastName", "SchoolID", "TeacherID" }, names);
         }
+
+        [Fact]
+        public void GetSql_ShouldReturnExpectedUpdateBulkStatement()
+        {
+            var teachers = new[]
+            {
+            new Teachers_Row { TeacherID = 1, FirstName = "A", LastName = "B", SchoolID = 100 },
+            new Teachers_Row { TeacherID = 2, FirstName = "C", LastName = "D", SchoolID = 101 }
+        };
+
+            var sut = new UpdateBulkTeachers(teachers);
+
+            var sql = sut.GetSql();
+            Assert.Contains("UPDATE dbo.Teachers", sql);
+            Assert.Contains("@TeacherID", sql);
+            Assert.Contains("@FirstName", sql);
+            Assert.Contains("@LastName", sql);
+            Assert.Contains("@SchoolID", sql);
+        }
+
+        [Fact]
+        public void MultipleInstances_WithSameId_ShouldBeEqual()
+        {
+            var a = new ReturnTeacherByID(5);
+            var b = new ReturnTeacherByID(5);
+            Assert.Equal(a, b);
+            Assert.True(a.Equals(b));
+            Assert.True(b.Equals(a));
+            Assert.Equal(a.GetHashCode(), b.GetHashCode());
+        }
     }
 }
+      

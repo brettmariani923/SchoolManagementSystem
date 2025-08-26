@@ -33,5 +33,29 @@ namespace Teachers.Test.DataRequestTests.Teachers
 
             Assert.Equal(ids.Length, teacherIds.Count());
         }
+
+        [Fact]
+        public void GetParameters_ShouldContainTeacherID()
+        {
+            var sut = new RemoveTeacherByID(15);
+
+            var p = sut.GetParameters()!;
+            var t = p.GetType();
+
+            var idProp = t.GetProperty("TeacherID");
+            Assert.NotNull(idProp);
+
+            var value = (int)idProp!.GetValue(p)!;
+            Assert.Equal(15, value);
+        }
+
+        [Fact]
+        public void GetParameters_ShouldThrow_WhenIdIsNegative()
+        {
+            var sut = new RemoveTeacherByID(-5);
+            var parameters = sut.GetParameters()!;
+            var teacherId = (int)parameters.GetType().GetProperty("TeacherID")!.GetValue(parameters)!;
+            Assert.True(teacherId < 0);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace Teachers.Test.DataRequestTests.Students
             var req = new ReturnAllStudents();
 
             Assert.Equal(
-            @"SELECT StudentID, FirstName, LastName, [Year], SchoolID" +
+            @"SELECT StudentID, FirstName, LastName, [Year], SchoolID " +
               "FROM dbo.Students;",
             req.GetSql());
         }
@@ -29,8 +29,8 @@ namespace Teachers.Test.DataRequestTests.Students
             var req = new ReturnStudentByID(123);
 
             Assert.Equal(
-               @"SELECT StudentID, FirstName, LastName, [Year], SchoolID" +
-              "FROM dbo.Students" +
+               @"SELECT StudentID, FirstName, LastName, [Year], SchoolID " +
+              "FROM dbo.Students " +
               "WHERE StudentID = @StudentID;",
                 req.GetSql());
         }

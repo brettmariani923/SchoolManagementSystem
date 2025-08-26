@@ -8,7 +8,7 @@ using Xunit;
 public class InsertTests
 {
     private const string ExpectedSql =
-        "INSERT INTO dbo.Teachers (FirstName, LastName, SchoolID)" +
+        "INSERT INTO dbo.Teachers (FirstName, LastName, SchoolID) " +
          "VALUES (@FirstName, @LastName, @SchoolID);";
 
     [Fact]

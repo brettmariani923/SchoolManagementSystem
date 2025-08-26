@@ -188,4 +188,38 @@ public class CourseServiceTests
         Assert.Equal(dtos.Count, result);
         _dataAccessMock.Verify(x => x.ExecuteAsync(It.IsAny<IDataExecute>()), Times.Once);
     }
+
+    [Fact]
+    public void Default_Properties_Row_AreInitialized()
+    {
+        var row = new CoursesRequestRow();
+        Assert.Equal(null, row.CourseName);
+        Assert.Equal(0, row.Credits);
+        Assert.Equal(0, row.SchoolID);
+    }
+
+    [Fact]
+    public void Properties_Row_CanBeSet()
+    {
+        var row = new CoursesRequestRow
+        {
+            CourseName = "Physics",
+            Credits = 4,
+            SchoolID = 7
+        };
+
+        Assert.Equal("Physics", row.CourseName);
+        Assert.Equal(4, row.Credits);
+        Assert.Equal(7, row.SchoolID);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("Advanced Math")]
+    public void CourseName_CanBeSetToVariousValues(string name)
+    {
+        var row = new CoursesRequestRow { CourseName = name };
+        Assert.Equal(name, row.CourseName);
+    }
 }

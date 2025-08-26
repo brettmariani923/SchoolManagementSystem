@@ -56,7 +56,6 @@ namespace Teachers.Test.DataRequestTests.Enrollments
         [Fact]
         public void UpdateBulkEnrollments_GetSql_IsCorrect()
         {
-            // Use at least one item to satisfy typical non-empty validation in ctor
             var items = new[]
             {
                 new Enrollments_Row { EnrollmentID = 1, StudentID = 10, TeacherID = 20, CourseID = 30, SchoolID = 40 }
