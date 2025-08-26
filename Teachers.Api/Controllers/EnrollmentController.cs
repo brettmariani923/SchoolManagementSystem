@@ -56,24 +56,28 @@ namespace Teachers.Api.Controllers
             return Ok(list);
         }
 
-        // DELETE: api/enrollment/5
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> RemoveById(int id, CancellationToken ct)
+        // POST: api/enrollments
+        [HttpPost]
+        public async Task<ActionResult<int>> Insert([FromBody] EnrollmentRequest newEnrollment, CancellationToken ct)
         {
-            await _service.RemoveByIdAsync(id, ct); // RemoveByIdAsync
-            return NoContent();
+            if (newEnrollment is null) return BadRequest("Body required.");
+
+            var id = await _service.InsertAsync(newEnrollment, ct);
+            return CreatedAtAction(nameof(GetById), new { id }, id);
         }
 
-        // DELETE: api/enrollment/bulk
-        [HttpDelete("bulk")]
-        public async Task<IActionResult> RemoveBulk([FromBody] IEnumerable<int> enrollmentIds, CancellationToken ct)
+        // POST: api/enrollments/bulk
+        [HttpPost("bulk")]
+        public async Task<ActionResult> BulkInsert([FromBody] IEnumerable<EnrollmentRequest> requests, CancellationToken ct)
         {
-            if (enrollmentIds is null || !enrollmentIds.Any())
-                return BadRequest("At least one enrollmentId is required.");
+            if (requests is null) return BadRequest("Body required.");
 
-            await _service.RemoveBulkAsync(enrollmentIds, ct); // RemoveBulkAsync
-            return NoContent();
+            var rows = await _service.InsertBulkAsync(requests, ct);
+            if (rows <= 0) return Problem("Bulk insert failed.");
+
+            return CreatedAtAction(nameof(GetAll), null);
         }
+
 
         // PUT: api/enrollment/5
         [HttpPut("{id:int}")]
@@ -97,32 +101,23 @@ namespace Teachers.Api.Controllers
             return NoContent();
         }
 
-        // POST: api/enrollment
-        [HttpPost]
-        public async Task<ActionResult<int>> Insert([FromBody] Enrollments_DTO newEnrollment, CancellationToken ct)
+        // DELETE: api/enrollment/5
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> RemoveById(int id, CancellationToken ct)
         {
-            if (newEnrollment is null) return BadRequest("Body required.");
-
-            var id = await _service.InsertAsync(newEnrollment, ct); // InsertAsync
-            return CreatedAtAction(nameof(GetById), new { id }, id);
+            await _service.RemoveByIdAsync(id, ct); // RemoveByIdAsync
+            return NoContent();
         }
 
-        // POST: api/enrollment/bulk?teacherId=7&courseId=55&schoolId=3
-        [HttpPost("bulk")]
-        public async Task<ActionResult<int>> InsertBulk(
-            [FromBody] IEnumerable<int> studentIds,
-            [FromQuery] int teacherId,
-            [FromQuery] int courseId,
-            [FromQuery] int schoolId,
-            CancellationToken ct)
+        // DELETE: api/enrollment/bulk
+        [HttpDelete("bulk")]
+        public async Task<IActionResult> RemoveBulk([FromBody] IEnumerable<int> enrollmentIds, CancellationToken ct)
         {
-            if (studentIds is null || !studentIds.Any())
-                return BadRequest("At least one studentId is required.");
-            if (teacherId <= 0 || courseId <= 0 || schoolId <= 0)
-                return BadRequest("Valid teacherId, courseId, and schoolId are required.");
+            if (enrollmentIds is null || !enrollmentIds.Any())
+                return BadRequest("At least one enrollmentId is required.");
 
-            var count = await _service.InsertBulkAsync(studentIds, teacherId, courseId, schoolId, ct); // InsertBulkAsync
-            return Ok(count);
+            await _service.RemoveBulkAsync(enrollmentIds, ct); // RemoveBulkAsync
+            return NoContent();
         }
     }
 }

@@ -50,6 +50,7 @@ namespace Teachers.Api.Controllers
 
             var rows = await _students.InsertBulkAsync(requests, ct);
             if (rows <= 0) return Problem("Bulk insert failed.");
+
             return CreatedAtAction(nameof(GetAll), null);
         }
 
@@ -91,7 +92,6 @@ namespace Teachers.Api.Controllers
                 ? Problem("Bulk update failed.")
                 : NoContent();
         }
-
 
         // DELETE: api/students/5
         [HttpDelete("{id:int}")]

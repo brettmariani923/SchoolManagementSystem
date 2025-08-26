@@ -43,6 +43,7 @@ namespace Teachers.Api.Controllers
 
             var rows = await _courses.InsertBulkAsync(requests, ct);
             if (rows <= 0) return Problem("Bulk insert failed.");
+
             return CreatedAtAction(nameof(GetAll), null);
         }
 
@@ -83,8 +84,6 @@ namespace Teachers.Api.Controllers
                 ? Problem("Bulk update failed.")
                 : NoContent();
         }
-
-
 
         // DELETE: api/courses/5
         [HttpDelete("{id:int}")]

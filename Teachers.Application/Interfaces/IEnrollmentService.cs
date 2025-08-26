@@ -20,7 +20,7 @@ namespace Teachers.Application.Interfaces
         Task<int> UpdateBulkAsync(IEnumerable<Enrollments_DTO> enrollments, CancellationToken ct = default);
 
         // Inserts (EnrollmentID ignored if IDENTITY)
-        Task<int> InsertAsync(Enrollments_DTO newEnrollment, CancellationToken ct = default);
-        Task<int> InsertBulkAsync(IEnumerable<int> studentIds, int teacherId, int courseId, int schoolId, CancellationToken ct = default);
+        Task<int> InsertAsync(EnrollmentRequest newEnrollment, CancellationToken ct = default);
+        Task<int> InsertBulkAsync(IEnumerable<EnrollmentRequest> requests, CancellationToken ct = default);
     }
 }
