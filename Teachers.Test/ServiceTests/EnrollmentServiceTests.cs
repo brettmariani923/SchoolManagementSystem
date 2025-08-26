@@ -79,12 +79,12 @@ public class EnrollmentServiceTests
     [Fact]
     public async Task InsertAsync_CallsDataAccess()
     {
-        var dto = new Enrollments_DTO { StudentID = 2, TeacherID = 3, CourseID = 4, SchoolID = 5 };
+        var request = new EnrollmentRequest { StudentID = 2, TeacherID = 3, CourseID = 4, SchoolID = 5 };
         _dataAccessMock
             .Setup(x => x.ExecuteAsync(It.IsAny<IDataExecute>()))
             .ReturnsAsync(1);
 
-        var result = await _service.InsertAsync(dto);
+        var result = await _service.InsertAsync(request);
 
         Assert.Equal(1, result);
     }
@@ -203,15 +203,18 @@ public class EnrollmentServiceTests
     [Fact]
     public async Task InsertBulkAsync_CallsDataAccess_AndReturnsResult()
     {
-        var studentIds = new List<int> { 2, 3 };
-        int teacherId = 4, courseId = 5, schoolId = 6;
+        var requests = new List<EnrollmentRequest>
+        {
+            new EnrollmentRequest { StudentID = 2, TeacherID = 3, CourseID = 4, SchoolID = 5 },
+            new EnrollmentRequest { StudentID = 3, TeacherID = 4, CourseID = 5, SchoolID = 6 }
+        };
         _dataAccessMock
             .Setup(x => x.ExecuteAsync(It.IsAny<IDataExecute>()))
-            .ReturnsAsync(studentIds.Count);
+            .ReturnsAsync(requests.Count);
 
-        var result = await _service.InsertBulkAsync(studentIds, teacherId, courseId, schoolId);
+        var result = await _service.InsertBulkAsync(requests);
 
-        Assert.Equal(studentIds.Count, result);
+        Assert.Equal(requests.Count, result);
         _dataAccessMock.Verify(x => x.ExecuteAsync(It.IsAny<IDataExecute>()), Times.Once);
     }
 

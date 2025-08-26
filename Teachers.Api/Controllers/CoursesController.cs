@@ -24,7 +24,7 @@ namespace Teachers.Api.Controllers
             return course is null ? NotFound() : Ok(course);
         }
 
-        // POST: api/courses  (NO CourseID in request)
+        // POST: api/courses
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CourseRequest request, CancellationToken ct)
         {
@@ -95,7 +95,7 @@ namespace Teachers.Api.Controllers
             return NoContent();
         }
 
-        // DELETE: api/courses/bulk?ids=1&ids=2
+        // DELETE: api/courses/bulk
         [HttpDelete("bulk")]
         public async Task<ActionResult> BulkDelete([FromQuery] IEnumerable<int> ids, CancellationToken ct)
         {

@@ -78,12 +78,12 @@ public class TeacherServiceTests
     [Fact]
     public async Task InsertAsync_CallsDataAccess()
     {
-        var dto = new Teachers_DTO { FirstName = "Alice", LastName = "Johnson", SchoolID = 2 };
+        var request = new TeacherRequest { FirstName = "Alice", LastName = "Johnson", SchoolID = 2 };
         _dataAccessMock
             .Setup(x => x.ExecuteAsync(It.IsAny<IDataExecute>()))
             .ReturnsAsync(1);
 
-        var result = await _service.InsertAsync(dto);
+        var result = await _service.InsertAsync(request);
 
         Assert.Equal(1, result);
     }

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using Teachers.Application.DTO; 
+﻿using Teachers.Application.DTO; 
 using Moq;
 using Teachers.Domain.Interfaces;
 using Teachers.Application.Services;
@@ -82,7 +79,7 @@ public class CourseServiceTests
     [Fact]
     public void Default_Properties_AreInitialized()
     {
-        var request = new CreateCourseRequest();
+        var request = new CourseRequest();
         Assert.Equal("", request.CourseName);
         Assert.Equal(0, request.Credits);
         Assert.Equal(0, request.SchoolID);
@@ -91,7 +88,7 @@ public class CourseServiceTests
     [Fact]
     public void Properties_CanBeSet()
     {
-        var request = new CreateCourseRequest
+        var request = new CourseRequest
         {
             CourseName = "Physics",
             Credits = 4,
@@ -106,7 +103,7 @@ public class CourseServiceTests
     [Fact]
     public void Default_Properties_Initialized()
     {
-        var request = new UpdateCourseRequest();
+        var request = new CourseRequest();
         Assert.Equal("", request.CourseName);
         Assert.Equal(0, request.Credits);
         Assert.Equal(0, request.SchoolID);
@@ -115,7 +112,7 @@ public class CourseServiceTests
     [Fact]
     public void Properties_CanBeSet_Update()
     {
-        var request = new UpdateCourseRequest
+        var request = new CourseRequest
         {
             CourseName = "Math",
             Credits = 3,
@@ -177,10 +174,10 @@ public class CourseServiceTests
     [Fact]
     public async Task InsertBulkAsync_CallsDataAccess_AndReturnsResult()
     {
-        var dtos = new List<Courses_DTO>
+        var dtos = new List<CourseRequest>
         {
-            new Courses_DTO { CourseName = "Math", Credits = 3, SchoolID = 2 },
-            new Courses_DTO { CourseName = "Science", Credits = 4, SchoolID = 2 }
+            new CourseRequest { CourseName = "Math", Credits = 3, SchoolID = 2 },
+            new CourseRequest { CourseName = "Science", Credits = 4, SchoolID = 2 }
         };
         _dataAccessMock
             .Setup(x => x.ExecuteAsync(It.IsAny<IDataExecute>()))

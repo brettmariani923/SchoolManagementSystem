@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.Data;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using Teachers.Domain.Implementation;
 using Teachers.Domain.Interfaces;
-using Xunit;
 
 namespace Teachers.Test.ImplementationTests
 {
@@ -32,7 +27,6 @@ namespace Teachers.Test.ImplementationTests
 
         public DataAccessTests()
         {
-            // Create a unique temp file for this test class.
             _dbPath = Path.Combine(Path.GetTempPath(), $"teachers-tests-{Guid.NewGuid():N}.db");
 
             _factory = new TestSqliteConnectionFactory(_dbPath);
@@ -76,7 +70,7 @@ namespace Teachers.Test.ImplementationTests
             ");
         }
 
-        // --------------- Basic ctor guard ---------------
+        //Basic ctor guard 
 
         [Fact]
         public void Ctor_WithNullFactory_ThrowsArgumentNullException()
@@ -84,7 +78,7 @@ namespace Teachers.Test.ImplementationTests
             Assert.Throws<ArgumentNullException>(() => new DataAccess(null!));
         }
 
-        // --------------- ExecuteAsync ---------------
+        //ExecuteAsync 
 
         private sealed class UpdateCreditsRequest : IDataExecute
         {
@@ -120,7 +114,7 @@ namespace Teachers.Test.ImplementationTests
             Assert.Equal(5, credits);
         }
 
-        // --------------- FetchAsync<T> ---------------
+        //FetchAsync<T>
 
         private sealed class SelectCourseNameById : IDataFetch<string>
         {
@@ -144,7 +138,7 @@ namespace Teachers.Test.ImplementationTests
             Assert.Null(miss);
         }
 
-        // --------------- FetchListAsync<T> ---------------
+        //FetchListAsync<T> 
 
         private sealed class SelectCourseNamesBySchool : IDataFetchList<string>
         {
@@ -168,8 +162,6 @@ namespace Teachers.Test.ImplementationTests
                 s => Assert.Equal("Biology", s),
                 s => Assert.Equal("Chemistry", s));
         }
-
-        // --------------- Exception propagation ---------------
 
         private sealed class FailingDataExecute : IDataExecute
         {

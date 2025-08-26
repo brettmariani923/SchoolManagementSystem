@@ -31,6 +31,7 @@ namespace Teachers.Api.Controllers
             return student is null ? NotFound() : Ok(student);
         }
 
+        // POST: api/students
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] StudentRequest request, CancellationToken ct)
         {
@@ -42,7 +43,7 @@ namespace Teachers.Api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        // POST: api/students/bulk?schoolID=12
+        // POST: api/students/bulk
         [HttpPost("bulk")]
         public async Task<ActionResult> BulkInsert([FromBody] IEnumerable<StudentRequest> requests, CancellationToken ct)
         {
@@ -73,7 +74,7 @@ namespace Teachers.Api.Controllers
             return rows == 0 ? NotFound() : NoContent();
         }
 
-
+        // PUT: api/students/bulk
         [HttpPut("bulk")]
         public async Task<IActionResult> BulkUpdate([FromBody] IEnumerable<Students_DTO> dtos, CancellationToken ct)
         {
@@ -103,7 +104,7 @@ namespace Teachers.Api.Controllers
             return NoContent();
         }
 
-        // DELETE: api/students/bulk?ids=1&ids=2
+        // DELETE: api/students/bulk
         [HttpDelete("bulk")]
         public async Task<ActionResult> BulkDelete([FromQuery] IEnumerable<int> ids, CancellationToken ct)
         {

@@ -61,19 +61,12 @@ namespace Teachers.Application.Services
             => _data.ExecuteAsync(new UpdateBulkEnrollments(enrollments.Select(MapToRow)));
 
         // Inserts (DTO -> Row -> row-based request)
-        public Task<int> InsertAsync(Enrollments_DTO newEnrollment, CancellationToken ct = default)
+        public Task<int> InsertAsync(EnrollmentRequest newEnrollment, CancellationToken ct = default)
             => _data.ExecuteAsync(new InsertStudentEnrollment(MapToRowForInsert(newEnrollment)));
 
         // Bulk insert (studentIds -> Rows -> row-based request)
-        public Task<int> InsertBulkAsync(IEnumerable<int> studentIds, int teacherId, int courseId, int schoolId, CancellationToken ct = default)
-            => _data.ExecuteAsync(new InsertBulkStudentEnrollment(
-                studentIds.Select(id => new Enrollments_Row
-                {
-                    StudentID = id,
-                    TeacherID = teacherId,
-                    CourseID = courseId,
-                    SchoolID = schoolId
-                })));
+        public Task<int> InsertBulkAsync(IEnumerable<EnrollmentRequest> newCourses, CancellationToken ct = default)
+            => _data.ExecuteAsync(new InsertBulkStudentEnrollment(newCourses.Select(MapToRowForInsert)));
 
         // Mapping helpers
         private static Enrollments_DTO Map(Enrollments_Row r) => new Enrollments_DTO
@@ -95,7 +88,7 @@ namespace Teachers.Application.Services
         };
 
         // For inserts: omit identity key
-        private static Enrollments_Row MapToRowForInsert(Enrollments_DTO d) => new Enrollments_Row
+        private static Enrollments_Row MapToRowForInsert(EnrollmentRequest d) => new Enrollments_Row
         {
             StudentID = d.StudentID,
             TeacherID = d.TeacherID,

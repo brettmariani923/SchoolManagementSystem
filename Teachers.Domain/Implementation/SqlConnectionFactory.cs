@@ -14,7 +14,16 @@ namespace Teachers.Domain.Implementation
 
         #region Constructor
 
-        public SqlConnectionFactory(string connectionString) => _connectionString = connectionString;
+        public SqlConnectionFactory(string connectionString)
+        {
+            if (connectionString is null)
+                throw new ArgumentNullException(nameof(connectionString));
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+                throw new ArgumentException("Connection string cannot be empty or whitespace.", nameof(connectionString));
+
+            _connectionString = connectionString;
+        }
 
         #endregion
 

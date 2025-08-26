@@ -42,10 +42,10 @@ namespace Teachers.Application.Services
             => _data.ExecuteAsync(new UpdateBulkStudents(students.Select(MapToRow)));
 
         // Inserts
-        public Task<int> InsertAsync(Students_DTO newStudent, CancellationToken ct = default)
+        public Task<int> InsertAsync(StudentRequest newStudent, CancellationToken ct = default)
             => _data.ExecuteAsync(new InsertNewStudent(MapToRowForInsert(newStudent)));
 //look into this one again
-        public Task<int> InsertBulkAsync(IEnumerable<Students_DTO> newStudents, CancellationToken ct = default)
+        public Task<int> InsertBulkAsync(IEnumerable<StudentRequest> newStudents, CancellationToken ct = default)
             => _data.ExecuteAsync(new InsertBulkStudents(newStudents.Select(MapToRowForInsert)));
 
         // Mapping helpers
@@ -68,7 +68,7 @@ namespace Teachers.Application.Services
         };
 
         // For inserts: omit identity key
-        private static Students_Row MapToRowForInsert(Students_DTO d) => new Students_Row
+        private static Students_Row MapToRowForInsert(StudentRequest d) => new Students_Row
         {
             FirstName = d.FirstName,
             LastName = d.LastName,

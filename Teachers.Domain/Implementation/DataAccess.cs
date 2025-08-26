@@ -16,8 +16,10 @@ namespace Teachers.Domain.Implementation
 
         public DataAccess(IDbConnectionFactory connectionFactory)
         {
-            _connectionFactory = connectionFactory;
+            _connectionFactory = connectionFactory
+                ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
+
 
         #endregion
 

@@ -36,40 +36,69 @@ namespace Teachers.Api.Controllers
 
         // POST: api/teacher
         [HttpPost]
-        public async Task<ActionResult<int>> Insert([FromBody] Teachers_DTO newTeacher, CancellationToken ct)
+        public async Task<ActionResult> Insert([FromBody] TeacherRequest request, CancellationToken ct)
         {
-            if (newTeacher is null) return BadRequest("Body required.");
-            if (newTeacher.SchoolID <= 0) return BadRequest("Valid SchoolID is required.");
+            if (request is null)
+                return BadRequest("Body required.");
 
-            var id = await _service.InsertAsync(newTeacher, ct);
-            return CreatedAtAction(nameof(GetById), new { id }, id);
+            if (request.SchoolID <= 0)
+                return BadRequest("Valid SchoolID is required.");
+
+            var rows = await _service.InsertAsync(request, ct);
+            if (rows <= 0)
+                return Problem("Insert failed.");
+
+            return StatusCode(StatusCodes.Status201Created);
         }
 
-        //POST: api/teacher/bulk?schoolID=5
+        // POST: api/teacher/bulk
         [HttpPost("bulk")]
-        public async Task<ActionResult<int>> InsertBulk([FromBody] IEnumerable<Teachers_DTO> newTeachers, int schoolID, CancellationToken ct)
+        public async Task<ActionResult> InsertBulk([FromBody] IEnumerable<TeacherRequest> requests, CancellationToken ct)
         {
-            var count = await _service.InsertBulkAsync(newTeachers, ct);
-            return Ok(count);
+            if (requests is null)
+                return BadRequest("Body required.");
+
+            var rows = await _service.InsertBulkAsync(requests, ct);
+            if (rows <= 0)
+                return Problem("Bulk insert failed.");
+
+            return CreatedAtAction(nameof(GetAll), null);
         }
 
-        //PUT: api/teacher/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Teachers_DTO teacher, CancellationToken ct)
+        // PUT: api/teacher/5
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, [FromBody] TeacherRequest body, CancellationToken ct)
         {
-            if (id != teacher.TeacherID)
-                return BadRequest("Mismatched TeacherID.");
+            if (id <= 0) return BadRequest("Invalid id.");
+            if (body is null) return BadRequest("Body required.");
 
-            await _service.UpdateAsync(teacher, ct);
-            return NoContent();
+            var dto = new Teachers_DTO
+            {
+                TeacherID = id,                 
+                FirstName = body.FirstName,
+                LastName = body.LastName,
+                SchoolID = body.SchoolID
+            };
+
+            var rows = await _service.UpdateAsync(dto, ct);
+            return rows == 0 ? NotFound() : NoContent();
         }
 
-        //PUT: api/teacher/bulk
+        // PUT: api/teacher/bulk
         [HttpPut("bulk")]
-        public async Task<IActionResult> UpdateBulk([FromBody] IEnumerable<Teachers_DTO> teachers, CancellationToken ct)
+        public async Task<IActionResult> UpdateBulk([FromBody] IEnumerable<Teachers_DTO> dtos, CancellationToken ct)
         {
-            await _service.UpdateBulkAsync(teachers, ct);
-            return NoContent();
+            if (dtos is null || !dtos.Any())
+                return BadRequest("At least one teacher is required.");
+
+            if (dtos.Any(t => t.TeacherID <= 0))
+                return BadRequest("Each teacher must include a valid TeacherID.");
+
+            if (dtos.Select(t => t.TeacherID).Distinct().Count() != dtos.Count())
+                return BadRequest("Duplicate TeacherIDs are not allowed.");
+
+            var rows = await _service.UpdateBulkAsync(dtos, ct);
+            return rows <= 0 ? Problem("Bulk update failed.") : NoContent();
         }
 
         //DELETE: api/teacher/5

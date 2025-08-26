@@ -42,12 +42,11 @@ namespace Teachers.Application.Services
             => _data.ExecuteAsync(new UpdateBulkTeachers(teachers.Select(MapToRow)));
 
         // Inserts
-        public Task<int> InsertAsync(Teachers_DTO newTeacher, CancellationToken ct = default)
+        public Task<int> InsertAsync(TeacherRequest newTeacher, CancellationToken ct = default)
              => _data.ExecuteAsync(new InsertNewTeacher(MapToRowForInsert(newTeacher)));
 
-        public Task<int> InsertBulkAsync(IEnumerable<Teachers_DTO> newTeachers, CancellationToken ct = default)
-            => _data.ExecuteAsync(new InsertBulkNewTeachers(
-                newTeachers.Select(MapToRowForInsert)));
+        public Task<int> InsertBulkAsync(IEnumerable<TeacherRequest> newTeachers, CancellationToken ct = default)
+            => _data.ExecuteAsync(new InsertBulkNewTeachers(newTeachers.Select(MapToRowForInsert)));
 
         // Mapping helpers 
         private static Teachers_DTO Map(Teachers_Row r) => new Teachers_DTO
@@ -67,7 +66,7 @@ namespace Teachers.Application.Services
         };
 
         // For inserts: omit identity key
-        private static Teachers_Row MapToRowForInsert(Teachers_DTO d) => new Teachers_Row
+        private static Teachers_Row MapToRowForInsert(TeacherRequest d) => new Teachers_Row
         {
             FirstName = d.FirstName,
             LastName = d.LastName,
