@@ -41,11 +41,10 @@ namespace Teachers.Api.Controllers
             var rows = await _courses.InsertAsync(dto, ct);
             if (rows <= 0) return Problem("Insert failed.");
 
-            // If your service later returns the new ID, switch this to CreatedAtAction(GetById, new { id = newId }, null)
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        // POST: api/courses/bulk  (NO CourseID in each item)
+        // POST: api/courses/bulk
         [HttpPost("bulk")]
         public async Task<ActionResult> BulkInsert([FromBody] IEnumerable<CreateCourseRequest> items, CancellationToken ct)
         {
@@ -63,7 +62,7 @@ namespace Teachers.Api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        // PUT: api/courses/5  (id in route; body has no ID)
+        // PUT: api/courses/5 
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateCourseRequest body, CancellationToken ct)
         {
@@ -72,7 +71,7 @@ namespace Teachers.Api.Controllers
 
             var dto = new Courses_DTO
             {
-                CourseID = id,                   // set from route
+                CourseID = id,                   
                 CourseName = body.CourseName,
                 Credits = body.Credits,
                 SchoolID = body.SchoolID

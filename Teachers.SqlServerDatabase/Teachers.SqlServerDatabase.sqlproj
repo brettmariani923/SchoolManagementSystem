@@ -62,7 +62,6 @@
     <Folder Include="DBO" />
     <Folder Include="Scripts\PostDeploymentScripts" />
     <Folder Include="DBO\Tables" />
-    <Folder Include="PublishLoctions" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\PostDeploymentScripts\Script.PostDeployment.sql" />
