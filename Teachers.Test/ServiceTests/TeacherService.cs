@@ -3,7 +3,6 @@ using Teachers.Domain.Interfaces;
 using Teachers.Application.Services;
 using Teachers.Data.Rows;
 using Teachers.Application.DTO;
-using Xunit;
 
 public class TeacherServiceTests
 {

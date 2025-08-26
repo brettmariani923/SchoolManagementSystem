@@ -3,7 +3,6 @@ using Moq;
 using Teachers.Domain.Interfaces;
 using Teachers.Application.Services;
 using Teachers.Data.Rows;
-using Xunit;
 
 public class StudentServiceTests
 {

@@ -11,10 +11,6 @@ using Xunit;
 
 namespace Teachers.Test.ImplementationTests
 {
-    /// <summary>
-    /// Test-only SQLite connection factory that returns NEW connections
-    /// to the same on-disk database file (so the schema persists across connections).
-    /// </summary>
     internal sealed class TestSqliteConnectionFactory : IDbConnectionFactory
     {
         private readonly string _connectionString;
