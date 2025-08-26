@@ -1,5 +1,4 @@
-﻿using System;
-using Teachers.Domain.Interfaces;
+﻿using Teachers.Domain.Interfaces;
 using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Teachers.Insert
@@ -19,7 +18,6 @@ namespace Teachers.Data.Requests.Teachers.Insert
             if (_row.SchoolID <= 0)
                 throw new ArgumentOutOfRangeException(nameof(row.SchoolID), "SchoolID must be positive.");
 
-            // Optional normalization
             _row.FirstName = _row.FirstName.Trim();
             _row.LastName = _row.LastName.Trim();
         }

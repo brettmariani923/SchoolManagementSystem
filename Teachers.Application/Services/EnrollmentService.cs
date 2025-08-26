@@ -86,8 +86,6 @@ namespace Teachers.Application.Services
             CourseID = d.CourseID,
             SchoolID = d.SchoolID
         };
-
-        // For inserts: omit identity key
         private static Enrollments_Row MapToRowForInsert(EnrollmentRequest d) => new Enrollments_Row
         {
             StudentID = d.StudentID,

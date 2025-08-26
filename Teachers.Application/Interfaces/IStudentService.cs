@@ -17,7 +17,7 @@ namespace Teachers.Application.Interfaces
         Task<int> UpdateAsync(Students_DTO student, CancellationToken ct = default);
         Task<int> UpdateBulkAsync(IEnumerable<Students_DTO> students, CancellationToken ct = default);
 
-        // Inserts (schoolID enforced by controller/service)
+        // Inserts 
         Task<int> InsertAsync(StudentRequest newStudent, CancellationToken ct = default);
         Task<int> InsertBulkAsync(IEnumerable<StudentRequest> newStudents, CancellationToken ct = default);
     }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Teachers.Domain.Interfaces;
+﻿using Teachers.Domain.Interfaces;
 using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Teachers.Insert

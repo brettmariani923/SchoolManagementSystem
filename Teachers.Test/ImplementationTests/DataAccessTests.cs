@@ -78,8 +78,6 @@ namespace Teachers.Test.ImplementationTests
             ");
         }
 
-        //Basic ctor guard 
-
         [Fact]
         public void Ctor_WithNullFactory_ThrowsArgumentNullException()
         {

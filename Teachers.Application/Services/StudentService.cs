@@ -66,8 +66,6 @@ namespace Teachers.Application.Services
             Year = d.Year,
             SchoolID = d.SchoolID
         };
-
-        // For inserts: omit identity key
         private static Students_Row MapToRowForInsert(StudentRequest d) => new Students_Row
         {
             FirstName = d.FirstName,
