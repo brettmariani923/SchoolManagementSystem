@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Teachers.Application.DTO
 {
-    internal class UpdateStudentRequest
+    public class TeacherRequest
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int SchoolID { get; set; }
     }
 }
