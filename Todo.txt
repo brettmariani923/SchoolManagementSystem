@@ -1,3 +1,5 @@
+
+
 Need to use something other than a DTO for inserts, because ideneity auto generates 
 the ID for each insert x
 
@@ -16,3 +18,5 @@ Teachers x
 Students x
 
 Enrollments x
+
+add the proper encapsulations to the different classes in each project 

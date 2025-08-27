@@ -6,6 +6,6 @@
     [Year]    INT NOT NULL,
     SchoolID  INT NOT NULL,
     CONSTRAINT FK_Students_School
-        FOREIGN KEY (SchoolID) REFERENCES dbo.School(SchoolID),
+        FOREIGN KEY (SchoolID) REFERENCES dbo.Schools(SchoolID),
     CONSTRAINT UQ_Student UNIQUE (FirstName, LastName, [Year], SchoolID)
 );
