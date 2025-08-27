@@ -5,5 +5,6 @@
     LastName  NVARCHAR(150) NOT NULL,
     SchoolID  INT NOT NULL,
     CONSTRAINT FK_Teachers_School
-        FOREIGN KEY (SchoolID) REFERENCES dbo.School(SchoolID)
+        FOREIGN KEY (SchoolID) REFERENCES dbo.School(SchoolID),
+    CONSTRAINT UQ_Teacher UNIQUE (FirstName, LastName, SchoolID)
 );

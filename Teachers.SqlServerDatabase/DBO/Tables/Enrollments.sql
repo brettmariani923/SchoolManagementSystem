@@ -7,8 +7,7 @@
   CourseID INT NOT NULL
     REFERENCES dbo.Courses(CourseID),
   SchoolID INT NOT NULL
-    REFERENCES dbo.Schools(SchoolID)
+    REFERENCES dbo.Schools(SchoolID),
+  CONSTRAINT UQ_Enrollments_Student_Course
+    UNIQUE (StudentID, CourseID)
 );
-
-CREATE UNIQUE INDEX UX_Enrollments_Student_Course
-  ON dbo.Enrollments(StudentID, CourseID);

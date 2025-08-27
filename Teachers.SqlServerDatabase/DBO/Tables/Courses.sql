@@ -5,5 +5,6 @@
     Credits    INT NOT NULL,
     SchoolID   INT NOT NULL,
     CONSTRAINT FK_Course_School 
-        FOREIGN KEY (SchoolID) REFERENCES dbo.School(SchoolID)
+        FOREIGN KEY (SchoolID) REFERENCES dbo.School(SchoolID),
+    CONSTRAINT UQ_Course_School UNIQUE (CourseName, SchoolID)
 );

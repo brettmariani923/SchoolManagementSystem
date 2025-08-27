@@ -7,7 +7,7 @@ make CreateRequests and UpdateRequests for inserts of students, enrollments, and
 
 test the rest of the requests that come after bulk insert courses x
 
-Make it so you cant add the same class twice 
+Make it so you cant add the same json twice x
 
 Courses x
 
@@ -15,4 +15,4 @@ Teachers x
 
 Students x
 
-Enrollments
+Enrollments x
