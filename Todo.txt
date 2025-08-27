@@ -20,3 +20,5 @@ Students x
 Enrollments x
 
 add the proper encapsulations to the different classes in each project 
+
+double check security for each project 
