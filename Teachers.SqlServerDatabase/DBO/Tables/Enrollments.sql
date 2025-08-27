@@ -1,4 +1,5 @@
-﻿CREATE TABLE dbo.Enrollments (
+﻿CREATE TABLE dbo.Enrollments 
+( 
   EnrollmentID INT IDENTITY(1,1) PRIMARY KEY,
   TeacherID INT NOT NULL
     REFERENCES dbo.Teachers(TeacherID),

@@ -58,13 +58,10 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="Scripts" />
     <Folder Include="DBO" />
-    <Folder Include="Scripts\PostDeploymentScripts" />
     <Folder Include="DBO\Tables" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Scripts\PostDeploymentScripts\Script.PostDeployment.sql" />
     <None Include="DBO\Tables\Teachers.sql" />
     <None Include="DBO\Tables\Students.sql" />
     <None Include="DBO\Tables\Schools.sql" />

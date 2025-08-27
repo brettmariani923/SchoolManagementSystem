@@ -44,7 +44,7 @@ namespace Teachers.Application.Services
         // Inserts
         public Task<int> InsertAsync(StudentRequest newStudent, CancellationToken ct = default)
             => _data.ExecuteAsync(new InsertNewStudent(MapToRowForInsert(newStudent)));
-//look into this one again
+
         public Task<int> InsertBulkAsync(IEnumerable<StudentRequest> newStudents, CancellationToken ct = default)
             => _data.ExecuteAsync(new InsertBulkStudents(newStudents.Select(MapToRowForInsert)));
 

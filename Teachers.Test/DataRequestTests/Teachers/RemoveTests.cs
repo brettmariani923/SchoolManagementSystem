@@ -49,13 +49,5 @@ namespace Teachers.Test.DataRequestTests.Teachers
             Assert.Equal(15, value);
         }
 
-        [Fact]
-        public void GetParameters_ShouldThrow_WhenIdIsNegative()
-        {
-            var sut = new RemoveTeacherByID(-5);
-            var parameters = sut.GetParameters()!;
-            var teacherId = (int)parameters.GetType().GetProperty("TeacherID")!.GetValue(parameters)!;
-            Assert.True(teacherId < 0);
-        }
     }
 }

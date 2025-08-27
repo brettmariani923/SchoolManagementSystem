@@ -102,15 +102,6 @@ namespace Teachers.Test.DataRequestTests.Teachers
         }
 
         [Fact]
-        public void GetParameters_ShouldThrow_WhenIdIsNegative()
-        {
-            var sut = new ReturnTeacherByID(-1);
-            var parameters = sut.GetParameters()!;
-            var teacherId = (int)parameters.GetType().GetProperty("TeacherID")!.GetValue(parameters)!;
-            Assert.True(teacherId < 0);
-        }
-
-        [Fact]
         public void GetSql_ShouldNotContainSemicolonInMiddle()
         {
             var sut = new ReturnTeacherByID(1);

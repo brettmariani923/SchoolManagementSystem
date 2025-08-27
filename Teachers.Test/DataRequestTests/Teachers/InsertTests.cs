@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Teachers.Data.Rows;
+﻿using Teachers.Data.Rows;
 using Teachers.Data.Requests.Teachers.Insert;
-using Xunit;
 
 public class InsertTests
 {

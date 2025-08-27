@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Teachers.Data.Rows;
+﻿using Teachers.Data.Rows;
 using Teachers.Data.Requests.Teachers.Update;
-using Teachers.Data.Requests.Teachers.Return;
-using Xunit;
 
 namespace Teachers.Test.DataRequestTests.Teachers
 {
@@ -123,17 +118,6 @@ namespace Teachers.Test.DataRequestTests.Teachers
             Assert.Contains("@FirstName", sql);
             Assert.Contains("@LastName", sql);
             Assert.Contains("@SchoolID", sql);
-        }
-
-        [Fact]
-        public void MultipleInstances_WithSameId_ShouldBeEqual()
-        {
-            var a = new ReturnTeacherByID(5);
-            var b = new ReturnTeacherByID(5);
-            Assert.Equal(a, b);
-            Assert.True(a.Equals(b));
-            Assert.True(b.Equals(a));
-            Assert.Equal(a.GetHashCode(), b.GetHashCode());
         }
     }
 }

@@ -9,6 +9,8 @@ Please design an application to represent these entities and establish the appro
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
+Rough Draft / Notes : May update as needed
+
 SCHOOL----> TEACHERS ----> COURSES 
 	\-----> STUDENTS ----> ENROLL ---> COURSES
 	 \-----> COURSES -----> STUDENTS

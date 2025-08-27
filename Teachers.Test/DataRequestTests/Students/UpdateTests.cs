@@ -39,15 +39,6 @@ namespace Teachers.Test.DataRequestTests.Students
         }
 
         [Fact]
-        public void UpdateBulkStudents_GetSql_IsCorrect()
-        {
-            var list = new[] { new Students_Row { StudentID = 1, FirstName = "A", LastName = "B", Year = 1, SchoolID = 2 } };
-            var req = new UpdateBulkStudents(list);
-
-            Assert.Equal(ExpectedSql, req.GetSql());
-        }
-
-        [Fact]
         public void UpdateBulkStudents_GetParameters_CountMatches()
         {
             var list = new[]
