@@ -1,4 +1,4 @@
-﻿using Teachers.Domain.Interfaces;
+﻿using Teachers.Data.Interfaces;
 using Teachers.Application.DTO;
 using Teachers.Application.Interfaces;
 using Teachers.Data.Rows;

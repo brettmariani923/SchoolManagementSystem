@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
-using Teachers.Domain.Implementation;
+using Teachers.Data.Implementation;
 using Teachers.Test.Helpers;
 
 namespace Teachers.Test.ImplementationTests

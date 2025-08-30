@@ -1,5 +1,5 @@
-﻿using Teachers.Domain.Interfaces;
-using Teachers.Domain.Implementation;
+﻿using Teachers.Data.Interfaces;
+using Teachers.Data.Implementation;
 
 namespace Teachers.Test.Helpers
 {

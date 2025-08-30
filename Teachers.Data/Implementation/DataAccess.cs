@@ -1,8 +1,8 @@
-﻿using Teachers.Domain.Interfaces;
+﻿using Teachers.Data.Interfaces;
 using System.Data;
 using Dapper;
 
-namespace Teachers.Domain.Implementation
+namespace Teachers.Data.Implementation
 {
     public class DataAccess : IDataAccess
     {

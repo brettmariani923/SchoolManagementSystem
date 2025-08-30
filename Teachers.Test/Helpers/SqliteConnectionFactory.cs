@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using Microsoft.Data.Sqlite;
-using Teachers.Domain.Interfaces;
+using Teachers.Data.Interfaces;
 
 namespace Teachers.Test.Helpers
 {

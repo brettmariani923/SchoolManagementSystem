@@ -2,8 +2,8 @@
 using Dapper;
 using Moq;
 using Microsoft.Data.Sqlite;
-using Teachers.Domain.Implementation;
-using Teachers.Domain.Interfaces;
+using Teachers.Data.Implementation;
+using Teachers.Data.Interfaces;
 using Teachers.Application.Services;
 using Teachers.Application.DTO;
 

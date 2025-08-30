@@ -1,8 +1,8 @@
 ﻿using Microsoft.OpenApi.Models;
 using Teachers.Application.Interfaces;
 using Teachers.Application.Services;
-using Teachers.Domain.Implementation;
-using Teachers.Domain.Interfaces;
+using Teachers.Data.Implementation;
+using Teachers.Data.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
-using Teachers.Domain.Interfaces;
+using Teachers.Data.Interfaces;
 
-namespace Teachers.Domain.Implementation
+namespace Teachers.Data.Implementation
 {
     public class SqlConnectionFactory : IDbConnectionFactory
     {

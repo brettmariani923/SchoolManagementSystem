@@ -1,5 +1,5 @@
 ﻿using Moq;
-using Teachers.Domain.Interfaces;
+using Teachers.Data.Interfaces;
 using Teachers.Application.Services;
 using Teachers.Data.Rows;
 using Teachers.Application.DTO;

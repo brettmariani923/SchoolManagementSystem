@@ -1,4 +1,4 @@
-﻿using Teachers.Domain.Interfaces;
+﻿using Teachers.Data.Interfaces;
 
 namespace Teachers.Data.Requests.Courses.Remove
 {

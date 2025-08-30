@@ -1,4 +1,4 @@
-﻿using Teachers.Domain.Interfaces;
+﻿using Teachers.Data.Interfaces;
 using Teachers.Data.Rows;
 
 namespace Teachers.Data.Requests.Enrollments.Update

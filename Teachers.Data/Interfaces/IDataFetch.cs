@@ -1,4 +1,4 @@
-﻿namespace Teachers.Domain.Interfaces
+﻿namespace Teachers.Data.Interfaces
 {
     public interface IDataFetch<TResponse> : IDataRequest { }
 }
