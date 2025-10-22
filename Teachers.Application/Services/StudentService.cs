@@ -15,37 +15,37 @@ namespace Teachers.Application.Services
         public StudentService(IDataAccess data) => _data = data;
 
         // Reads: Rows -> DTOs
-        public async Task<Students_DTO?> GetByIdAsync(int studentId, CancellationToken ct = default)
+        public async Task<Students_DTO?> GetByIdAsync(int studentId)
         {
             var row = await _data.FetchAsync(new ReturnStudentByID(studentId));
             return row is null ? null : Map(row);
         }
 
-        public async Task<IEnumerable<Students_DTO>> GetAllAsync(CancellationToken ct = default)
+        public async Task<IEnumerable<Students_DTO>> GetAllAsync( )
         {
             var rows = await _data.FetchListAsync(new ReturnAllStudents());
             return rows.Select(Map);
         }
 
         // Deletes
-        public Task<int> RemoveByIdAsync(int studentId, CancellationToken ct = default)
+        public Task<int> RemoveByIdAsync(int studentId)
             => _data.ExecuteAsync(new RemoveStudentByID(studentId));
 
-        public Task<int> RemoveBulkAsync(IEnumerable<int> studentIds, CancellationToken ct = default)
+        public Task<int> RemoveBulkAsync(IEnumerable<int> studentIds)
             => _data.ExecuteAsync(new RemoveBulkStudents(studentIds));
 
         // Updates: DTO -> Row
-        public Task<int> UpdateAsync(Students_DTO student, CancellationToken ct = default)
+        public Task<int> UpdateAsync(Students_DTO student)
             => _data.ExecuteAsync(new UpdateStudent(MapToRow(student)));
 
-        public Task<int> UpdateBulkAsync(IEnumerable<Students_DTO> students, CancellationToken ct = default)
+        public Task<int> UpdateBulkAsync(IEnumerable<Students_DTO> students)
             => _data.ExecuteAsync(new UpdateBulkStudents(students.Select(MapToRow)));
 
         // Inserts
-        public Task<int> InsertAsync(StudentRequest newStudent, CancellationToken ct = default)
+        public Task<int> InsertAsync(StudentRequest newStudent)
             => _data.ExecuteAsync(new InsertNewStudent(MapToRowForInsert(newStudent)));
 
-        public Task<int> InsertBulkAsync(IEnumerable<StudentRequest> newStudents, CancellationToken ct = default)
+        public Task<int> InsertBulkAsync(IEnumerable<StudentRequest> newStudents)
             => _data.ExecuteAsync(new InsertBulkStudents(newStudents.Select(MapToRowForInsert)));
 
         // Mapping helpers

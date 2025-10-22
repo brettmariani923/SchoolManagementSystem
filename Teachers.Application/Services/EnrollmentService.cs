@@ -15,57 +15,57 @@ namespace Teachers.Application.Services
         public EnrollmentService(IDataAccess data) => _data = data;
 
         // Reads: Rows -> DTOs
-        public async Task<Enrollments_DTO?> GetByIdAsync(int enrollmentId, CancellationToken ct = default)
+        public async Task<Enrollments_DTO?> GetByIdAsync(int enrollmentId)
         {
             var rows = await _data.FetchListAsync(new ReturnEnrollmentsByEnrollmentID(enrollmentId));
             var row = rows.FirstOrDefault();
             return row is null ? null : Map(row);
         }
 
-        public async Task<IEnumerable<Enrollments_DTO>> GetAllAsync(CancellationToken ct = default)
+        public async Task<IEnumerable<Enrollments_DTO>> GetAllAsync( )
         {
             var rows = await _data.FetchListAsync(new ReturnAllEnrollments());
             return rows.Select(Map);
         }
 
-        public async Task<IEnumerable<Enrollments_DTO>> GetByStudentIdAsync(int studentId, CancellationToken ct = default)
+        public async Task<IEnumerable<Enrollments_DTO>> GetByStudentIdAsync(int studentId)
         {
             var rows = await _data.FetchListAsync(new ReturnEnrollmentsByStudentID(studentId));
             return rows.Select(Map);
         }
 
-        public async Task<IEnumerable<Enrollments_DTO>> GetByCourseIdAsync(int courseId, CancellationToken ct = default)
+        public async Task<IEnumerable<Enrollments_DTO>> GetByCourseIdAsync(int courseId)
         {
             var rows = await _data.FetchListAsync(new ReturnEnrollmentsByCourseID(courseId));
             return rows.Select(Map);
         }
 
-        public async Task<IEnumerable<Enrollments_DTO>> GetByTeacherIdAsync(int teacherId, CancellationToken ct = default)
+        public async Task<IEnumerable<Enrollments_DTO>> GetByTeacherIdAsync(int teacherId)
         {
             var rows = await _data.FetchListAsync(new ReturnEnrollmentsByTeacherID(teacherId));
             return rows.Select(Map);
         }
 
         // Deletes
-        public Task<int> RemoveByIdAsync(int enrollmentId, CancellationToken ct = default)
+        public Task<int> RemoveByIdAsync(int enrollmentId)
             => _data.ExecuteAsync(new RemoveStudentEnrollmentByID(enrollmentId));
 
-        public Task<int> RemoveBulkAsync(IEnumerable<int> enrollmentIds, CancellationToken ct = default)
+        public Task<int> RemoveBulkAsync(IEnumerable<int> enrollmentIds)
             => _data.ExecuteAsync(new RemoveBulkStudentEnrollments(enrollmentIds));
 
         // Updates (DTO -> Row -> row-based request)
-        public Task<int> UpdateAsync(Enrollments_DTO enrollment, CancellationToken ct = default)
+        public Task<int> UpdateAsync(Enrollments_DTO enrollment)
             => _data.ExecuteAsync(new UpdateStudentEnrollment(MapToRow(enrollment)));
 
-        public Task<int> UpdateBulkAsync(IEnumerable<Enrollments_DTO> enrollments, CancellationToken ct = default)
+        public Task<int> UpdateBulkAsync(IEnumerable<Enrollments_DTO> enrollments)
             => _data.ExecuteAsync(new UpdateBulkEnrollments(enrollments.Select(MapToRow)));
 
         // Inserts (DTO -> Row -> row-based request)
-        public Task<int> InsertAsync(EnrollmentRequest newEnrollment, CancellationToken ct = default)
+        public Task<int> InsertAsync(EnrollmentRequest newEnrollment)
             => _data.ExecuteAsync(new InsertStudentEnrollment(MapToRowForInsert(newEnrollment)));
 
         // Bulk insert (studentIds -> Rows -> row-based request)
-        public Task<int> InsertBulkAsync(IEnumerable<EnrollmentRequest> newCourses, CancellationToken ct = default)
+        public Task<int> InsertBulkAsync(IEnumerable<EnrollmentRequest> newCourses)
             => _data.ExecuteAsync(new InsertBulkStudentEnrollment(newCourses.Select(MapToRowForInsert)));
 
         // Mapping helpers

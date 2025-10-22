@@ -5,19 +5,19 @@ namespace Teachers.Application.Interfaces
     public interface ICourseService
     {
         // Reads
-        Task<Courses_DTO?> GetByIdAsync(int courseId, CancellationToken ct = default);
-        Task<IEnumerable<Courses_DTO>> GetAllAsync(CancellationToken ct = default);
+        Task<Courses_DTO?> GetByIdAsync(int courseId);
+        Task<IEnumerable<Courses_DTO>> GetAllAsync();
 
         // Deletes
-        Task<int> RemoveByIdAsync(int courseId, CancellationToken ct = default);
-        Task<int> RemoveBulkAsync(IEnumerable<int> courseIds, CancellationToken ct = default);
+        Task<int> RemoveByIdAsync(int courseId);
+        Task<int> RemoveBulkAsync(IEnumerable<int> courseIds);
 
         // Updates
-        Task<int> UpdateAsync(Courses_DTO course, CancellationToken ct = default);
-        Task<int> UpdateBulkAsync(IEnumerable<Courses_DTO> courses, CancellationToken ct = default);
+        Task<int> UpdateAsync(Courses_DTO course);
+        Task<int> UpdateBulkAsync(IEnumerable<Courses_DTO> courses);
 
         // Inserts
-        Task<int> InsertAsync(CourseRequest newCourse, CancellationToken ct = default);
-        Task<int> InsertBulkAsync(IEnumerable<CourseRequest> newCourses, CancellationToken ct = default);
+        Task<int> InsertAsync(CourseRequest newCourse);
+        Task<int> InsertBulkAsync(IEnumerable<CourseRequest> newCourses);
     }
 }
